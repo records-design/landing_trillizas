@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+  <title>Las Trillizas de Oro y El Libro Mágico</title>
+  <meta name="description" content="Tres hermanas, un libro, música y magia. Mirá el videoclip y escuchá &quot;La Locomotora llega a la estación&quot;." />
+  <link rel="canonical" href="https://lastrillizasdeoroyellibromagico.com" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Las Trillizas de Oro y El Libro Mágico" />
+  <meta property="og:description" content="Tres hermanas, un libro, música y magia." />
+  <meta property="og:image" content="https://lastrillizasdeoroyellibromagico.com/imagenes/hero-poster.jpg" />
+  <meta property="og:type" content="website" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500;1,600&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css?v=1" />
+
+  <!--
+    META PIXEL — pegar acá el snippet oficial de Meta cuando META_CONFIG.enabled
+    pase a true en config.js. No hardcodear el Pixel ID en este comentario.
+  -->
+</head>
+<body>
+
+  <!-- HERO — objetivo: ver el videoclip / escuchar la canción -->
+  <section class="hero">
+    <video
+      class="hero-video"
+      autoplay
+      muted
+      loop
+      playsinline
+      poster="imagenes/hero-poster.jpg"
+    >
+      <source src="videos/videoplayback.mp4" type="video/mp4" />
+    </video>
+
+    <div class="hero-overlay" aria-hidden="true"></div>
+    <div class="hero-vignette" aria-hidden="true"></div>
+
+    <div class="hero-content">
+      <div class="hero-glow" aria-hidden="true"></div>
+
+      <img
+        class="hero-logo"
+        src="imagenes/logo%20trillizas.png"
+        alt="Las Trillizas de Oro y El Libro Mágico"
+        width="1314"
+        height="1315"
+      />
+
+      <p class="hero-slogan">Tres hermanas, un libro, música y magia</p>
+
+      <div class="hero-meta">
+        <h1 class="hero-song">La Locomotora llega a la estación</h1>
+      </div>
+
+      <div class="hero-ctas">
+        <a
+          id="ctaVideoclip"
+          class="btn btn-primary"
+          href="https://www.youtube.com/watch?v=wK0aSHRF_Wg"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Ver el videoclip de La Locomotora llega a la estación en YouTube"
+          data-event="WatchVideo"
+          data-destination="YouTube"
+        >
+          <span class="btn-icon-badge">
+            <svg class="btn-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="12" fill="#FF0000"/>
+              <path d="M9.5 8.3v7.4c0 .5.55.8 1 .55l6.4-3.7c.45-.26.45-.9 0-1.16l-6.4-3.7c-.45-.25-1 .06-1 .57Z" fill="#fff"/>
+            </svg>
+          </span>
+          Ver en YouTube
+        </a>
+
+        <a
+          id="ctaSpotify"
+          class="btn btn-secondary"
+          href="https://open.spotify.com/intl-es/track/4oxUGUj9S6KreStpNAHHXq?si=9a3d7e9111f14a55"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Escuchar La Locomotora llega a la estación en Spotify"
+          data-event="ListenSong"
+          data-destination="Spotify"
+        >
+          <span class="btn-icon-badge">
+            <svg class="btn-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="12" fill="#1ED760"/>
+              <path d="M17.36 16.5a.75.75 0 0 1-1.03.26c-2.82-1.72-6.36-2.11-10.54-1.16a.75.75 0 1 1-.33-1.46c4.58-1.04 8.5-.59 11.64 1.33.36.22.47.68.26 1.03Zm1.47-3.27a.94.94 0 0 1-1.29.31c-3.23-1.98-8.15-2.56-11.97-1.4a.938.938 0 1 1-.54-1.8c4.36-1.32 9.78-.68 13.49 1.6.44.27.58.85.31 1.29Zm.13-3.4C15.9 7.7 9.99 7.5 6.6 8.53a1.125 1.125 0 1 1-.66-2.15c3.9-1.18 10.43-.95 14.54 1.48a1.125 1.125 0 1 1-1.15 1.93Z" fill="#fff"/>
+            </svg>
+          </span>
+          Escuchar en Spotify
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-scroll" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+  </section>
+
+  <!-- SECCIÓN 2 — refuerzo simple, sin cards ni contenido inventado -->
+  <section class="disponible">
+    <div class="disponible-content">
+      <p class="disponible-text">
+        Escuchá &quot;La Locomotora llega a la estación&quot; y descubrí el comienzo
+        de este universo de música y magia.
+      </p>
+
+      <button
+        type="button"
+        class="video-facade"
+        id="videoFacade"
+        aria-label="Reproducir el videoclip de La Locomotora llega a la estación"
+      >
+        <img
+          src="https://i.ytimg.com/vi/wK0aSHRF_Wg/hqdefault.jpg"
+          alt=""
+          loading="lazy"
+        />
+        <span class="video-facade-play" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+        </span>
+      </button>
+
+      <div class="hero-ctas disponible-ctas">
+        <a
+          class="btn btn-primary"
+          href="https://www.youtube.com/watch?v=wK0aSHRF_Wg"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Ver el videoclip de La Locomotora llega a la estación en YouTube"
+          data-event="WatchVideo"
+          data-destination="YouTube"
+        >
+          <span class="btn-icon-badge">
+            <svg class="btn-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="12" fill="#FF0000"/>
+              <path d="M9.5 8.3v7.4c0 .5.55.8 1 .55l6.4-3.7c.45-.26.45-.9 0-1.16l-6.4-3.7c-.45-.25-1 .06-1 .57Z" fill="#fff"/>
+            </svg>
+          </span>
+          Ver en YouTube
+        </a>
+
+        <a
+          class="btn btn-secondary"
+          href="https://open.spotify.com/intl-es/track/4oxUGUj9S6KreStpNAHHXq?si=9a3d7e9111f14a55"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Escuchar La Locomotora llega a la estación en Spotify"
+          data-event="ListenSong"
+          data-destination="Spotify"
+        >
+          <span class="btn-icon-badge">
+            <svg class="btn-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="12" fill="#1ED760"/>
+              <path d="M17.36 16.5a.75.75 0 0 1-1.03.26c-2.82-1.72-6.36-2.11-10.54-1.16a.75.75 0 1 1-.33-1.46c4.58-1.04 8.5-.59 11.64 1.33.36.22.47.68.26 1.03Zm1.47-3.27a.94.94 0 0 1-1.29.31c-3.23-1.98-8.15-2.56-11.97-1.4a.938.938 0 1 1-.54-1.8c4.36-1.32 9.78-.68 13.49 1.6.44.27.58.85.31 1.29Zm.13-3.4C15.9 7.7 9.99 7.5 6.6 8.53a1.125 1.125 0 1 1-.66-2.15c3.9-1.18 10.43-.95 14.54 1.48a1.125 1.125 0 1 1-1.15 1.93Z" fill="#fff"/>
+            </svg>
+          </span>
+          Escuchar en Spotify
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
