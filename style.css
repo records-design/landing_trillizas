@@ -222,7 +222,7 @@ button:focus-visible {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: clamp(20px, 3vw, 36px);
+  gap: clamp(18px, 2.7vw, 32px);
   row-gap: 14px;
   flex-wrap: wrap;
 }
@@ -230,21 +230,22 @@ button:focus-visible {
 .follow-link {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
+  gap: 11px;
   color: var(--gold-light);
-  font-family: var(--font-ui);
-  font-weight: 700;
-  font-size: clamp(20px, 2.4vw, 28px);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-style: italic;
+  font-size: clamp(18px, 2.2vw, 25px);
   letter-spacing: 0.01em;
   opacity: 0.92;
   transition: opacity 0.2s ease, transform 0.2s ease;
 }
-.follow-link svg { width: clamp(28px, 3vw, 40px); height: clamp(28px, 3vw, 40px); flex-shrink: 0; }
+.follow-link svg { width: clamp(25px, 2.7vw, 36px); height: clamp(25px, 2.7vw, 36px); flex-shrink: 0; }
 .follow-link:hover { opacity: 1; transform: translateY(-2px); }
 
 .follow-sep {
   width: 1px;
-  height: clamp(36px, 5vh, 56px);
+  height: clamp(32px, 4.5vh, 50px);
   background: rgba(216, 178, 92, 0.3);
   flex-shrink: 0;
 }
