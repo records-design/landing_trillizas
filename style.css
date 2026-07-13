@@ -275,7 +275,7 @@ button:focus-visible {
   position: relative;
 
   width: min(var(--cta-group-width), calc(100vw - 40px));
-  max-width: none;
+  max-width: var(--cta-group-width);
 
   display: flex;
   align-items: center;
@@ -320,96 +320,69 @@ button:focus-visible {
    ============================================================ */
 
 .hero-slogan {
+  position: relative;
+  z-index: 2;
 
-    position: relative;
-    z-index: 2;
+  display: block;
+  width: 100%;
 
-    display: block;
-    width: 100%;
+  margin: 0;
+  padding: 0 0 10px;
 
-    margin: 0;
-    padding: 0 0 10px;
+  overflow: visible;
 
-    overflow: visible;
+  font-family: var(--font-display);
 
-    font-family: var(--font-display);
+  /* Grande y protagonista, pero sin cortarse */
+  font-size: clamp(58px, 4.15vw, 78px);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: 0.002em;
 
-    /* MUCHO MÁS GRANDE */
-    font-size: clamp(105px, 7.5vw, 150px);
+  white-space: nowrap;
+  text-align: center;
 
-    font-weight: 500;
-
-    line-height: 1.05;
-
-    letter-spacing: -0.01em;
-
-    white-space: nowrap;
-
-    text-align: center;
-
-    /* DORADO ANTIGUO */
-
-    background:
+  /* Dorado antiguo */
+  color: #e7bd62;
+  background:
     linear-gradient(
-
-        180deg,
-
-        #FFFBEF 0%,
-        #FFEFB8 14%,
-        #FFD977 34%,
-        #F0BC52 56%,
-        #D89432 78%,
-        #A86820 100%
-
+      180deg,
+      #fff8dc 0%,
+      #f6dc98 24%,
+      #e9bd62 54%,
+      #c88c34 82%,
+      #9f6420 100%
     );
 
-    -webkit-background-clip:text;
-    background-clip:text;
-    -webkit-text-fill-color:transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 
-    /* BISSEL MUY SUAVE */
+  /* Relieve muy sutil */
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.42),
+    0 2px 0 rgba(155, 94, 24, 0.24),
+    0 5px 14px rgba(0, 0, 0, 0.34),
+    0 0 18px rgba(255, 215, 120, 0.14);
 
-    text-shadow:
+  opacity: 0;
+  filter: blur(10px);
+  transform: translateY(14px);
 
-        0 1px 0 rgba(255,255,255,.55),
+  animation:
+    sloganMaterialize 1.05s cubic-bezier(.22, 1, .36, 1) .8s forwards,
+    sloganSettleGlow 1.2s ease-out 1.9s forwards;
 
-        0 2px 0 rgba(184,120,30,.28),
-
-        0 5px 14px rgba(0,0,0,.34),
-
-        0 0 18px rgba(255,215,120,.18);
-
-    opacity:0;
-
-    filter:blur(10px);
-
-    transform:translateY(14px);
-
-    animation:
-
-        sloganMaterialize 1.05s cubic-bezier(.22,1,.36,1) .8s forwards,
-
-        sloganSettleGlow 1.2s ease-out 1.9s forwards;
-
-    transition:
-
-        filter .35s ease,
-
-        transform .35s ease,
-
-        text-shadow .35s ease;
-
+  transition:
+    filter .35s ease,
+    text-shadow .35s ease;
 }
-
-
-
-
 
 @keyframes sloganMaterialize {
   0% {
     opacity: 0;
     filter: blur(12px);
-    transform: translateY(14px) scale(1.02);
+    transform: translateY(14px);
   }
 
   65% {
@@ -420,7 +393,7 @@ button:focus-visible {
   100% {
     opacity: 1;
     filter: blur(0);
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
   }
 }
 
@@ -1104,8 +1077,8 @@ button:focus-visible {
   }
 
   .hero-slogan {
-    font-size: clamp(44px, 5.8vw, 64px);
-    line-height: 1.16;
+    font-size: clamp(40px, 5.2vw, 56px);
+    line-height: 1.10;
     white-space: nowrap;
   }
 
@@ -1122,58 +1095,90 @@ button:focus-visible {
    MOBILE
    ============================================================ */
 
-@media (max-width: 480px) {
+@media (max-width: 700px) {
   :root {
-    --button-width: min(340px, calc(100vw - 40px));
-    --button-gap: 14px;
+    --button-width: min(360px, calc(100vw - 32px));
+    --button-gap: 16px;
     --cta-group-width: var(--button-width);
   }
 
+  html,
+  body {
+    min-height: 100%;
+    overflow-x: hidden;
+  }
+
   .hero {
-    min-height: 100svh;
+    width: 100%;
     height: auto;
+    min-height: 100svh;
+    overflow: visible;
+  }
+
+  .hero-video,
+  .hero-overlay,
+  .hero-vignette,
+  .hero-shadow,
+  .hero-particles {
+    position: fixed;
   }
 
   .hero-content {
+    width: 100%;
+    max-width: 100%;
     transform: none;
-    padding: 12px 20px 48px;
+    padding: 12px 16px 54px;
   }
 
   .hero-logo {
-    width: min(94vw, 430px);
-    margin-top: -34px;
+    width: min(96vw, 455px);
+    margin-top: -28px;
     margin-bottom: 8px;
   }
 
   .hero-slogan-wrap {
     width: 100%;
-    padding: 4px 8px 10px;
-    margin-bottom: 24px;
+    max-width: 100%;
+    padding: 4px 8px 12px;
+    margin-bottom: 26px;
   }
 
   .hero-slogan {
-    max-width: 24ch;
-    padding: 0 8px 4px;
-    font-size: clamp(27px, 8vw, 36px);
-    line-height: 1.24;
+    width: 100%;
+    max-width: 22ch;
+    margin-inline: auto;
+    padding: 0 6px 4px;
+
+    font-size: clamp(28px, 8vw, 38px);
+    line-height: 1.18;
+
     white-space: normal;
+    text-wrap: balance;
   }
 
+  /* CTA: uno debajo del otro */
   .hero-ctas {
     width: 100%;
+    max-width: 100%;
+
+    display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
     gap: var(--button-gap);
     margin-bottom: 52px;
   }
 
   .magic-button {
     width: var(--button-width);
-    flex-basis: auto;
+    max-width: 100%;
+    flex: 0 0 auto;
   }
 
   .magic-button__content {
     gap: 9px;
-    padding-inline: 28px;
+    padding-inline: 26px;
   }
 
   .magic-button__icon {
@@ -1188,20 +1193,22 @@ button:focus-visible {
   }
 
   .magic-button__label {
-    font-size: clamp(16px, 4.5vw, 19px);
+    font-size: clamp(16px, 4.4vw, 19px);
   }
 
   .follow-title {
-    font-size: 11px;
-    letter-spacing: 0.2em;
+    max-width: calc(100vw - 40px);
+    font-size: 12px;
+    line-height: 1.35;
+    letter-spacing: 0.18em;
+    text-align: center;
   }
 
   .follow-links {
     margin-top: 30px;
-    gap: 26px;
+    gap: 24px;
   }
 
-  /* Mantener los círculos, ocultar solo los nombres si el espacio aprieta */
   .follow-name {
     display: none;
   }
@@ -1247,8 +1254,9 @@ button:focus-visible {
   }
 
   .hero-slogan {
-    font-size: clamp(34px, 2.6vw, 46px);
-    line-height: 1.2;
+    font-size: clamp(44px, 3.4vw, 56px);
+    line-height: 1.08;
+    white-space: nowrap;
   }
 
   .hero-ctas {
@@ -1287,7 +1295,7 @@ button:focus-visible {
    VIEWPORTS MUY BAJOS
    ============================================================ */
 
-@media (max-height: 700px) {
+@media (max-height: 700px) and (min-width: 701px) {
   .hero {
     min-height: 100svh;
     height: auto;
@@ -1310,8 +1318,9 @@ button:focus-visible {
   }
 
   .hero-slogan {
-    font-size: clamp(24px, 4.4vh, 31px);
-    line-height: 1.3;
+    font-size: clamp(34px, 5.2vh, 44px);
+    line-height: 1.10;
+    white-space: nowrap;
   }
 
   .hero-ctas {
@@ -1406,7 +1415,7 @@ button:focus-visible {
 
 /* El texto se ilumina apenas */
 .hero-slogan-wrap:hover .hero-slogan {
-  filter: brightness(1.08);
+  filter: brightness(1.12) saturate(1.06);
   text-shadow:
     0 1px 0 rgba(255, 249, 220, 0.48),
     0 2px 0 rgba(121, 72, 18, 0.34),
@@ -1511,4 +1520,55 @@ button:focus-visible {
   .hero-slogan-wrap:hover .slogan-sparkles i {
     animation: none;
   }
+}
+
+
+/* ============================================================
+   SEGURIDAD FINAL DEL SLOGAN Y MOBILE
+   ============================================================ */
+
+@media (min-width: 901px) {
+  .hero-slogan-wrap {
+    width: min(var(--cta-group-width), calc(100vw - 40px));
+    max-width: var(--cta-group-width);
+  }
+
+  .hero-slogan {
+    white-space: nowrap;
+    overflow: visible;
+  }
+}
+
+@media (min-width: 901px) and (min-height: 821px) {
+  .hero-slogan {
+    font-size: clamp(58px, 4.15vw, 78px);
+  }
+}
+
+@media (min-width: 901px) and (max-height: 820px) {
+  .hero-slogan {
+    font-size: clamp(44px, 3.4vw, 56px);
+  }
+}
+
+@media (min-width: 901px) and (max-height: 700px) {
+  .hero-slogan {
+    font-size: clamp(34px, 5.2vh, 44px);
+  }
+}
+
+@media (max-width: 700px) {
+  .hero-ctas {
+    flex-direction: column !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .magic-button {
+    width: min(360px, calc(100vw - 32px)) !important;
+    max-width: 100% !important;
+  }
+}
+
+.hero-slogan-wrap:hover .hero-slogan {
+  filter: brightness(1.12) saturate(1.06);
 }
