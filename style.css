@@ -229,7 +229,7 @@ button:focus-visible {
   filter: blur(8px);
 
   animation: sloganReveal 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-  animation-delay: 0.72s;
+  animation-delay: 0.85s;
 }
 
 .hero-slogan {
@@ -237,11 +237,11 @@ button:focus-visible {
   max-width: none;
 
   font-family: var(--font-display);
-  font-size: clamp(42px, 3.15vw, 58px);
+  font-size: clamp(50px, 3.75vw, 70px);
   font-style: normal;
   font-weight: 400;
   line-height: 1.15;
-  letter-spacing: 0.005em;
+  letter-spacing: 0.018em;
   white-space: nowrap;
   text-align: center;
 
@@ -266,7 +266,7 @@ button:focus-visible {
 
   text-shadow: 0 3px 16px rgba(0, 0, 0, 0.24);
 
-  animation: sloganShimmer 1s ease-out 1.55s 1 forwards;
+  animation: sloganShimmer 1s ease-out 1.75s 1 forwards;
 }
 
 @keyframes sloganReveal {
@@ -284,11 +284,11 @@ button:focus-visible {
 }
 
 @keyframes sloganShimmer {
-  from {
+  0% {
     background-position: 100% 0;
   }
 
-  to {
+  100% {
     background-position: 0% 0;
   }
 }
@@ -612,7 +612,7 @@ button:focus-visible {
   }
 
   .hero-slogan {
-    font-size: clamp(32px, 4.2vw, 44px);
+    font-size: clamp(36px, 4.8vw, 52px);
     white-space: normal;
   }
 
@@ -656,7 +656,7 @@ button:focus-visible {
 
   .hero-slogan {
     max-width: 24ch;
-    font-size: clamp(25px, 7.4vw, 33px);
+    font-size: clamp(26px, 7.8vw, 35px);
     white-space: normal;
   }
 
@@ -739,7 +739,7 @@ button:focus-visible {
   }
 
   .hero-slogan {
-    font-size: clamp(28px, 2.15vw, 38px);
+    font-size: clamp(40px, 3vw, 54px);
   }
 
   .hero-ctas {
@@ -782,7 +782,7 @@ button:focus-visible {
   }
 
   .hero-slogan {
-    font-size: clamp(22px, 4vh, 29px);
+    font-size: clamp(24px, 4.4vh, 31px);
   }
 
   .hero-ctas {
