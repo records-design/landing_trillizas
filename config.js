@@ -6,7 +6,7 @@
 const SONG_NAME = 'La Locomotora llega a la estación';
 
 // ------------------------------------------------------------
-// REDES SOCIALES — bloque "Seguinos en" debajo de los botones del hero
+// REDES SOCIALES — bloque "Cruzá el portal mágico" debajo de los botones del hero
 // ------------------------------------------------------------
 // Todavía no hay URLs reales: quedan en "#" para no romper el layout.
 // Reemplazar cada valor por la URL real y sacar el href="#" del HTML

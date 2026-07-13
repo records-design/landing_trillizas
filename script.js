@@ -57,23 +57,3 @@ document.querySelectorAll('[data-event]').forEach((el) => {
 document.querySelectorAll('a[data-placeholder="true"]').forEach((el) => {
   el.addEventListener('click', (e) => e.preventDefault());
 });
-
-// ============================================================
-// Facade de video (sección "Ya disponible")
-// Carga el iframe de YouTube recién al hacer clic, para no pagar
-// el costo de rendimiento del embed si el usuario no lo pide.
-// ============================================================
-
-const videoFacade = document.getElementById('videoFacade');
-
-if (videoFacade) {
-  videoFacade.addEventListener('click', () => {
-    const iframe = document.createElement('iframe');
-    iframe.src = 'https://www.youtube-nocookie.com/embed/wK0aSHRF_Wg?autoplay=1&rel=0';
-    iframe.title = SONG_NAME;
-    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
-    iframe.allowFullscreen = true;
-    videoFacade.replaceWith(iframe);
-    iframe.className = 'video-facade';
-  });
-}

@@ -16,7 +16,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,500;1,600&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="style.css?v=1" />
 
@@ -56,15 +56,7 @@
       />
 
       <div class="hero-slogan-wrap">
-        <svg class="slogan-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M12 6c-1.8-1.3-4.2-2-7-2v13c2.8 0 5.2.7 7 2 1.8-1.3 4.2-2 7-2V4c-2.8 0-5.2.7-7 2Z"/>
-          <path d="M12 6v13"/>
-        </svg>
-        <h1 class="hero-slogan">Tres hermanas, un libro, música y magia</h1>
-        <svg class="slogan-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-          <path d="M12 2c.6 3.4 2 4.8 5 5-3 .2-4.4 1.6-5 5-.6-3.4-2-4.8-5-5 3-.2 4.4-1.6 5-5Z"/>
-          <path d="M19 14c.3 1.6.9 2.2 2.5 2.5-1.6.3-2.2.9-2.5 2.5-.3-1.6-.9-2.2-2.5-2.5 1.6-.3 2.2-.9 2.5-2.5Z"/>
-        </svg>
+        <h1 class="hero-slogan">Tres hermanas, un libro,<br>música y magia.</h1>
       </div>
 
       <div class="hero-ctas">
@@ -83,7 +75,7 @@
             <span class="magic-button__side magic-button__side--left" aria-hidden="true"></span>
             <span class="magic-button__content">
               <span class="magic-button__icon">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </span>
               <span class="magic-button__label">Ver videoclip</span>
             </span>
@@ -107,7 +99,11 @@
             <span class="magic-button__side magic-button__side--left" aria-hidden="true"></span>
             <span class="magic-button__content">
               <span class="magic-button__icon">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" fill="currentColor"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M9 18V5l12-2v13"/>
+                  <circle cx="6" cy="18" r="3"/>
+                  <circle cx="18" cy="16" r="3"/>
+                </svg>
               </span>
               <span class="magic-button__label">Escuchar canción</span>
             </span>
@@ -121,11 +117,11 @@
       <div class="hero-follow">
         <div class="follow-divider" aria-hidden="true">
           <span class="follow-line"></span>
-          <svg class="follow-heart" viewBox="0 0 24 24" fill="currentColor"><path d="M12 20.5s-7.5-4.6-10-9.3C.5 8 2 4.8 5.2 4.1c2-.4 3.9.5 5 2.1 1-1.6 2.9-2.5 4.9-2.1 3.2.7 4.7 3.9 3.2 7.1-2.5 4.7-10 9.3-10 9.3Z"/></svg>
+          <span class="follow-diamond"></span>
           <span class="follow-line"></span>
         </div>
 
-        <span class="follow-title">Seguinos en</span>
+        <span class="follow-title">Cruzá el portal mágico</span>
 
         <div class="follow-links">
           <a class="follow-link" href="#" data-placeholder="true" aria-label="Instagram">
@@ -152,91 +148,11 @@
             <span>YouTube</span>
           </a>
         </div>
-
-        <div class="follow-divider" aria-hidden="true">
-          <span class="follow-line"></span>
-          <svg class="follow-heart" viewBox="0 0 24 24" fill="currentColor"><path d="M12 20.5s-7.5-4.6-10-9.3C.5 8 2 4.8 5.2 4.1c2-.4 3.9.5 5 2.1 1-1.6 2.9-2.5 4.9-2.1 3.2.7 4.7 3.9 3.2 7.1-2.5 4.7-10 9.3-10 9.3Z"/></svg>
-          <span class="follow-line"></span>
-        </div>
       </div>
     </div>
 
     <div class="hero-scroll" aria-hidden="true">
       <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </div>
-  </section>
-
-  <!-- SECCIÓN 2 — refuerzo simple, sin cards ni contenido inventado -->
-  <section class="disponible">
-    <div class="disponible-content">
-      <p class="disponible-text">
-        Escuchá &quot;La Locomotora llega a la estación&quot; y descubrí el comienzo
-        de este universo de música y magia.
-      </p>
-
-      <button
-        type="button"
-        class="video-facade"
-        id="videoFacade"
-        aria-label="Reproducir el videoclip de La Locomotora llega a la estación"
-      >
-        <img
-          src="https://i.ytimg.com/vi/wK0aSHRF_Wg/hqdefault.jpg"
-          alt=""
-          loading="lazy"
-        />
-        <span class="video-facade-play" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
-        </span>
-      </button>
-
-      <div class="hero-ctas disponible-ctas">
-        <a
-          class="magic-button magic-button--purple"
-          href="https://www.youtube.com/watch?v=wK0aSHRF_Wg"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Ver el videoclip de La Locomotora llega a la estación en YouTube"
-          data-event="WatchVideo"
-          data-destination="YouTube"
-        >
-          <span class="magic-button__diamond magic-button__diamond--top" aria-hidden="true"></span>
-          <span class="magic-button__inner">
-            <span class="magic-button__side magic-button__side--left" aria-hidden="true"></span>
-            <span class="magic-button__content">
-              <span class="magic-button__icon">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
-              </span>
-              <span class="magic-button__label">Ver videoclip</span>
-            </span>
-            <span class="magic-button__side magic-button__side--right" aria-hidden="true"></span>
-          </span>
-          <span class="magic-button__diamond magic-button__diamond--bottom" aria-hidden="true"></span>
-        </a>
-
-        <a
-          class="magic-button magic-button--gold"
-          href="https://open.spotify.com/intl-es/track/4oxUGUj9S6KreStpNAHHXq?si=9a3d7e9111f14a55"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Escuchar La Locomotora llega a la estación en Spotify"
-          data-event="ListenSong"
-          data-destination="Spotify"
-        >
-          <span class="magic-button__diamond magic-button__diamond--top" aria-hidden="true"></span>
-          <span class="magic-button__inner">
-            <span class="magic-button__side magic-button__side--left" aria-hidden="true"></span>
-            <span class="magic-button__content">
-              <span class="magic-button__icon">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" fill="currentColor"/></svg>
-              </span>
-              <span class="magic-button__label">Escuchar canción</span>
-            </span>
-            <span class="magic-button__side magic-button__side--right" aria-hidden="true"></span>
-          </span>
-          <span class="magic-button__diamond magic-button__diamond--bottom" aria-hidden="true"></span>
-        </a>
-      </div>
     </div>
   </section>
 
