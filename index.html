@@ -42,6 +42,7 @@
 
     <div class="hero-overlay" aria-hidden="true"></div>
     <div class="hero-vignette" aria-hidden="true"></div>
+    <div class="hero-shadow" aria-hidden="true"></div>
 
     <div class="hero-content">
       <div class="hero-glow" aria-hidden="true"></div>
@@ -54,16 +55,22 @@
         height="1315"
       />
 
-      <p class="hero-slogan">Tres hermanas, un libro, música y magia</p>
-
-      <div class="hero-meta">
-        <h1 class="hero-song">La Locomotora llega a la estación</h1>
+      <div class="hero-slogan-wrap">
+        <svg class="slogan-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 6c-1.8-1.3-4.2-2-7-2v13c2.8 0 5.2.7 7 2 1.8-1.3 4.2-2 7-2V4c-2.8 0-5.2.7-7 2Z"/>
+          <path d="M12 6v13"/>
+        </svg>
+        <h1 class="hero-slogan">Tres hermanas, un libro, música y magia</h1>
+        <svg class="slogan-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12 2c.6 3.4 2 4.8 5 5-3 .2-4.4 1.6-5 5-.6-3.4-2-4.8-5-5 3-.2 4.4-1.6 5-5Z"/>
+          <path d="M19 14c.3 1.6.9 2.2 2.5 2.5-1.6.3-2.2.9-2.5 2.5-.3-1.6-.9-2.2-2.5-2.5 1.6-.3 2.2-.9 2.5-2.5Z"/>
+        </svg>
       </div>
 
       <div class="hero-ctas">
         <a
           id="ctaVideoclip"
-          class="btn btn-primary"
+          class="magic-button magic-button--purple"
           href="https://www.youtube.com/watch?v=wK0aSHRF_Wg"
           target="_blank"
           rel="noopener noreferrer"
@@ -71,18 +78,23 @@
           data-event="WatchVideo"
           data-destination="YouTube"
         >
-          <span class="btn-icon-badge">
-            <svg class="btn-icon" viewBox="0 0 24 24" aria-hidden="true">
-              <circle cx="12" cy="12" r="12" fill="#FF0000"/>
-              <path d="M9.5 8.3v7.4c0 .5.55.8 1 .55l6.4-3.7c.45-.26.45-.9 0-1.16l-6.4-3.7c-.45-.25-1 .06-1 .57Z" fill="#fff"/>
-            </svg>
+          <span class="magic-button__diamond magic-button__diamond--top" aria-hidden="true"></span>
+          <span class="magic-button__inner">
+            <span class="magic-button__side magic-button__side--left" aria-hidden="true"></span>
+            <span class="magic-button__content">
+              <span class="magic-button__icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+              </span>
+              <span class="magic-button__label">Ver videoclip</span>
+            </span>
+            <span class="magic-button__side magic-button__side--right" aria-hidden="true"></span>
           </span>
-          Ver en YouTube
+          <span class="magic-button__diamond magic-button__diamond--bottom" aria-hidden="true"></span>
         </a>
 
         <a
           id="ctaSpotify"
-          class="btn btn-secondary"
+          class="magic-button magic-button--gold"
           href="https://open.spotify.com/intl-es/track/4oxUGUj9S6KreStpNAHHXq?si=9a3d7e9111f14a55"
           target="_blank"
           rel="noopener noreferrer"
@@ -90,14 +102,62 @@
           data-event="ListenSong"
           data-destination="Spotify"
         >
-          <span class="btn-icon-badge">
-            <svg class="btn-icon" viewBox="0 0 24 24" aria-hidden="true">
-              <circle cx="12" cy="12" r="12" fill="#1ED760"/>
-              <path d="M17.36 16.5a.75.75 0 0 1-1.03.26c-2.82-1.72-6.36-2.11-10.54-1.16a.75.75 0 1 1-.33-1.46c4.58-1.04 8.5-.59 11.64 1.33.36.22.47.68.26 1.03Zm1.47-3.27a.94.94 0 0 1-1.29.31c-3.23-1.98-8.15-2.56-11.97-1.4a.938.938 0 1 1-.54-1.8c4.36-1.32 9.78-.68 13.49 1.6.44.27.58.85.31 1.29Zm.13-3.4C15.9 7.7 9.99 7.5 6.6 8.53a1.125 1.125 0 1 1-.66-2.15c3.9-1.18 10.43-.95 14.54 1.48a1.125 1.125 0 1 1-1.15 1.93Z" fill="#fff"/>
-            </svg>
+          <span class="magic-button__diamond magic-button__diamond--top" aria-hidden="true"></span>
+          <span class="magic-button__inner">
+            <span class="magic-button__side magic-button__side--left" aria-hidden="true"></span>
+            <span class="magic-button__content">
+              <span class="magic-button__icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" fill="currentColor"/></svg>
+              </span>
+              <span class="magic-button__label">Escuchar canción</span>
+            </span>
+            <span class="magic-button__side magic-button__side--right" aria-hidden="true"></span>
           </span>
-          Escuchar en Spotify
+          <span class="magic-button__diamond magic-button__diamond--bottom" aria-hidden="true"></span>
         </a>
+      </div>
+
+      <!-- Íconos sin URL real todavía: hrefs y comentario en config.js (SOCIAL_LINKS) -->
+      <div class="hero-follow">
+        <div class="follow-divider" aria-hidden="true">
+          <span class="follow-line"></span>
+          <svg class="follow-heart" viewBox="0 0 24 24" fill="currentColor"><path d="M12 20.5s-7.5-4.6-10-9.3C.5 8 2 4.8 5.2 4.1c2-.4 3.9.5 5 2.1 1-1.6 2.9-2.5 4.9-2.1 3.2.7 4.7 3.9 3.2 7.1-2.5 4.7-10 9.3-10 9.3Z"/></svg>
+          <span class="follow-line"></span>
+        </div>
+
+        <span class="follow-title">Seguinos en</span>
+
+        <div class="follow-links">
+          <a class="follow-link" href="#" data-placeholder="true" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="5"/>
+              <circle cx="12" cy="12" r="4"/>
+              <circle cx="17" cy="7" r="1" fill="currentColor" stroke="none"/>
+            </svg>
+            <span>Instagram</span>
+          </a>
+          <span class="follow-sep" aria-hidden="true"></span>
+          <a class="follow-link" href="#" data-placeholder="true" aria-label="Spotify">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M17.36 16.5a.75.75 0 0 1-1.03.26c-2.82-1.72-6.36-2.11-10.54-1.16a.75.75 0 1 1-.33-1.46c4.58-1.04 8.5-.59 11.64 1.33.36.22.47.68.26 1.03Zm1.47-3.27a.94.94 0 0 1-1.29.31c-3.23-1.98-8.15-2.56-11.97-1.4a.938.938 0 1 1-.54-1.8c4.36-1.32 9.78-.68 13.49 1.6.44.27.58.85.31 1.29Zm.13-3.4C15.9 7.7 9.99 7.5 6.6 8.53a1.125 1.125 0 1 1-.66-2.15c3.9-1.18 10.43-.95 14.54 1.48a1.125 1.125 0 1 1-1.15 1.93Z"/>
+            </svg>
+            <span>Spotify</span>
+          </a>
+          <span class="follow-sep" aria-hidden="true"></span>
+          <a class="follow-link" href="#" data-placeholder="true" aria-label="YouTube">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+              <rect x="2.5" y="6" width="19" height="12" rx="4"/>
+              <path d="M10.5 9.5v5l4.5-2.5Z" fill="currentColor" stroke="none"/>
+            </svg>
+            <span>YouTube</span>
+          </a>
+        </div>
+
+        <div class="follow-divider" aria-hidden="true">
+          <span class="follow-line"></span>
+          <svg class="follow-heart" viewBox="0 0 24 24" fill="currentColor"><path d="M12 20.5s-7.5-4.6-10-9.3C.5 8 2 4.8 5.2 4.1c2-.4 3.9.5 5 2.1 1-1.6 2.9-2.5 4.9-2.1 3.2.7 4.7 3.9 3.2 7.1-2.5 4.7-10 9.3-10 9.3Z"/></svg>
+          <span class="follow-line"></span>
+        </div>
       </div>
     </div>
 
@@ -132,7 +192,7 @@
 
       <div class="hero-ctas disponible-ctas">
         <a
-          class="btn btn-primary"
+          class="magic-button magic-button--purple"
           href="https://www.youtube.com/watch?v=wK0aSHRF_Wg"
           target="_blank"
           rel="noopener noreferrer"
@@ -140,17 +200,22 @@
           data-event="WatchVideo"
           data-destination="YouTube"
         >
-          <span class="btn-icon-badge">
-            <svg class="btn-icon" viewBox="0 0 24 24" aria-hidden="true">
-              <circle cx="12" cy="12" r="12" fill="#FF0000"/>
-              <path d="M9.5 8.3v7.4c0 .5.55.8 1 .55l6.4-3.7c.45-.26.45-.9 0-1.16l-6.4-3.7c-.45-.25-1 .06-1 .57Z" fill="#fff"/>
-            </svg>
+          <span class="magic-button__diamond magic-button__diamond--top" aria-hidden="true"></span>
+          <span class="magic-button__inner">
+            <span class="magic-button__side magic-button__side--left" aria-hidden="true"></span>
+            <span class="magic-button__content">
+              <span class="magic-button__icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+              </span>
+              <span class="magic-button__label">Ver videoclip</span>
+            </span>
+            <span class="magic-button__side magic-button__side--right" aria-hidden="true"></span>
           </span>
-          Ver en YouTube
+          <span class="magic-button__diamond magic-button__diamond--bottom" aria-hidden="true"></span>
         </a>
 
         <a
-          class="btn btn-secondary"
+          class="magic-button magic-button--gold"
           href="https://open.spotify.com/intl-es/track/4oxUGUj9S6KreStpNAHHXq?si=9a3d7e9111f14a55"
           target="_blank"
           rel="noopener noreferrer"
@@ -158,13 +223,18 @@
           data-event="ListenSong"
           data-destination="Spotify"
         >
-          <span class="btn-icon-badge">
-            <svg class="btn-icon" viewBox="0 0 24 24" aria-hidden="true">
-              <circle cx="12" cy="12" r="12" fill="#1ED760"/>
-              <path d="M17.36 16.5a.75.75 0 0 1-1.03.26c-2.82-1.72-6.36-2.11-10.54-1.16a.75.75 0 1 1-.33-1.46c4.58-1.04 8.5-.59 11.64 1.33.36.22.47.68.26 1.03Zm1.47-3.27a.94.94 0 0 1-1.29.31c-3.23-1.98-8.15-2.56-11.97-1.4a.938.938 0 1 1-.54-1.8c4.36-1.32 9.78-.68 13.49 1.6.44.27.58.85.31 1.29Zm.13-3.4C15.9 7.7 9.99 7.5 6.6 8.53a1.125 1.125 0 1 1-.66-2.15c3.9-1.18 10.43-.95 14.54 1.48a1.125 1.125 0 1 1-1.15 1.93Z" fill="#fff"/>
-            </svg>
+          <span class="magic-button__diamond magic-button__diamond--top" aria-hidden="true"></span>
+          <span class="magic-button__inner">
+            <span class="magic-button__side magic-button__side--left" aria-hidden="true"></span>
+            <span class="magic-button__content">
+              <span class="magic-button__icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" fill="currentColor"/></svg>
+              </span>
+              <span class="magic-button__label">Escuchar canción</span>
+            </span>
+            <span class="magic-button__side magic-button__side--right" aria-hidden="true"></span>
           </span>
-          Escuchar en Spotify
+          <span class="magic-button__diamond magic-button__diamond--bottom" aria-hidden="true"></span>
         </a>
       </div>
     </div>

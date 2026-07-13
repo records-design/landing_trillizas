@@ -5,9 +5,12 @@
 
 :root {
   --violet-deep:  #1B0F2E;
-  --violet-btn:   #3D1A52;
-  --magenta-dark: #4A1240;
+  --violet-btn:   #2E1740;
+  --magenta-dark: #1B0F2E;
+  --amber:        #8A5A22;
+  --amber-dark:   #4A2E10;
   --gold:         #D8B25C;
+  --gold-light:   #F0D998;
   --gold-soft:    rgba(216, 178, 92, 0.4);
   --ivory:        #F6F1E7;
   --muted:        #CFC6DA;
@@ -67,8 +70,8 @@ button:focus-visible {
   inset: 0;
   z-index: 1;
   background:
-    radial-gradient(ellipse 60% 50% at 50% 42%, rgba(27, 15, 46, 0.15), rgba(27, 15, 46, 0.55) 70%),
-    linear-gradient(180deg, rgba(15, 8, 25, 0.45) 0%, rgba(15, 8, 25, 0.15) 32%, rgba(15, 8, 25, 0.35) 62%, rgba(10, 5, 18, 0.85) 100%);
+    radial-gradient(circle at 50% 45%, rgba(20, 8, 28, 0.5) 0%, rgba(14, 5, 20, 0.65) 45%, rgba(8, 3, 12, 0.8) 100%),
+    linear-gradient(180deg, rgba(10, 5, 18, 0.25) 0%, rgba(10, 5, 18, 0.1) 25%, rgba(10, 5, 18, 0.3) 60%, rgba(8, 3, 12, 0.82) 100%);
 }
 
 .hero-vignette {
@@ -79,6 +82,20 @@ button:focus-visible {
   pointer-events: none;
 }
 
+.hero-shadow {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: radial-gradient(
+    ellipse 42% 48% at center,
+    rgba(13, 4, 20, 0.72) 0%,
+    rgba(13, 4, 20, 0.48) 48%,
+    rgba(13, 4, 20, 0.12) 75%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
 .hero-content {
   position: relative;
   z-index: 2;
@@ -86,10 +103,10 @@ button:focus-visible {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: clamp(8px, 1.8vh, 20px);
   padding: clamp(16px, 4vh, 32px) 20px;
-  max-width: 760px;
+  max-width: 860px;
   max-height: 100%;
+  transform: translateY(-6vh);
 }
 
 .hero-glow {
@@ -107,41 +124,45 @@ button:focus-visible {
 }
 
 .hero-logo {
-  width: clamp(200px, min(34vw, 30vh), 640px);
+  width: clamp(420px, min(38vw, 44vh), 720px);
   height: auto;
-  filter: drop-shadow(0 6px 30px rgba(0, 0, 0, 0.45)) drop-shadow(0 0 34px rgba(216, 178, 92, 0.28));
+  margin-bottom: clamp(20px, 4vh, 40px);
+  filter: drop-shadow(0 6px 30px rgba(0, 0, 0, 0.45)) drop-shadow(0 0 38px rgba(216, 178, 92, 0.3));
   opacity: 0;
   animation: fadeUp 0.7s ease forwards;
   animation-delay: 0.05s;
+}
+
+.hero-slogan-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  max-width: 620px;
+  margin-bottom: clamp(24px, 4.4vh, 44px);
+  opacity: 0;
+  animation: fadeUp 0.7s ease forwards;
+  animation-delay: 0.25s;
+}
+
+.slogan-icon {
+  width: 20px;
+  height: 20px;
+  color: var(--gold);
+  opacity: 0.85;
+  flex-shrink: 0;
 }
 
 .hero-slogan {
   font-family: var(--font-display);
   font-style: italic;
   font-weight: 500;
-  font-size: clamp(15px, min(2.6vw, 2.6vh), 27px);
+  font-size: clamp(19px, min(3.2vw, 3vh), 32px);
+  line-height: 1.35;
   color: var(--ivory);
-  max-width: 44ch;
-  opacity: 0;
-  animation: fadeUp 0.7s ease forwards;
-  animation-delay: 0.25s;
-}
-
-.hero-meta {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  opacity: 0;
-  animation: fadeUp 0.7s ease forwards;
-  animation-delay: 0.45s;
-}
-
-.hero-song {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: clamp(17px, min(3vw, 2.8vh), 30px);
-  color: var(--ivory);
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.45);
+  max-width: 46ch;
 }
 
 .hero-ctas {
@@ -150,11 +171,85 @@ button:focus-visible {
   gap: 18px;
   flex-wrap: wrap;
   justify-content: center;
-  margin-top: 4px;
+  margin-bottom: clamp(20px, 3.4vh, 34px);
   opacity: 0;
   animation: fadeUp 0.7s ease forwards;
-  animation-delay: 0.65s;
+  animation-delay: 0.45s;
 }
+
+.hero-follow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 28px;
+  opacity: 0;
+  animation: fadeUp 0.7s ease forwards;
+  animation-delay: 0.62s;
+}
+
+.follow-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.follow-line {
+  width: clamp(48px, 8vw, 90px);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(216, 178, 92, 0.55));
+}
+.follow-divider .follow-line:last-child { background: linear-gradient(270deg, transparent, rgba(216, 178, 92, 0.55)); }
+
+.follow-heart {
+  width: 11px;
+  height: 11px;
+  color: var(--gold);
+  flex-shrink: 0;
+}
+
+.follow-title {
+  margin-top: 14px;
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.follow-links {
+  margin-top: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(20px, 3vw, 36px);
+  row-gap: 14px;
+  flex-wrap: wrap;
+}
+
+.follow-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--gold-light);
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: clamp(20px, 2.4vw, 28px);
+  letter-spacing: 0.01em;
+  opacity: 0.92;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.follow-link svg { width: clamp(28px, 3vw, 40px); height: clamp(28px, 3vw, 40px); flex-shrink: 0; }
+.follow-link:hover { opacity: 1; transform: translateY(-2px); }
+
+.follow-sep {
+  width: 1px;
+  height: clamp(36px, 5vh, 56px);
+  background: rgba(216, 178, 92, 0.3);
+  flex-shrink: 0;
+}
+
+.hero-follow .follow-divider:last-child { margin-top: 18px; }
 
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(16px); }
@@ -162,63 +257,158 @@ button:focus-visible {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-logo, .hero-slogan, .hero-meta, .hero-ctas {
+  .hero-logo, .hero-slogan-wrap, .hero-ctas, .hero-follow {
     animation: none;
     opacity: 1;
     transform: none;
   }
 }
 
-/* ---------------- BOTONES ---------------- */
+/* ---------------- MAGIC BUTTON (placa ornamental en capas) ---------------- */
 
-.btn {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  min-height: clamp(44px, 7vh, 58px);
-  padding: 0 26px 0 8px;
-  clip-path: polygon(
-    16px 0, calc(100% - 16px) 0, 100% 16px,
-    100% calc(100% - 16px), calc(100% - 16px) 100%, 16px 100%,
-    0 calc(100% - 16px), 0 16px
+:root {
+  --mb-cut: polygon(
+    5% 0, 95% 0, 98% 8%,
+    100% 22%, 100% 78%, 98% 92%,
+    95% 100%, 5% 100%, 2% 92%,
+    0 78%, 0 22%, 2% 8%
   );
-  border: 1.5px solid var(--gold);
-  font-family: var(--font-ui);
-  font-weight: 700;
-  font-size: clamp(12px, 1.6vh, 13px);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
 }
 
-.btn-icon-badge {
-  width: clamp(28px, 4.2vh, 36px);
-  height: clamp(28px, 4.2vh, 36px);
+.magic-button {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  width: clamp(300px, 22vw, 360px);
+  height: clamp(68px, 9vh, 82px);
+  clip-path: var(--mb-cut);
+  filter: drop-shadow(0 14px 26px rgba(0, 0, 0, 0.45));
+  transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+.magic-button:hover {
+  transform: translateY(-3px);
+  filter: drop-shadow(0 18px 32px rgba(216, 178, 92, 0.35)) brightness(1.06);
+}
+
+/* capa exterior: marco dorado */
+.magic-button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  clip-path: inherit;
+  background: linear-gradient(180deg, #f9dd8c 0%, #c89532 38%, #8f5d16 70%, #e7c56e 100%);
+  z-index: 0;
+}
+
+/* capa interior: color propio de cada variante */
+.magic-button__inner {
+  position: absolute;
+  inset: 3px;
+  clip-path: inherit;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 14px;
+}
+
+.magic-button--purple .magic-button__inner {
+  background: linear-gradient(180deg, #4d246a 0%, #34144f 48%, #251036 100%);
+}
+.magic-button--gold .magic-button__inner {
+  background: linear-gradient(180deg, #ba8734 0%, #90611f 50%, #674015 100%);
+}
+
+/* marco interior fino y semitransparente */
+.magic-button::after {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  clip-path: inherit;
+  border: 1px solid rgba(246, 241, 231, 0.28);
+  z-index: 2;
+  pointer-events: none;
+  transition: border-color 0.25s ease;
+}
+.magic-button:hover::after { border-color: rgba(246, 241, 231, 0.5); }
+
+/* rombos decorativos */
+.magic-button__diamond {
+  position: absolute;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  background: var(--gold-light);
+  border: 1px solid var(--gold);
+  transform: translateX(-50%) rotate(45deg);
+  z-index: 3;
+}
+.magic-button__diamond--top { top: -4px; }
+.magic-button__diamond--bottom { bottom: -4px; }
+
+/* ornamentos laterales: línea fina + punto central */
+.magic-button__side {
+  position: relative;
+  width: 16px;
+  height: 55%;
+  flex-shrink: 0;
+}
+.magic-button__side::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(246, 241, 231, 0.32);
+  transform: translateX(-50%);
+}
+.magic-button__side::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 4px;
+  height: 4px;
   border-radius: 50%;
-  border: 1px solid var(--gold-soft);
+  background: var(--gold-light);
+  transform: translate(-50%, -50%);
+}
+
+.magic-button__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+.magic-button__icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--gold-light);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  overflow: hidden;
-  background: rgba(0, 0, 0, 0.22);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.3);
 }
+.magic-button__icon svg { width: 18px; height: 18px; color: var(--violet-deep); }
 
-.btn-icon { width: 100%; height: 100%; flex-shrink: 0; display: block; }
-
-.btn-primary {
-  background: linear-gradient(135deg, var(--violet-btn), var(--magenta-dark));
+.magic-button__label {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
   color: var(--ivory);
+  white-space: nowrap;
 }
-.btn-primary:hover { transform: translateY(-2px); filter: brightness(1.15); box-shadow: 0 12px 26px rgba(0, 0, 0, 0.4); }
-
-.btn-secondary {
-  background: rgba(10, 5, 18, 0.55);
-  color: var(--ivory);
-  border-color: var(--gold-soft);
-}
-.btn-secondary:hover { transform: translateY(-2px); background: rgba(216, 178, 92, 0.12); box-shadow: 0 12px 26px rgba(0, 0, 0, 0.3); }
 
 /* ---------------- SCROLL HINT ---------------- */
 
@@ -308,14 +498,39 @@ button:focus-visible {
 /* ---------------- RESPONSIVE ---------------- */
 
 @media (max-width: 900px) {
-  .hero-logo { width: clamp(300px, 46vw, 520px); }
+  .hero-logo { width: clamp(360px, 50vw, 560px); }
+  .magic-button { width: clamp(280px, 40vw, 340px); }
 }
 
 @media (max-width: 480px) {
-  .hero-content { padding: 24px 20px; gap: 14px; }
-  .hero-logo { width: clamp(270px, 68vw, 340px); }
-  .hero-slogan { max-width: 22ch; }
+  .hero-content { padding: 24px 20px; }
+  .hero-logo { width: min(86vw, 360px); margin-bottom: 20px; }
+  .hero-slogan { font-size: clamp(17px, 5.2vw, 22px); max-width: 24ch; }
+  .hero-slogan-wrap { gap: 8px; }
   .hero-ctas { flex-direction: column; width: 100%; }
-  .btn { width: 100%; max-width: 340px; }
+  .magic-button { width: min(340px, calc(100vw - 40px)); height: 68px; }
+  .hero-follow { margin-top: 22px; }
+  .follow-title { font-size: 11px; letter-spacing: 0.24em; }
+  .follow-links { gap: 22px; }
+  .follow-link { gap: 0; }
+  .follow-link span { display: none; }
+  .follow-link svg { width: 30px; height: 30px; }
+  .follow-sep { height: 32px; }
   .disponible { padding: 72px 20px; }
+}
+
+/* Viewports muy bajos (ej. iPhone SE): el logo grande + todo el aire
+   nuevo no deben tapar el bloque "Seguinos en" contra el borde inferior. */
+@media (max-height: 700px) {
+  .hero-content { transform: none; }
+  .hero-logo { width: min(58vw, 260px); margin-bottom: 12px; }
+  .hero-slogan-wrap { margin-bottom: 16px; }
+  .hero-ctas { margin-bottom: 16px; }
+  .magic-button { height: 58px; }
+  .hero-follow { margin-top: 16px; }
+  .follow-links { margin-top: 12px; }
+  .follow-title { margin-top: 10px; }
+  .follow-link { font-size: 16px; gap: 6px; }
+  .follow-link svg { width: 22px; height: 22px; }
+  .follow-sep { height: 24px; }
 }

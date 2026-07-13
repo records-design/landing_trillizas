@@ -50,6 +50,15 @@ document.querySelectorAll('[data-event]').forEach((el) => {
 });
 
 // ============================================================
+// Íconos sociales sin URL real todavía — evitar que "#" haga
+// saltar la página al tope mientras no se cargan los links reales.
+// ============================================================
+
+document.querySelectorAll('a[data-placeholder="true"]').forEach((el) => {
+  el.addEventListener('click', (e) => e.preventDefault());
+});
+
+// ============================================================
 // Facade de video (sección "Ya disponible")
 // Carga el iframe de YouTube recién al hacer clic, para no pagar
 // el costo de rendimiento del embed si el usuario no lo pide.
