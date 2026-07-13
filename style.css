@@ -148,19 +148,21 @@ button:focus-visible {
   font-family: var(--font-display);
   font-style: normal;
   font-weight: 400;
-  font-size: clamp(28px, min(4.2vw, 4vh), 45px);
-  line-height: 1.35;
+  font-size: clamp(30px, 2.2vw, 42px);
+  line-height: 1.2;
   letter-spacing: 0.01em;
   color: var(--ivory);
+  max-width: 900px;
+  white-space: nowrap;
 }
 
 .hero-ctas {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 20px;
   flex-wrap: wrap;
   justify-content: center;
-  margin-bottom: clamp(28px, 5.2vh, 48px);
+  margin-bottom: clamp(32px, 5.8vh, 58px);
   opacity: 0;
   animation: fadeUp 0.7s ease forwards;
   animation-delay: 0.45s;
@@ -170,6 +172,7 @@ button:focus-visible {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-bottom: clamp(24px, 4vh, 40px);
   opacity: 0;
   animation: fadeUp 0.7s ease forwards;
   animation-delay: 0.62s;
@@ -201,18 +204,18 @@ button:focus-visible {
   margin-top: 12px;
   font-family: var(--font-ui);
   font-weight: 500;
-  font-size: 13px;
-  letter-spacing: 0.24em;
+  font-size: 14px;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
   color: var(--gold);
 }
 
 .follow-links {
-  margin-top: clamp(16px, 3vh, 26px);
+  margin-top: clamp(28px, 3.6vh, 36px);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: clamp(18px, 2.7vw, 32px);
+  gap: clamp(24px, 3vw, 36px);
   row-gap: 14px;
   flex-wrap: wrap;
 }
@@ -220,24 +223,24 @@ button:focus-visible {
 .follow-link {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 9px;
   color: var(--gold-light);
   font-family: var(--font-ui);
   font-weight: 500;
   font-style: normal;
-  font-size: clamp(16px, 1.9vw, 21px);
+  font-size: clamp(15px, 1.3vw, 18px);
   letter-spacing: 0.01em;
   opacity: 0.9;
   transition: opacity 0.2s ease, transform 0.2s ease;
 }
-.follow-link svg { display: block; width: clamp(22px, 2.3vw, 30px); height: clamp(22px, 2.3vw, 30px); flex-shrink: 0; }
+.follow-link svg { display: block; width: clamp(22px, 1.8vw, 27px); height: clamp(22px, 1.8vw, 27px); flex-shrink: 0; }
 .follow-link span { display: inline-flex; align-items: center; line-height: 1; }
 .follow-link:hover { opacity: 1; transform: translateY(-2px); }
 
 .follow-sep {
   width: 1px;
-  height: clamp(26px, 3.6vh, 40px);
-  background: rgba(216, 178, 92, 0.2);
+  height: 24px;
+  background: rgba(216, 178, 92, 0.25);
   flex-shrink: 0;
 }
 
@@ -254,99 +257,53 @@ button:focus-visible {
   }
 }
 
-/* ---------------- MAGIC BUTTON (marco = imagen ornamental real, vía border-image) ---------------- */
+/* ---------------- MAGIC BUTTON (wrapper transparente + PNG ornamental real) ---------------- */
 
 .magic-button {
   position: relative;
-  isolation: isolate;
-  display: inline-flex;
-  width: clamp(280px, 20vw, 340px);
-  height: clamp(68px, 9vh, 82px);
-  border-style: solid;
-  border-image-repeat: stretch;
+  display: inline-block;
+  width: clamp(340px, 24vw, 450px);
+  background: transparent;
+  border: 0;
+  padding: 0;
+  overflow: visible;
   filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
   transition: transform 0.25s ease, filter 0.25s ease;
 }
+
+/* aspect-ratio real de cada PNG (medido desde el archivo) para que no se deforme ni se recorte */
+.magic-button--purple { aspect-ratio: 693 / 174; }
+.magic-button--gold { aspect-ratio: 759 / 172; }
 
 .magic-button:hover {
   transform: translateY(-2px);
   filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.32)) brightness(1.05);
 }
 
-/* Ambos botones usan el marco real subido por el usuario.
-   La placa ya viene con relleno, rombos y brillo incluidos en la imagen. */
-.magic-button--purple {
-  background: linear-gradient(180deg, #4d246a 0%, #34144f 48%, #251036 100%); /* respaldo si la imagen no carga */
-  border-width: 30px 26px;
-  border-image-source: url('imagenes/button-frame-purple.png');
-  border-image-slice: 87 59 87 59 fill;
-  border-image-width: 30px 26px;
-}
-.magic-button--gold {
-  background: linear-gradient(180deg, #ba8734 0%, #90611f 50%, #674015 100%); /* respaldo si la imagen no carga */
-  border-width: 30px 26px;
-  border-image-source: url('imagenes/button-frame-gold.png');
-  border-image-slice: 86 59 86 59 fill;
-  border-image-width: 30px 26px;
-}
-.magic-button--purple .magic-button__diamond,
-.magic-button--gold .magic-button__diamond,
-.magic-button__inner::before {
-  display: none; /* ya están dibujados/incluidos dentro de la imagen del marco */
-}
-
-.magic-button__inner {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* destello mágico: brillo ambiental muy sutil sobre el fondo */
-.magic-button__inner::before {
-  content: '';
+.magic-button__frame {
   position: absolute;
   inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  display: block;
   pointer-events: none;
-  background:
-    radial-gradient(circle at 22% 26%, rgba(255, 255, 255, 0.22) 0%, transparent 2%),
-    radial-gradient(circle at 70% 60%, rgba(255, 255, 255, 0.16) 0%, transparent 1.6%),
-    radial-gradient(ellipse 90% 65% at 50% -12%, rgba(246, 224, 173, 0.22), transparent 65%);
-  mix-blend-mode: screen;
-  opacity: 0.5;
 }
-
-/* rombos decorativos */
-.magic-button__diamond {
-  position: absolute;
-  left: 50%;
-  width: 8px;
-  height: 8px;
-  background: var(--gold-light);
-  border: 1px solid var(--gold);
-  transform: translateX(-50%) rotate(45deg);
-  z-index: 3;
-}
-.magic-button__diamond--top { top: -4px; }
-.magic-button__diamond--bottom { bottom: -4px; }
 
 .magic-button__content {
-  position: relative;
-  z-index: 1;
+  position: absolute;
+  inset: 0;
+  z-index: 2;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 7px;
-  flex: 1;
-  min-width: 0;
+  gap: 14px;
+  padding: 0 42px;
 }
 
 .magic-button__icon {
-  width: 38px;
-  height: 38px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   background: transparent;
   border: 1.5px solid var(--ivory);
@@ -360,8 +317,8 @@ button:focus-visible {
 .magic-button__label {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: 19px;
-  letter-spacing: 0.05em;
+  font-size: clamp(18px, 1.4vw, 21px);
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--ivory);
   white-space: nowrap;
@@ -391,16 +348,17 @@ button:focus-visible {
 
 @media (max-width: 900px) {
   .hero-logo { width: clamp(420px, 52vw, 620px); }
-  .magic-button { width: clamp(280px, 40vw, 340px); }
+  .magic-button { width: clamp(300px, 40vw, 360px); }
   .hero-slogan-wrap { max-width: 440px; }
+  .hero-slogan { white-space: normal; }
 }
 
 @media (max-width: 480px) {
   .hero-content { padding: 24px 20px; }
   .hero-logo { width: min(86vw, 380px); margin-bottom: 20px; }
-  .hero-slogan { font-size: clamp(23px, 7vw, 31px); max-width: 24ch; }
+  .hero-slogan { font-size: clamp(23px, 7vw, 31px); max-width: 24ch; white-space: normal; }
   .hero-ctas { flex-direction: column; width: 100%; }
-  .magic-button { width: min(340px, calc(100vw - 40px)); height: 68px; }
+  .magic-button { width: min(340px, calc(100vw - 40px)); }
   .follow-title { font-size: 11px; letter-spacing: 0.2em; }
   .follow-links { gap: 20px; }
   .follow-link { gap: 0; }
@@ -426,7 +384,6 @@ button:focus-visible {
   .hero-logo { width: min(58vw, 260px); margin-bottom: 12px; }
   .hero-slogan-wrap { margin-bottom: 16px; }
   .hero-ctas { margin-bottom: 16px; }
-  .magic-button { height: 58px; }
   .follow-links { margin-top: 12px; }
   .follow-title { margin-top: 10px; }
   .follow-link { font-size: 14px; gap: 6px; }

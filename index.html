@@ -37,7 +37,7 @@
       playsinline
       poster="imagenes/hero-poster.jpg"
     >
-      <source src="videos/videoplayback.mp4" type="video/mp4" />
+      <source src="videos/video%20fondo.mp4" type="video/mp4" />
     </video>
 
     <div class="hero-overlay" aria-hidden="true"></div>
@@ -70,16 +70,13 @@
           data-event="WatchVideo"
           data-destination="YouTube"
         >
-          <span class="magic-button__diamond magic-button__diamond--top" aria-hidden="true"></span>
-          <span class="magic-button__inner">
-            <span class="magic-button__content">
-              <span class="magic-button__icon">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </span>
-              <span class="magic-button__label">Ver videoclip</span>
+          <img class="magic-button__frame" src="imagenes/button-frame-purple.png" alt="" aria-hidden="true" />
+          <span class="magic-button__content">
+            <span class="magic-button__icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </span>
+            <span class="magic-button__label">Ver videoclip</span>
           </span>
-          <span class="magic-button__diamond magic-button__diamond--bottom" aria-hidden="true"></span>
         </a>
 
         <a
@@ -92,20 +89,17 @@
           data-event="ListenSong"
           data-destination="Spotify"
         >
-          <span class="magic-button__diamond magic-button__diamond--top" aria-hidden="true"></span>
-          <span class="magic-button__inner">
-            <span class="magic-button__content">
-              <span class="magic-button__icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M9 18V5l12-2v13"/>
-                  <circle cx="6" cy="18" r="3"/>
-                  <circle cx="18" cy="16" r="3"/>
-                </svg>
-              </span>
-              <span class="magic-button__label">Escuchar canción</span>
+          <img class="magic-button__frame" src="imagenes/button-frame-gold.png" alt="" aria-hidden="true" />
+          <span class="magic-button__content">
+            <span class="magic-button__icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M9 18V5l12-2v13"/>
+                <circle cx="6" cy="18" r="3"/>
+                <circle cx="18" cy="16" r="3"/>
+              </svg>
             </span>
+            <span class="magic-button__label">Escuchar canción</span>
           </span>
-          <span class="magic-button__diamond magic-button__diamond--bottom" aria-hidden="true"></span>
         </a>
       </div>
 
