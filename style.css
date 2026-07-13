@@ -512,11 +512,11 @@ button:focus-visible {
   .magic-button { width: min(340px, calc(100vw - 40px)); height: 68px; }
   .hero-follow { margin-top: 22px; }
   .follow-title { font-size: 11px; letter-spacing: 0.24em; }
-  .follow-links { gap: 22px; }
+  .follow-links { gap: 20px; }
   .follow-link { gap: 0; }
   .follow-link span { display: none; }
-  .follow-link svg { width: 30px; height: 30px; }
-  .follow-sep { height: 32px; }
+  .follow-link svg { width: 27px; height: 27px; }
+  .follow-sep { height: 29px; }
   .disponible { padding: 72px 20px; }
 }
 
@@ -531,7 +531,7 @@ button:focus-visible {
   .hero-follow { margin-top: 16px; }
   .follow-links { margin-top: 12px; }
   .follow-title { margin-top: 10px; }
-  .follow-link { font-size: 16px; gap: 6px; }
-  .follow-link svg { width: 22px; height: 22px; }
-  .follow-sep { height: 24px; }
+  .follow-link { font-size: 14px; gap: 6px; }
+  .follow-link svg { width: 20px; height: 20px; }
+  .follow-sep { height: 22px; }
 }
