@@ -17,11 +17,21 @@
 
   --font-display: 'Cormorant Garamond', serif;
   --font-ui:      'Poppins', sans-serif;
+
+  /* Ambos botones comparten exactamente las mismas medidas */
+  --button-width: clamp(360px, 24vw, 440px);
+  --button-ratio: 693 / 174;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+}
 
 body {
   background: var(--violet-deep);
@@ -31,9 +41,14 @@ body {
   overflow-x: hidden;
 }
 
-img { max-width: 100%; display: block; }
+img {
+  max-width: 100%;
+  display: block;
+}
 
-a { text-decoration: none; }
+a {
+  text-decoration: none;
+}
 
 a:focus-visible,
 button:focus-visible {
@@ -45,24 +60,24 @@ button:focus-visible {
 
 .hero {
   position: relative;
+  width: 100%;
   height: 100vh;
   height: 100svh;
-  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: var(--violet-deep); /* respaldo mientras carga el video */
+  background: var(--violet-deep);
 }
 
 .hero-video {
   position: absolute;
   inset: 0;
+  z-index: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center;
-  z-index: 0;
 }
 
 .hero-overlay {
@@ -70,8 +85,19 @@ button:focus-visible {
   inset: 0;
   z-index: 1;
   background:
-    radial-gradient(circle at 50% 45%, rgba(20, 8, 28, 0.5) 0%, rgba(14, 5, 20, 0.65) 45%, rgba(8, 3, 12, 0.8) 100%),
-    linear-gradient(180deg, rgba(10, 5, 18, 0.25) 0%, rgba(10, 5, 18, 0.1) 25%, rgba(10, 5, 18, 0.3) 60%, rgba(8, 3, 12, 0.82) 100%);
+    radial-gradient(
+      circle at 50% 43%,
+      rgba(20, 8, 28, 0.46) 0%,
+      rgba(14, 5, 20, 0.60) 46%,
+      rgba(8, 3, 12, 0.78) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(10, 5, 18, 0.20) 0%,
+      rgba(10, 5, 18, 0.08) 25%,
+      rgba(10, 5, 18, 0.30) 62%,
+      rgba(8, 3, 12, 0.84) 100%
+    );
 }
 
 .hero-vignette {
@@ -87,37 +113,47 @@ button:focus-visible {
   inset: 0;
   z-index: 1;
   background: radial-gradient(
-    ellipse 42% 48% at center,
-    rgba(13, 4, 20, 0.72) 0%,
-    rgba(13, 4, 20, 0.48) 48%,
-    rgba(13, 4, 20, 0.12) 75%,
+    ellipse 44% 50% at 50% 44%,
+    rgba(13, 4, 20, 0.68) 0%,
+    rgba(13, 4, 20, 0.44) 48%,
+    rgba(13, 4, 20, 0.10) 76%,
     transparent 100%
   );
   pointer-events: none;
 }
 
+/*
+  El bloque completo se sube para descubrir mejor
+  el centro y la parte inferior del video.
+*/
 .hero-content {
   position: relative;
   z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
-  padding: clamp(16px, 4vh, 32px) 20px;
-  max-width: 1060px;
+  width: 100%;
+  max-width: 1100px;
   max-height: 100%;
-  transform: translateY(-36px);
+  padding: clamp(16px, 3vh, 28px) 20px;
+  text-align: center;
+  transform: translateY(-72px);
 }
 
 .hero-glow {
   position: absolute;
-  z-index: -1;
   top: -12%;
   left: 50%;
-  transform: translateX(-50%);
+  z-index: -1;
   width: min(900px, 130vw);
   aspect-ratio: 1;
-  background: radial-gradient(circle, rgba(216, 178, 92, 0.32) 0%, rgba(122, 45, 130, 0.22) 32%, rgba(122, 45, 130, 0) 68%);
+  transform: translateX(-50%);
+  background: radial-gradient(
+    circle,
+    rgba(216, 178, 92, 0.28) 0%,
+    rgba(122, 45, 130, 0.18) 34%,
+    rgba(122, 45, 130, 0) 68%
+  );
   filter: blur(30px);
   mix-blend-mode: screen;
   pointer-events: none;
@@ -126,7 +162,7 @@ button:focus-visible {
 .hero-logo {
   width: clamp(500px, min(46vw, 40vh), 860px);
   height: auto;
-  margin-bottom: clamp(24px, 3.6vh, 54px);
+  margin-bottom: clamp(26px, 3.4vh, 48px);
   filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.35));
   opacity: 0;
   animation: fadeUp 0.7s ease forwards;
@@ -137,147 +173,86 @@ button:focus-visible {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
   max-width: 1020px;
-  margin-bottom: clamp(24px, 3.8vh, 60px);
+  margin-bottom: clamp(28px, 4vh, 56px);
   opacity: 0;
   animation: fadeUp 0.7s ease forwards;
   animation-delay: 0.25s;
 }
 
 .hero-slogan {
+  max-width: 900px;
+  color: var(--ivory);
   font-family: var(--font-display);
+  font-size: clamp(30px, 2.2vw, 42px);
   font-style: normal;
   font-weight: 400;
-  font-size: clamp(30px, 2.2vw, 42px);
   line-height: 1.2;
   letter-spacing: 0.01em;
-  color: var(--ivory);
-  max-width: 900px;
   white-space: nowrap;
 }
+
+/* ---------------- CTA GROUP ---------------- */
 
 .hero-ctas {
   display: flex;
   align-items: center;
-  gap: 20px;
-  flex-wrap: wrap;
   justify-content: center;
-  margin-bottom: clamp(32px, 5.8vh, 58px);
+  flex-wrap: nowrap;
+  gap: 22px;
+
+  /*
+    Este margen genera la separación real entre
+    los botones y “Cruzá el portal mágico”.
+  */
+  margin-bottom: clamp(58px, 7vh, 86px);
+
   opacity: 0;
   animation: fadeUp 0.7s ease forwards;
   animation-delay: 0.45s;
 }
 
-.hero-follow {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: clamp(24px, 4vh, 40px);
-  opacity: 0;
-  animation: fadeUp 0.7s ease forwards;
-  animation-delay: 0.62s;
-}
-
-.follow-divider {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.follow-line {
-  width: clamp(40px, 6vw, 70px);
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(216, 178, 92, 0.32));
-}
-.follow-divider .follow-line:last-child { background: linear-gradient(270deg, transparent, rgba(216, 178, 92, 0.32)); }
-
-.follow-diamond {
-  width: 6px;
-  height: 6px;
-  background: var(--gold-light);
-  border: 1px solid var(--gold);
-  transform: rotate(45deg);
-  flex-shrink: 0;
-}
-
-.follow-title {
-  margin-top: 12px;
-  font-family: var(--font-ui);
-  font-weight: 500;
-  font-size: 14px;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  color: var(--gold);
-}
-
-.follow-links {
-  margin-top: clamp(28px, 3.6vh, 36px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: clamp(24px, 3vw, 36px);
-  row-gap: 14px;
-  flex-wrap: wrap;
-}
-
-.follow-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  color: var(--gold-light);
-  font-family: var(--font-ui);
-  font-weight: 500;
-  font-style: normal;
-  font-size: clamp(15px, 1.3vw, 18px);
-  letter-spacing: 0.01em;
-  opacity: 0.9;
-  transition: opacity 0.2s ease, transform 0.2s ease;
-}
-.follow-link svg { display: block; width: clamp(22px, 1.8vw, 27px); height: clamp(22px, 1.8vw, 27px); flex-shrink: 0; }
-.follow-link span { display: inline-flex; align-items: center; line-height: 1; }
-.follow-link:hover { opacity: 1; transform: translateY(-2px); }
-
-.follow-sep {
-  width: 1px;
-  height: 24px;
-  background: rgba(216, 178, 92, 0.25);
-  flex-shrink: 0;
-}
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-logo, .hero-slogan-wrap, .hero-ctas, .hero-follow {
-    animation: none;
-    opacity: 1;
-    transform: none;
-  }
-}
-
-/* ---------------- MAGIC BUTTON (wrapper transparente + PNG ornamental real) ---------------- */
+/* ---------------- MAGIC BUTTON ---------------- */
 
 .magic-button {
   position: relative;
-  display: inline-block;
-  width: clamp(340px, 24vw, 450px);
-  background: transparent;
-  border: 0;
+  display: block;
+
+  /*
+    Los dos botones usan exactamente
+    la misma caja y la misma proporción.
+  */
+  width: var(--button-width);
+  aspect-ratio: var(--button-ratio);
+  flex: 0 0 var(--button-width);
+
   padding: 0;
   overflow: visible;
-  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
-  transition: transform 0.25s ease, filter 0.25s ease;
+  border: 0;
+  background: transparent;
+
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.30));
+  transition:
+    transform 0.25s ease,
+    filter 0.25s ease;
 }
 
-/* aspect-ratio real de cada PNG (medido desde el archivo) para que no se deforme ni se recorte */
-.magic-button--purple { aspect-ratio: 693 / 174; }
-.magic-button--gold { aspect-ratio: 759 / 172; }
+/*
+  Eliminamos las proporciones individuales.
+  El dorado se adapta a la misma caja visual
+  que el violeta.
+*/
+.magic-button--purple,
+.magic-button--gold {
+  aspect-ratio: var(--button-ratio);
+}
 
 .magic-button:hover {
   transform: translateY(-2px);
-  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.32)) brightness(1.05);
+  filter:
+    drop-shadow(0 10px 18px rgba(0, 0, 0, 0.32))
+    brightness(1.04);
 }
 
 .magic-button__frame {
@@ -285,6 +260,11 @@ button:focus-visible {
   inset: 0;
   width: 100%;
   height: 100%;
+
+  /*
+    Fill permite que ambos PNG ocupen exactamente
+    la misma caja, sin dejar el dorado más chico.
+  */
   object-fit: fill;
   display: block;
   pointer-events: none;
@@ -294,34 +274,193 @@ button:focus-visible {
   position: absolute;
   inset: 0;
   z-index: 2;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 14px;
-  padding: 0 42px;
+
+  /*
+    Ícono y texto quedan más unidos.
+  */
+  gap: 11px;
+  padding: 0 36px;
 }
 
 .magic-button__icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: transparent;
-  border: 1.5px solid var(--ivory);
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  border: 1.5px solid var(--ivory);
+  border-radius: 50%;
+  background: transparent;
 }
-.magic-button__icon svg { width: 16px; height: 16px; color: var(--ivory); }
+
+.magic-button__icon svg {
+  width: 16px;
+  height: 16px;
+  color: var(--ivory);
+}
 
 .magic-button__label {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: clamp(18px, 1.4vw, 21px);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
   color: var(--ivory);
+  font-family: var(--font-display);
+  font-size: clamp(18px, 1.4vw, 21px);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
   white-space: nowrap;
+}
+
+/* ---------------- PORTAL + REDES ---------------- */
+
+.hero-follow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+
+  /*
+    No se usa margen superior porque la separación
+    principal ya la controla .hero-ctas.
+  */
+  margin-bottom: clamp(24px, 4vh, 40px);
+
+  opacity: 0;
+  animation: fadeUp 0.7s ease forwards;
+  animation-delay: 0.62s;
+}
+
+.follow-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.follow-line {
+  width: clamp(48px, 7vw, 84px);
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(216, 178, 92, 0.34)
+  );
+}
+
+.follow-divider .follow-line:last-child {
+  background: linear-gradient(
+    270deg,
+    transparent,
+    rgba(216, 178, 92, 0.34)
+  );
+}
+
+.follow-diamond {
+  width: 6px;
+  height: 6px;
+  flex-shrink: 0;
+  transform: rotate(45deg);
+  border: 1px solid var(--gold);
+  background: var(--gold-light);
+}
+
+.follow-title {
+  margin-top: 14px;
+  color: var(--gold);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+}
+
+/*
+  Más aire real entre el título y las redes.
+*/
+.follow-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  margin-top: clamp(34px, 4.2vh, 48px);
+
+  gap: clamp(30px, 3.4vw, 44px);
+  row-gap: 18px;
+}
+
+.follow-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+
+  color: var(--gold-light);
+  font-family: var(--font-ui);
+  font-size: clamp(15px, 1.2vw, 18px);
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.01em;
+
+  opacity: 0.88;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.follow-link svg {
+  display: block;
+  width: clamp(22px, 1.7vw, 27px);
+  height: clamp(22px, 1.7vw, 27px);
+  flex-shrink: 0;
+}
+
+.follow-link span {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+}
+
+.follow-link:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+.follow-sep {
+  width: 1px;
+  height: 24px;
+  flex-shrink: 0;
+  background: rgba(216, 178, 92, 0.25);
+}
+
+/* ---------------- ANIMACIONES ---------------- */
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-logo,
+  .hero-slogan-wrap,
+  .hero-ctas,
+  .hero-follow {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
 }
 
 /* ---------------- SCROLL HINT ---------------- */
@@ -330,63 +469,251 @@ button:focus-visible {
   position: absolute;
   bottom: max(22px, env(safe-area-inset-bottom));
   left: 50%;
-  transform: translateX(-50%);
   z-index: 2;
+
   color: var(--gold);
+  transform: translateX(-50%);
   animation: scrollBounce 1.8s ease-in-out infinite;
 }
-.hero-scroll svg { width: 22px; height: 22px; }
-@media (prefers-reduced-motion: reduce) {
-  .hero-scroll { animation: none; opacity: 0.6; }
-}
-@keyframes scrollBounce {
-  0%, 100% { transform: translate(-50%, 0); opacity: 0.5; }
-  50% { transform: translate(-50%, 6px); opacity: 1; }
+
+.hero-scroll svg {
+  width: 22px;
+  height: 22px;
 }
 
-/* ---------------- RESPONSIVE ---------------- */
+@keyframes scrollBounce {
+  0%,
+  100% {
+    transform: translate(-50%, 0);
+    opacity: 0.5;
+  }
+
+  50% {
+    transform: translate(-50%, 6px);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-scroll {
+    animation: none;
+    opacity: 0.6;
+  }
+}
+
+/* ---------------- RESPONSIVE: TABLET ---------------- */
 
 @media (max-width: 900px) {
-  .hero-logo { width: clamp(420px, 52vw, 620px); }
-  .magic-button { width: clamp(300px, 40vw, 360px); }
-  .hero-slogan-wrap { max-width: 440px; }
-  .hero-slogan { white-space: normal; }
+  :root {
+    --button-width: clamp(300px, 40vw, 360px);
+  }
+
+  .hero-content {
+    transform: translateY(-42px);
+  }
+
+  .hero-logo {
+    width: clamp(420px, 52vw, 620px);
+  }
+
+  .hero-slogan-wrap {
+    max-width: 680px;
+  }
+
+  .hero-slogan {
+    white-space: normal;
+  }
+
+  .hero-ctas {
+    gap: 16px;
+    margin-bottom: clamp(46px, 6vh, 64px);
+  }
+
+  .follow-links {
+    margin-top: 32px;
+  }
 }
+
+/* ---------------- RESPONSIVE: MOBILE ---------------- */
 
 @media (max-width: 480px) {
-  .hero-content { padding: 24px 20px; }
-  .hero-logo { width: min(86vw, 380px); margin-bottom: 20px; }
-  .hero-slogan { font-size: clamp(23px, 7vw, 31px); max-width: 24ch; white-space: normal; }
-  .hero-ctas { flex-direction: column; width: 100%; }
-  .magic-button { width: min(340px, calc(100vw - 40px)); }
-  .follow-title { font-size: 11px; letter-spacing: 0.2em; }
-  .follow-links { gap: 20px; }
-  .follow-link { gap: 0; }
-  .follow-link span { display: none; }
-  .follow-link svg { width: 27px; height: 27px; }
-  .follow-sep { height: 29px; }
+  :root {
+    --button-width: min(340px, calc(100vw - 40px));
+  }
+
+  .hero-content {
+    padding: 24px 20px;
+    transform: translateY(-12px);
+  }
+
+  .hero-logo {
+    width: min(86vw, 380px);
+    margin-bottom: 20px;
+  }
+
+  .hero-slogan-wrap {
+    margin-bottom: 24px;
+  }
+
+  .hero-slogan {
+    max-width: 24ch;
+    font-size: clamp(23px, 7vw, 31px);
+    white-space: normal;
+  }
+
+  .hero-ctas {
+    flex-direction: column;
+    width: 100%;
+    gap: 14px;
+    margin-bottom: 42px;
+  }
+
+  .magic-button {
+    width: var(--button-width);
+    flex-basis: auto;
+  }
+
+  .magic-button__content {
+    gap: 10px;
+    padding: 0 28px;
+  }
+
+  .magic-button__icon {
+    width: 32px;
+    height: 32px;
+    flex-basis: 32px;
+  }
+
+  .magic-button__icon svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .magic-button__label {
+    font-size: clamp(16px, 4.5vw, 19px);
+  }
+
+  .follow-title {
+    margin-top: 12px;
+    font-size: 11px;
+    letter-spacing: 0.20em;
+  }
+
+  .follow-links {
+    margin-top: 26px;
+    gap: 22px;
+  }
+
+  .follow-link {
+    gap: 0;
+  }
+
+  .follow-link span {
+    display: none;
+  }
+
+  .follow-link svg {
+    width: 27px;
+    height: 27px;
+  }
+
+  .follow-sep {
+    height: 29px;
+  }
 }
 
-/* Notebooks comunes (ej. 1366x768): con el logo más grande y el aire
-   nuevo, el bloque "Cruzá el portal mágico" queda justo al límite. */
-@media (max-height: 820px) {
-  .hero-logo { width: clamp(460px, min(46vw, 38vh), 860px); margin-bottom: 16px; }
-  .hero-slogan-wrap { margin-bottom: 20px; }
-  .hero-ctas { margin-bottom: 24px; }
-  .follow-title { margin-top: 10px; }
-  .follow-links { margin-top: 12px; }
+/* ---------------- NOTEBOOKS DE POCA ALTURA ---------------- */
+
+/*
+  En esta versión no comprimimos de forma extrema
+  “Cruzá el portal mágico” y las redes.
+*/
+@media (max-height: 820px) and (min-width: 901px) {
+  .hero-content {
+    transform: translateY(-48px);
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+  .hero-logo {
+    width: clamp(410px, min(42vw, 34vh), 680px);
+    margin-bottom: 16px;
+  }
+
+  .hero-slogan-wrap {
+    margin-bottom: 20px;
+  }
+
+  .hero-slogan {
+    font-size: clamp(27px, 2vw, 36px);
+  }
+
+  .hero-ctas {
+    margin-bottom: 40px;
+  }
+
+  .follow-title {
+    margin-top: 11px;
+  }
+
+  .follow-links {
+    margin-top: 24px;
+  }
+
+  .hero-follow {
+    margin-bottom: 20px;
+  }
 }
 
-/* Viewports muy bajos (ej. iPhone SE): el logo grande + todo el aire
-   nuevo no deben tapar el bloque "Cruzá el portal mágico" contra el borde inferior. */
+/* ---------------- VIEWPORTS MUY BAJOS ---------------- */
+
 @media (max-height: 700px) {
-  .hero-content { transform: none; }
-  .hero-logo { width: min(58vw, 260px); margin-bottom: 12px; }
-  .hero-slogan-wrap { margin-bottom: 16px; }
-  .hero-ctas { margin-bottom: 16px; }
-  .follow-links { margin-top: 12px; }
-  .follow-title { margin-top: 10px; }
-  .follow-link { font-size: 14px; gap: 6px; }
-  .follow-link svg { width: 20px; height: 20px; }
-  .follow-sep { height: 22px; }
+  .hero-content {
+    transform: translateY(-8px);
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  .hero-logo {
+    width: min(58vw, 250px);
+    margin-bottom: 10px;
+  }
+
+  .hero-slogan-wrap {
+    margin-bottom: 14px;
+  }
+
+  .hero-slogan {
+    font-size: clamp(22px, 4vh, 29px);
+  }
+
+  .hero-ctas {
+    margin-bottom: 28px;
+  }
+
+  .follow-title {
+    margin-top: 9px;
+  }
+
+  .follow-links {
+    margin-top: 20px;
+  }
+
+  .follow-link {
+    gap: 6px;
+    font-size: 14px;
+  }
+
+  .follow-link svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .follow-sep {
+    height: 22px;
+  }
+
+  .hero-follow {
+    margin-bottom: 12px;
+  }
 }
