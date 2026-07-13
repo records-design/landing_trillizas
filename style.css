@@ -315,56 +315,95 @@ button:focus-visible {
   animation: sloganHaloReveal 1.3s ease-out 1.1s forwards;
 }
 
+/* ============================================================
+   HERO SLOGAN
+   ============================================================ */
+
 .hero-slogan {
-  position: relative;
-  z-index: 2;
 
-  display: block;
-  width: 100%;
+    position: relative;
+    z-index: 2;
 
-  margin: 0;
-  padding: 0 0 8px;
+    display: block;
+    width: 100%;
 
-  overflow: visible;
+    margin: 0;
+    padding: 0 0 10px;
 
-  font-family: var(--font-display);
-  font-size: clamp(76px, 5.6vw, 105px);
-  font-style: normal;
-  font-weight: 500;
-  line-height: 1.12;
-  letter-spacing: 0.008em;
-  white-space: nowrap;
-  text-align: center;
+    overflow: visible;
 
-  /* Dorado antiguo: claro arriba y cálido abajo */
-  color: #e7bd62;
-  background:
+    font-family: var(--font-display);
+
+    /* MUCHO MÁS GRANDE */
+    font-size: clamp(105px, 7.5vw, 150px);
+
+    font-weight: 500;
+
+    line-height: 1.05;
+
+    letter-spacing: -0.01em;
+
+    white-space: nowrap;
+
+    text-align: center;
+
+    /* DORADO ANTIGUO */
+
+    background:
     linear-gradient(
-      180deg,
-      #fff3c6 0%,
-      #f4d27a 32%,
-      #dca947 64%,
-      #b97a2e 100%
+
+        180deg,
+
+        #FFFBEF 0%,
+        #FFEFB8 14%,
+        #FFD977 34%,
+        #F0BC52 56%,
+        #D89432 78%,
+        #A86820 100%
+
     );
 
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
 
-  /* Bisel muy sutil */
-  text-shadow:
-    0 1px 0 rgba(255, 249, 220, 0.38),
-    0 2px 0 rgba(121, 72, 18, 0.34),
-    0 4px 12px rgba(0, 0, 0, 0.34);
+    /* BISSEL MUY SUAVE */
 
-  opacity: 0;
-  filter: blur(12px);
-  transform: translateY(14px) scale(1.02);
+    text-shadow:
 
-  animation:
-    sloganMaterialize 1.15s cubic-bezier(0.22, 1, 0.36, 1) 0.85s forwards,
-    sloganSettleGlow 1.1s ease-out 1.95s 1 both;
+        0 1px 0 rgba(255,255,255,.55),
+
+        0 2px 0 rgba(184,120,30,.28),
+
+        0 5px 14px rgba(0,0,0,.34),
+
+        0 0 18px rgba(255,215,120,.18);
+
+    opacity:0;
+
+    filter:blur(10px);
+
+    transform:translateY(14px);
+
+    animation:
+
+        sloganMaterialize 1.05s cubic-bezier(.22,1,.36,1) .8s forwards,
+
+        sloganSettleGlow 1.2s ease-out 1.9s forwards;
+
+    transition:
+
+        filter .35s ease,
+
+        transform .35s ease,
+
+        text-shadow .35s ease;
+
 }
+
+
+
+
 
 @keyframes sloganMaterialize {
   0% {
