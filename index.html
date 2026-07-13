@@ -2,33 +2,64 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  />
 
   <title>Las Trillizas de Oro y El Libro Mágico</title>
-  <meta name="description" content="Tres hermanas, un libro, música y magia. Mirá el videoclip y escuchá &quot;La Locomotora llega a la estación&quot;." />
-  <link rel="canonical" href="https://lastrillizasdeoroyellibromagico.com" />
+
+  <meta
+    name="description"
+    content="Tres hermanas, un libro, música y magia. Mirá el videoclip y escuchá &quot;La Locomotora llega a la estación&quot;."
+  />
+
+  <link
+    rel="canonical"
+    href="https://lastrillizasdeoroyellibromagico.com"
+  />
 
   <!-- Open Graph -->
-  <meta property="og:title" content="Las Trillizas de Oro y El Libro Mágico" />
-  <meta property="og:description" content="Tres hermanas, un libro, música y magia." />
-  <meta property="og:image" content="https://lastrillizasdeoroyellibromagico.com/imagenes/hero-poster.jpg" />
+  <meta
+    property="og:title"
+    content="Las Trillizas de Oro y El Libro Mágico"
+  />
+
+  <meta
+    property="og:description"
+    content="Tres hermanas, un libro, música y magia."
+  />
+
+  <meta
+    property="og:image"
+    content="https://lastrillizasdeoroyellibromagico.com/imagenes/hero-poster.jpg"
+  />
+
   <meta property="og:type" content="website" />
 
+  <!-- Fuentes -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="style.css?v=1" />
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  />
 
-  <!--
-    META PIXEL — pegar acá el snippet oficial de Meta cuando META_CONFIG.enabled
-    pase a true en config.js. No hardcodear el Pixel ID en este comentario.
-  -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Poppins:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css?v=2" />
 </head>
+
 <body>
 
-  <!-- HERO — objetivo: ver el videoclip / escuchar la canción -->
+  <!-- HERO -->
   <section class="hero">
+
     <video
       class="hero-video"
       autoplay
@@ -37,17 +68,26 @@
       playsinline
       poster="imagenes/hero-poster.jpg"
     >
-      <source src="videos/video%20fondo.mp4" type="video/mp4" />
+      <source
+        src="videos/video%20fondo.mp4"
+        type="video/mp4"
+      />
     </video>
 
     <div class="hero-overlay" aria-hidden="true"></div>
     <div class="hero-vignette" aria-hidden="true"></div>
     <div class="hero-shadow" aria-hidden="true"></div>
-    <div class="hero-particles" aria-hidden="true"><i></i><i></i></div>
+
+    <div class="hero-particles" aria-hidden="true">
+      <i></i>
+      <i></i>
+    </div>
 
     <div class="hero-content">
+
       <div class="hero-glow" aria-hidden="true"></div>
 
+      <!-- LOGO -->
       <img
         class="hero-logo"
         src="imagenes/logo%20trillizas.png"
@@ -56,15 +96,38 @@
         height="1315"
       />
 
+      <!-- SLOGAN -->
       <div class="hero-slogan-wrap">
-        <h1 class="hero-slogan">Tres hermanas, un libro, música y magia.</h1>
-        <span class="slogan-shimmer" aria-hidden="true"></span>
-        <span class="slogan-sparkles" aria-hidden="true">
-          <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+
+        <h1 class="hero-slogan">
+          Tres hermanas, un libro, música y magia.
+        </h1>
+
+        <span
+          class="slogan-shimmer"
+          aria-hidden="true"
+        ></span>
+
+        <span
+          class="slogan-sparkles"
+          aria-hidden="true"
+        >
+          <i></i>
+          <i></i>
+          <i></i>
+          <i></i>
+          <i></i>
+          <i></i>
+          <i></i>
+          <i></i>
         </span>
+
       </div>
 
+      <!-- BOTONES PRINCIPALES -->
       <div class="hero-ctas">
+
+        <!-- YouTube -->
         <a
           id="ctaVideoclip"
           class="magic-button magic-button--purple"
@@ -75,85 +138,254 @@
           data-event="WatchVideo"
           data-destination="YouTube"
         >
-          <img class="magic-button__frame" src="imagenes/button-frame-purple.png" alt="" aria-hidden="true" />
+
+          <img
+            class="magic-button__frame"
+            src="imagenes/button-frame-purple.png"
+            alt=""
+            aria-hidden="true"
+          />
+
           <span class="magic-button__content">
+
             <span class="magic-button__icon">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  d="M8 5v14l11-7z"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+
             </span>
-            <span class="magic-button__label">Mirá el videoclip</span>
+
+            <span class="magic-button__label">
+              Mirá el videoclip
+            </span>
+
           </span>
+
         </a>
 
+        <!-- Spotify -->
         <a
           id="ctaSpotify"
           class="magic-button magic-button--gold"
-          href="https://open.spotify.com/intl-es/track/4oxUGUj9S6KreStpNAHHXq?si=9a3d7e9111f14a55"
+          href="https://open.spotify.com/intl-es/track/4oxUGUj9S6KreStpNAHHXq?si=34716ea6e96341f4"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Escuchar La Locomotora llega a la estación en Spotify"
           data-event="ListenSong"
           data-destination="Spotify"
         >
-          <img class="magic-button__frame" src="imagenes/button-frame-gold.png" alt="" aria-hidden="true" />
+
+          <img
+            class="magic-button__frame"
+            src="imagenes/button-frame-gold.png"
+            alt=""
+            aria-hidden="true"
+          />
+
           <span class="magic-button__content">
+
             <span class="magic-button__icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M9 18V5l12-2v13"/>
-                <circle cx="6" cy="18" r="3"/>
-                <circle cx="18" cy="16" r="3"/>
+
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M9 18V5l12-2v13" />
+                <circle cx="6" cy="18" r="3" />
+                <circle cx="18" cy="16" r="3" />
               </svg>
+
             </span>
-            <span class="magic-button__label">Escuchá la canción</span>
+
+            <span class="magic-button__label">
+              Escuchá la canción
+            </span>
+
           </span>
+
         </a>
+
       </div>
 
-      <!-- Íconos sin URL real todavía: hrefs y comentario en config.js (SOCIAL_LINKS) -->
+      <!-- PORTAL + REDES SOCIALES -->
       <div class="hero-follow">
-        <div class="follow-divider" aria-hidden="true">
+
+        <div
+          class="follow-divider"
+          aria-hidden="true"
+        >
           <span class="follow-line"></span>
           <span class="follow-diamond"></span>
           <span class="follow-line"></span>
         </div>
 
-        <span class="follow-title">Cruzá el portal mágico</span>
+        <span class="follow-title">
+          Cruzá el portal mágico
+        </span>
 
         <div class="follow-links">
-          <a class="follow-link" href="#" data-placeholder="true" aria-label="Instagram">
+
+          <!-- Instagram -->
+          <a
+            class="follow-link"
+            href="https://www.instagram.com/lastrillizasdeoro_libromagico/?hl=es"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Abrir Instagram de Las Trillizas de Oro y El Libro Mágico"
+            data-event="OpenSocial"
+            data-destination="Instagram"
+          >
+
             <span class="social-circle">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
-                <rect x="3" y="3" width="18" height="18" rx="5"/>
-                <circle cx="12" cy="12" r="4"/>
-                <circle cx="17" cy="7" r="1" fill="currentColor" stroke="none"/>
+
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+                aria-hidden="true"
+              >
+                <rect
+                  x="3"
+                  y="3"
+                  width="18"
+                  height="18"
+                  rx="5"
+                />
+
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="4"
+                />
+
+                <circle
+                  cx="17"
+                  cy="7"
+                  r="1"
+                  fill="currentColor"
+                  stroke="none"
+                />
               </svg>
+
             </span>
-            <span class="follow-name">Instagram</span>
+
+            <span class="follow-name">
+              Instagram
+            </span>
+
           </a>
-          <span class="follow-sep" aria-hidden="true"></span>
-          <a class="follow-link" href="#" data-placeholder="true" aria-label="Spotify">
+
+          <span
+            class="follow-sep"
+            aria-hidden="true"
+          ></span>
+
+          <!-- Spotify -->
+          <a
+            class="follow-link"
+            href="https://open.spotify.com/intl-es/track/4oxUGUj9S6KreStpNAHHXq?si=34716ea6e96341f4"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Escuchar La Locomotora llega a la estación en Spotify"
+            data-event="OpenSocial"
+            data-destination="Spotify"
+          >
+
             <span class="social-circle">
-              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M17.36 16.5a.75.75 0 0 1-1.03.26c-2.82-1.72-6.36-2.11-10.54-1.16a.75.75 0 1 1-.33-1.46c4.58-1.04 8.5-.59 11.64 1.33.36.22.47.68.26 1.03Zm1.47-3.27a.94.94 0 0 1-1.29.31c-3.23-1.98-8.15-2.56-11.97-1.4a.938.938 0 1 1-.54-1.8c4.36-1.32 9.78-.68 13.49 1.6.44.27.58.85.31 1.29Zm.13-3.4C15.9 7.7 9.99 7.5 6.6 8.53a1.125 1.125 0 1 1-.66-2.15c3.9-1.18 10.43-.95 14.54 1.48a1.125 1.125 0 1 1-1.15 1.93Z"/>
+
+              <svg
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  d="M17.36 16.5a.75.75 0 0 1-1.03.26c-2.82-1.72-6.36-2.11-10.54-1.16a.75.75 0 1 1-.33-1.46c4.58-1.04 8.5-.59 11.64 1.33.36.22.47.68.26 1.03Zm1.47-3.27a.94.94 0 0 1-1.29.31c-3.23-1.98-8.15-2.56-11.97-1.4a.938.938 0 1 1-.54-1.8c4.36-1.32 9.78-.68 13.49 1.6.44.27.58.85.31 1.29Zm.13-3.4C15.9 7.7 9.99 7.5 6.6 8.53a1.125 1.125 0 1 1-.66-2.15c3.9-1.18 10.43-.95 14.54 1.48a1.125 1.125 0 1 1-1.15 1.93Z"
+                />
               </svg>
+
             </span>
-            <span class="follow-name">Spotify</span>
+
+            <span class="follow-name">
+              Spotify
+            </span>
+
           </a>
-          <span class="follow-sep" aria-hidden="true"></span>
-          <a class="follow-link" href="#" data-placeholder="true" aria-label="YouTube">
+
+          <span
+            class="follow-sep"
+            aria-hidden="true"
+          ></span>
+
+          <!-- YouTube -->
+          <a
+            class="follow-link"
+            href="https://www.youtube.com/watch?v=wK0aSHRF_Wg"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Ver el videoclip en YouTube"
+            data-event="OpenSocial"
+            data-destination="YouTube"
+          >
+
             <span class="social-circle">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
-                <rect x="2.5" y="6" width="19" height="12" rx="4"/>
-                <path d="M10.5 9.5v5l4.5-2.5Z" fill="currentColor" stroke="none"/>
+
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.6"
+                aria-hidden="true"
+              >
+                <rect
+                  x="2.5"
+                  y="6"
+                  width="19"
+                  height="12"
+                  rx="4"
+                />
+
+                <path
+                  d="M10.5 9.5v5l4.5-2.5Z"
+                  fill="currentColor"
+                  stroke="none"
+                />
               </svg>
+
             </span>
-            <span class="follow-name">YouTube</span>
+
+            <span class="follow-name">
+              YouTube
+            </span>
+
           </a>
+
         </div>
+
       </div>
+
     </div>
+
   </section>
 
   <script src="config.js"></script>
   <script src="script.js"></script>
+
 </body>
 </html>
