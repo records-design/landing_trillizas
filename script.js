@@ -48,7 +48,7 @@ function splitSloganIntoWords() {
       el.appendChild(document.createTextNode(' '));
     }
 
-    const delayMs = (i * 0.24 + 0.3) * 1000 + 250;
+    const delayMs = (i * 0.24 + 1.3) * 1000 + 250;
     setTimeout(() => spawnWordBurst(wordSpan, wrapEl), delayMs);
   });
 }
