@@ -56,13 +56,27 @@ function splitSloganIntoWords() {
 document.addEventListener('DOMContentLoaded', splitSloganIntoWords);
 
 // ============================================================
-// Video de fondo del hero — forzar mute (sin audio, es decorativo)
+// Video de fondo del hero — elige vertical/horizontal por JS
+// (más confiable que <source media="..."> en navegadores mobile
+// como el webview de Instagram/WhatsApp) y fuerza mute.
 // ============================================================
 
 const heroVideo = document.querySelector('.hero-video');
 if (heroVideo) {
   heroVideo.muted = true;
   heroVideo.volume = 0;
+
+  const isMobile = window.matchMedia('(max-width: 700px)').matches;
+  const src = isMobile
+    ? heroVideo.dataset.srcMobile
+    : heroVideo.dataset.srcDesktop;
+
+  heroVideo.setAttribute('src', src);
+  heroVideo.load();
+
+  const tryPlay = () => heroVideo.play().catch(() => {});
+  heroVideo.addEventListener('loadedmetadata', tryPlay);
+  tryPlay();
 }
 
 // ============================================================
