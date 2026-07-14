@@ -1436,7 +1436,7 @@ button:focus-visible {
     justify-content: center;
 
     gap: var(--button-gap);
-    margin-bottom: 18px;
+    margin-bottom: 34px;
   }
 
   .magic-button {
