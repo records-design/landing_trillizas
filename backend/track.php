@@ -145,10 +145,10 @@ if ($get('ad_id')) {
         'INSERT INTO ad_reference (ad_id, ad_name, campaign_id, campaign_name, adset_id, updated_at)
          VALUES (?, ?, ?, ?, ?, ?)
          ON DUPLICATE KEY UPDATE
-            ad_name = VALUES(ad_name),
-            campaign_id = VALUES(campaign_id),
-            campaign_name = VALUES(campaign_name),
-            adset_id = VALUES(adset_id),
+            ad_name = COALESCE(VALUES(ad_name), ad_name),
+            campaign_id = COALESCE(VALUES(campaign_id), campaign_id),
+            campaign_name = COALESCE(VALUES(campaign_name), campaign_name),
+            adset_id = COALESCE(VALUES(adset_id), adset_id),
             updated_at = VALUES(updated_at)'
     );
     $ref->execute([

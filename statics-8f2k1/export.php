@@ -26,11 +26,12 @@ $out = fopen('php://output', 'w');
 // BOM para que Excel abra bien los acentos.
 fwrite($out, "\xEF\xBB\xBF");
 
+// El 5º parámetro ($escape='') evita el warning de deprecación en PHP 8.4+.
 fputcsv($out, [
     'fecha_utc', 'tipo', 'boton', 'destino', 'session_id',
     'utm_source', 'utm_campaign', 'ad_id', 'placement',
     'dispositivo', 'pais', 'ciudad', 'enviado_meta', 'url',
-]);
+], ',', '"', '');
 
 $stmt = $pdo->prepare(
     "SELECT created_at, event_name, button, destination, session_id,
@@ -43,7 +44,7 @@ $stmt = $pdo->prepare(
 $stmt->execute([$fromDt, $toDt]);
 
 while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-    fputcsv($out, $row);
+    fputcsv($out, $row, ',', '"', '');
 }
 
 fclose($out);
