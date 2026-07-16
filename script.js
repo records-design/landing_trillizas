@@ -80,45 +80,9 @@ if (heroVideo) {
 }
 
 // ============================================================
-// Tracking (Meta Pixel + Conversions API) — ver config.js
+// El tracking de analíticas + Meta CAPI ahora vive en tracking.js
+// (se carga antes que este archivo desde index.html).
 // ============================================================
-
-function trackEvent(eventName, payload) {
-  if (!META_CONFIG.enabled) return;
-
-  try {
-    if (typeof fbq === 'function') {
-      fbq('trackCustom', eventName, payload);
-    }
-    // Conversions API (server-side): reenviar el mismo evento al backend.
-    // El Access Token nunca vive en este archivo.
-    fetch(META_CONFIG.apiEndpoint, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ event_name: eventName, ...payload }),
-    }).catch(() => {});
-  } catch (_err) {
-    // El tracking nunca debe bloquear la navegación del usuario.
-  }
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  trackEvent('PageView', {});
-  trackEvent('ViewContent', {
-    content_name: SONG_NAME,
-    content_category: 'Landing',
-  });
-});
-
-document.querySelectorAll('[data-event]').forEach((el) => {
-  el.addEventListener('click', () => {
-    trackEvent(el.dataset.event, {
-      content_name: SONG_NAME,
-      content_category: el.dataset.event === 'WatchVideo' ? 'Videoclip' : 'Music',
-      destination: el.dataset.destination,
-    });
-  });
-});
 
 // ============================================================
 // Íconos sociales sin URL real todavía — evitar que "#" haga

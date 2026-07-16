@@ -14,6 +14,9 @@
 
   <title>Las Trillizas de Oro y El Libro Mágico</title>
 
+  <!-- Verificación de dominio de Meta (NO mover a JS, debe estar en el HTML estático) -->
+  <meta name="facebook-domain-verification" content="wpaf3wqvov0he4v25y9coh9aplzuin" />
+
   <meta
     name="description"
     content="Tres hermanas, un libro, música y magia. Mirá el videoclip y escuchá &quot;La Locomotora llega a la estación&quot;."
@@ -57,7 +60,7 @@
   />
 
   <!-- CSS -->
-  <link rel="stylesheet" href="style.css?v=20260714151543" />
+  <link rel="stylesheet" href="style.css?v=20260716165028" />
 </head>
 
 <body>
@@ -160,6 +163,7 @@
           aria-label="Ver el videoclip de La Locomotora llega a la estación en YouTube"
           data-event="WatchVideo"
           data-destination="YouTube"
+          data-track-button="videoclip"
         >
 
           <img
@@ -207,6 +211,7 @@
           aria-label="Escuchar La Locomotora llega a la estación en Spotify"
           data-event="ListenSong"
           data-destination="Spotify"
+          data-track-button="cancion_spotify"
         >
 
           <img
@@ -273,6 +278,7 @@
             aria-label="Abrir Instagram de Las Trillizas de Oro y El Libro Mágico"
             data-event="OpenSocial"
             data-destination="Instagram"
+            data-track-button="social_instagram"
           >
 
             <span class="social-circle">
@@ -329,6 +335,7 @@
             aria-label="Escuchar La Locomotora llega a la estación en Spotify"
             data-event="OpenSocial"
             data-destination="Spotify"
+            data-track-button="social_spotify"
           >
 
             <span class="social-circle">
@@ -365,6 +372,7 @@
             aria-label="Ver el videoclip en YouTube"
             data-event="OpenSocial"
             data-destination="YouTube"
+            data-track-button="social_youtube"
           >
 
             <span class="social-circle">
@@ -407,8 +415,9 @@
 
   </section>
 
-  <script src="config.js?v=20260714151543"></script>
-  <script src="script.js?v=20260714151543"></script>
+  <script src="config.js?v=20260716165028"></script>
+  <script src="tracking.js?v=20260714151543"></script>
+  <script src="script.js?v=20260716165028"></script>
 
 </body>
 </html>

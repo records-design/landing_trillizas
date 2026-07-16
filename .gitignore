@@ -1,0 +1,6 @@
+# Config con credenciales — NUNCA subir al repositorio
+backend/config.php
+config.php
+
+# Sistema
+.DS_Store

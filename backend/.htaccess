@@ -1,0 +1,18 @@
+# Solo track.php debe ser accesible por URL desde el navegador.
+# El resto (config, librerías, schema) queda bloqueado.
+
+<FilesMatch "\.(php)$">
+    Require all denied
+</FilesMatch>
+
+<Files "track.php">
+    Require all granted
+</Files>
+
+# Bloquear explícitamente config y esquema por las dudas.
+<FilesMatch "^(config\.php|config\.example\.php|schema\.sql)$">
+    Require all denied
+</FilesMatch>
+
+# Evitar listado de directorio.
+Options -Indexes
