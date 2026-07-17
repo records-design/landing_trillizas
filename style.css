@@ -1312,17 +1312,38 @@ button:focus-visible {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 14px;
+  width: 100%;
 
-  margin-top: clamp(28px, 4vh, 46px);
+  margin-top: clamp(24px, 3.5vh, 40px);
 
   opacity: 0;
   transform: translateY(12px);
   animation: fadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) 5.3s forwards;
 }
 
+/* Línea divisoria dorada finita */
+.footer-rule {
+  width: min(var(--cta-group-width), calc(100vw - 40px));
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(216, 178, 92, 0.45) 20%,
+    rgba(216, 178, 92, 0.45) 80%,
+    transparent
+  );
+}
+
+.footer-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
 .footer-logo {
-  width: clamp(110px, 12vw, 150px);
+  width: clamp(78px, 7vw, 96px);
   height: auto;
   opacity: 0.85;
   filter: drop-shadow(0 0 12px rgba(232, 201, 123, 0.14));
@@ -1335,6 +1356,16 @@ button:focus-visible {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   opacity: 0.65;
+}
+
+/* Desktop: texto a la izquierda, logo a la derecha, en una fila */
+@media (min-width: 901px) {
+  .footer-inner {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: min(var(--cta-group-width), calc(100vw - 40px));
+  }
 }
 
 /* ============================================================
