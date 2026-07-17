@@ -1836,22 +1836,42 @@ button:focus-visible {
   }
 }
 
-/* Laptops de poca altura (≤850px): logo y aire un poco más compactos
-   para que entre todo sin scroll, sin achicar en pantallas altas. */
+/* Laptops / MacBook 13" (≤850px de alto): logo grande igual, compactando
+   el resto del espacio para que entre todo sin scroll. */
 @media (max-height: 850px) and (min-width: 901px) {
   .hero-content {
-    padding-top: clamp(12px, 1.6vh, 22px);
-    padding-bottom: clamp(34px, 4.5vh, 52px);
+    padding-top: clamp(8px, 1vh, 16px);
+    padding-bottom: clamp(24px, 3vh, 42px);
+  }
+
+  .hero-slogan-wrap {
+    margin-top: -4px;
+    margin-bottom: 6px;
+  }
+
+  .hero-ctas {
+    margin-bottom: 16px;
   }
 
   .hero-logo {
-    width: clamp(320px, min(50vw, 45vh), 500px);
-    margin-top: -14px;
-    margin-bottom: -2px;
+    width: clamp(400px, min(56vw, 53vh), 580px);
+    margin-top: -18px;
+    margin-bottom: -8px;
   }
 
   .site-footer {
-    margin-top: 36px;
+    margin-top: 26px;
+  }
+}
+
+/* Laptops muy bajas (≤790px): logo un poco menor para que siga entrando. */
+@media (max-height: 790px) and (min-width: 901px) {
+  .hero-logo {
+    width: clamp(360px, 48vh, 470px);
+  }
+
+  .site-footer {
+    margin-top: 26px;
   }
 }
 
