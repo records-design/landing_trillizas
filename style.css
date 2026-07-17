@@ -1343,10 +1343,10 @@ button:focus-visible {
 }
 
 .footer-logo {
-  width: clamp(78px, 7vw, 96px);
+  width: clamp(70px, 6vw, 84px);
   height: auto;
-  opacity: 0.85;
-  filter: drop-shadow(0 0 12px rgba(232, 201, 123, 0.14));
+  opacity: 0.72;
+  filter: drop-shadow(0 0 10px rgba(232, 201, 123, 0.12));
 }
 
 .footer-text {
@@ -1355,16 +1355,20 @@ button:focus-visible {
   font-size: clamp(10px, 1vw, 12px);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  opacity: 0.65;
+  opacity: 0.6;
 }
 
-/* Desktop: texto a la izquierda, logo a la derecha, en una fila */
+/* Desktop: texto pegado a la izquierda, logo pegado a la derecha, a lo ancho */
 @media (min-width: 901px) {
+  .footer-rule {
+    width: 100%;
+  }
+
   .footer-inner {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    width: min(var(--cta-group-width), calc(100vw - 40px));
+    width: 100%;
   }
 }
 
