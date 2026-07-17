@@ -1783,13 +1783,13 @@ button:focus-visible {
   }
 
   .site-footer {
-    margin-top: 44px;
+    margin-top: 46px;
   }
 
   .hero-logo {
-    width: clamp(345px, min(53vw, 51vh), 620px);
+    width: clamp(340px, min(54vw, 46vh), 560px);
     margin-top: -20px;
-    margin-bottom: 2px;
+    margin-bottom: 4px;
   }
 
   .hero-slogan-wrap {
@@ -1852,6 +1852,19 @@ button:focus-visible {
 
   .site-footer {
     margin-top: 36px;
+  }
+}
+
+/* Pantallas altas (≥1001px): logo grande y más aire alrededor del footer. */
+@media (min-height: 1001px) and (min-width: 901px) {
+  .hero-logo {
+    width: clamp(500px, min(58vw, 52vh), 720px);
+    margin-top: -28px;
+    margin-bottom: 8px;
+  }
+
+  .site-footer {
+    margin-top: 64px;
   }
 }
 
