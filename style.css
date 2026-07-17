@@ -1661,7 +1661,7 @@ button:focus-visible {
     margin-inline: auto;
     padding: 0;
 
-    font-size: clamp(34px, 9.5vw, 42px);
+    font-size: clamp(38px, 10.7vw, 47px);
     line-height: 1.06;
     letter-spacing: -0.018em;
 
@@ -1742,7 +1742,7 @@ button:focus-visible {
     max-width: calc(100vw - 32px);
     margin-top: 16px;
 
-    font-size: 15px;
+    font-size: 17px;
     line-height: 1.2;
     letter-spacing: 0.16em;
     text-align: center;
@@ -1759,18 +1759,18 @@ button:focus-visible {
   }
 
   .social-circle {
-    width: 56px;
-    height: 56px;
+    width: 63px;
+    height: 63px;
   }
 
   .social-circle svg {
-    width: 25px;
-    height: 25px;
+    width: 28px;
+    height: 28px;
   }
 
   .follow-link:nth-child(3) .social-circle svg {
-    width: 22px;
-    height: 22px;
+    width: 25px;
+    height: 25px;
   }
 
   .follow-sep {
@@ -1846,8 +1846,8 @@ button:focus-visible {
   }
 
   .hero-slogan {
-    max-width: 20ch;
-    font-size: clamp(24px, 6.8vw, 28px);
+    max-width: 17ch;
+    font-size: clamp(27px, 7.7vw, 32px);
     line-height: 1.01;
   }
 
@@ -1872,7 +1872,7 @@ button:focus-visible {
 
   .follow-title {
     margin-top: 8px;
-    font-size: 9px;
+    font-size: 10px;
     letter-spacing: 0.13em;
   }
 
@@ -1882,8 +1882,8 @@ button:focus-visible {
   }
 
   .social-circle {
-    width: 35px;
-    height: 35px;
+    width: 40px;
+    height: 40px;
   }
 
   .follow-sep {
@@ -1919,7 +1919,7 @@ button:focus-visible {
 
   .hero-slogan {
     max-width: 19.5ch;
-    font-size: clamp(22px, 6.3vw, 26px);
+    font-size: clamp(25px, 7.1vw, 29px);
   }
 
   .magic-button__icon {
@@ -1934,7 +1934,7 @@ button:focus-visible {
 
   .follow-title {
     margin-top: 6px;
-    font-size: 8px;
+    font-size: 9px;
   }
 
   .follow-links {
@@ -1942,8 +1942,8 @@ button:focus-visible {
   }
 
   .social-circle {
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
   }
 
   .follow-sep {
