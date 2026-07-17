@@ -238,15 +238,12 @@ button:focus-visible {
   position: relative;
   display: flex;
   justify-content: center;
-  transform: translateY(0%);
 }
 
 .hero-logo {
-  width: clamp(768px, min(84vw, 92vh), 1584px);
+  width: clamp(220px, 18vw, 300px);
   height: auto;
-
-  margin-top: -155px;
-  margin-bottom: -5px;
+  margin: 0 0 16px;
 
   opacity: 0;
   transform: translateY(-38px) scale(0.985);
@@ -361,7 +358,6 @@ button:focus-visible {
   margin-top: -16px;
   margin-bottom: clamp(30px, 3.5vh, 40px);
   cursor: default;
-  transform: translateY(-10%);
 }
 
 .hero-slogan-wrap::before {
@@ -1013,7 +1009,6 @@ button:focus-visible {
   align-items: center;
 
   margin-bottom: 0;
-  transform: translateY(10%);
 }
 
 .follow-divider {
@@ -1370,56 +1365,197 @@ button:focus-visible {
 }
 
 /* ============================================================
-   TABLET
+   RESPONSIVE CONSOLIDADO
+   Una sola fuente de verdad por breakpoint.
    ============================================================ */
 
-@media (max-width: 900px) {
-  :root {
-    --button-width: clamp(300px, 40vw, 360px);
-    --button-gap: 16px;
-  }
-
+@media (min-width: 901px) {
   .hero-content {
-    transform: translateY(-122px);
+    padding: clamp(24px, 3.5vh, 48px) 20px;
+    transform: translateY(-24px);
   }
 
   .hero-logo {
-    width: clamp(648px, 79vw, 912px);
-    margin-top: -84px;
-    margin-bottom: 0;
+    width: clamp(220px, min(18vw, 28vh), 300px);
+    margin: 0 0 16px;
   }
 
   .hero-slogan-wrap {
-    width: min(var(--cta-group-width), calc(100vw - 32px));
+    width: min(var(--cta-group-width), calc(100vw - 40px));
     max-width: var(--cta-group-width);
-    padding-inline: 8px;
-    margin-top: -10px;
+    padding-bottom: 4px;
+    margin: 0 0 12px;
   }
 
   .hero-slogan {
-    font-size: clamp(38px, 4.8vw, 50px);
-    line-height: 1.08;
-    letter-spacing: -0.012em;
+    width: 100%;
+    font-size: clamp(40px, 3.15vw, 50px);
+    line-height: 1.06;
     white-space: nowrap;
   }
 
   .hero-ctas {
-    margin-bottom: 42px;
+    margin-bottom: 22px;
+  }
+
+  .follow-title {
+    margin-top: 14px;
   }
 
   .follow-links {
-    margin-top: 28px;
+    margin-top: 16px;
+  }
+
+  .social-circle {
+    width: 52px;
+    height: 52px;
+  }
+
+  .social-circle svg {
+    width: 23px;
+    height: 23px;
+  }
+
+  .follow-link:nth-child(3) .social-circle svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .follow-sep {
+    height: 50px;
+  }
+
+  .site-footer {
+    position: relative;
+    top: clamp(30px, 3.5vh, 48px);
+    margin-top: 34px;
+  }
+
+  .footer-rule {
+    width: 100%;
+  }
+
+  .footer-inner {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
   }
 }
 
-/* ============================================================
-   MOBILE — TODO DENTRO DEL VIEWPORT, SIN SCROLL
-   ============================================================ */
+@media (min-width: 901px) and (max-height: 850px) {
+  .hero-content {
+    padding-block: 14px;
+    transform: translateY(-14px);
+  }
+
+  .hero-logo {
+    width: clamp(195px, 25vh, 240px);
+    margin-bottom: 10px;
+  }
+
+  .hero-slogan-wrap {
+    margin-bottom: 8px;
+  }
+
+  .hero-slogan {
+    font-size: clamp(36px, 4.6vh, 44px);
+  }
+
+  .hero-ctas {
+    margin-bottom: 16px;
+  }
+
+  .follow-title {
+    margin-top: 10px;
+  }
+
+  .follow-links {
+    margin-top: 12px;
+  }
+
+  .site-footer {
+    top: 24px;
+    margin-top: 24px;
+  }
+}
+
+@media (min-width: 901px) and (max-height: 740px) {
+  .hero-content {
+    transform: translateY(-6px);
+    padding-block: 8px;
+  }
+
+  .hero-logo {
+    width: clamp(170px, 22vh, 205px);
+    margin-bottom: 8px;
+  }
+
+  .hero-slogan {
+    font-size: clamp(32px, 4.5vh, 39px);
+  }
+
+  .hero-ctas {
+    margin-bottom: 12px;
+  }
+
+  .follow-links {
+    margin-top: 9px;
+  }
+
+  .site-footer {
+    top: 16px;
+    margin-top: 16px;
+  }
+}
+
+@media (min-width: 701px) and (max-width: 900px) {
+  :root {
+    --button-width: clamp(290px, 40vw, 350px);
+    --button-gap: 16px;
+  }
+
+  .hero-content {
+    padding: clamp(18px, 3vh, 32px) 18px;
+    transform: translateY(-12px);
+  }
+
+  .hero-logo {
+    width: clamp(210px, 29vw, 270px);
+    margin-bottom: 14px;
+  }
+
+  .hero-slogan-wrap {
+    width: min(var(--cta-group-width), calc(100vw - 32px));
+    margin: 0 0 14px;
+    padding-inline: 8px;
+  }
+
+  .hero-slogan {
+    font-size: clamp(34px, 4.7vw, 44px);
+    line-height: 1.08;
+    white-space: nowrap;
+  }
+
+  .hero-ctas {
+    margin-bottom: 26px;
+  }
+
+  .follow-links {
+    margin-top: 20px;
+  }
+
+  .site-footer {
+    position: relative;
+    top: 18px;
+    margin-top: 24px;
+  }
+}
 
 @media (max-width: 700px) {
   :root {
     --button-width: min(340px, calc(100vw - 32px));
-    --button-gap: 12px;
+    --button-gap: 10px;
     --cta-group-width: var(--button-width);
   }
 
@@ -1440,58 +1576,37 @@ button:focus-visible {
     overflow: hidden;
   }
 
-  .hero-video,
-  .hero-overlay,
-  .hero-vignette,
-  .hero-shadow,
-  .hero-particles {
-    position: absolute;
-  }
-
   .hero-content {
     width: 100%;
     max-width: 100%;
     height: 100%;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    transform: none;
-
     padding:
       max(8px, env(safe-area-inset-top))
       16px
       max(10px, env(safe-area-inset-bottom));
+    transform: none;
   }
 
   .hero-logo {
-    width: min(105vw, 463px);
-    margin-top: 0;
-    margin-bottom: -2px;
+    width: min(54vw, 220px);
+    margin: 0 0 8px;
   }
 
   .hero-slogan-wrap {
     width: 100%;
     max-width: 100%;
-
     padding: 0 2px 4px;
-    margin-top: 0;
-    margin-bottom: 14px;
+    margin: 0 0 12px;
   }
 
   .hero-slogan {
     width: 100%;
     max-width: 26ch;
-
     margin-inline: auto;
     padding: 0 2px 2px;
-
     font-size: clamp(24px, 7vw, 32px);
     line-height: 1.12;
     letter-spacing: -0.01em;
-
     white-space: normal;
     text-wrap: balance;
   }
@@ -1499,16 +1614,9 @@ button:focus-visible {
   .hero-ctas {
     width: 100%;
     max-width: 100%;
-
-    display: flex;
     flex-direction: column;
-    flex-wrap: nowrap;
-    align-items: center;
-    justify-content: center;
-
     gap: var(--button-gap);
-    margin-bottom: 16px;
-
+    margin-bottom: 14px;
     opacity: 1;
     transform: none;
     animation: none;
@@ -1518,7 +1626,6 @@ button:focus-visible {
     width: var(--button-width);
     max-width: 100%;
     flex: 0 0 auto;
-
     opacity: 0;
     transform: translateY(14px);
     animation:
@@ -1530,18 +1637,6 @@ button:focus-visible {
     animation:
       ctaRevealSoft 1.3s cubic-bezier(0.16, 0.8, 0.24, 1) 4.2s forwards,
       btnIdle 7s ease-in-out 8.3s infinite;
-  }
-
-  @keyframes ctaRevealSoft {
-    from {
-      opacity: 0;
-      transform: translateY(14px);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
   }
 
   .magic-button__content {
@@ -1580,7 +1675,6 @@ button:focus-visible {
   .follow-title {
     max-width: calc(100vw - 32px);
     margin-top: 8px;
-
     font-size: 11px;
     line-height: 1.25;
     letter-spacing: 0.17em;
@@ -1588,14 +1682,9 @@ button:focus-visible {
   }
 
   .follow-links {
-    margin-top: 30px;
+    margin-top: 16px;
     gap: 20px;
     row-gap: 0;
-  }
-
-  .site-footer {
-    margin-top: 16px;
-    gap: 6px;
   }
 
   .follow-name {
@@ -1603,30 +1692,48 @@ button:focus-visible {
   }
 
   .social-circle {
-    width: 46px;
-    height: 46px;
+    width: 44px;
+    height: 44px;
   }
 
   .social-circle svg {
-    width: 20px;
-    height: 20px;
+    width: 19px;
+    height: 19px;
   }
 
   .follow-link:nth-child(3) .social-circle svg {
-    width: 18px;
-    height: 18px;
+    width: 17px;
+    height: 17px;
   }
 
   .follow-sep {
-    height: 40px;
+    height: 38px;
+  }
+
+  .site-footer {
+    position: relative;
+    top: 0;
+    margin-top: 14px;
+    gap: 6px;
   }
 }
 
-/* Teléfonos de poca altura: reducción automática */
+@keyframes ctaRevealSoft {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @media (max-width: 700px) and (max-height: 760px) {
   :root {
-    --button-width: min(320px, calc(100vw - 34px));
-    --button-gap: 10px;
+    --button-width: min(310px, calc(100vw - 34px));
+    --button-gap: 8px;
   }
 
   .hero-content {
@@ -1637,79 +1744,8 @@ button:focus-visible {
   }
 
   .hero-logo {
-    width: min(76vw, 320px);
-    margin-bottom: -6px;
-  }
-
-  .hero-slogan-wrap {
-    margin-bottom: 10px;
-  }
-
-  .hero-slogan {
-    max-width: 18ch;
-    font-size: clamp(23px, 6.6vw, 30px);
-    line-height: 1.08;
-  }
-
-  .hero-ctas {
-    gap: 9px;
-    margin-bottom: 13px;
-  }
-
-  .magic-button__content {
-    padding-inline: 22px;
-  }
-
-  .magic-button__icon {
-    width: 28px;
-    height: 28px;
-    flex-basis: 28px;
-  }
-
-  .magic-button__label {
-    font-size: clamp(14px, 4vw, 17px);
-  }
-
-  .follow-title {
-    margin-top: 6px;
-    font-size: 10px;
-    letter-spacing: 0.15em;
-  }
-
-  .follow-links {
-    margin-top: 10px;
-    gap: 18px;
-  }
-
-  .social-circle {
-    width: 42px;
-    height: 42px;
-  }
-
-  .social-circle svg {
-    width: 18px;
-    height: 18px;
-  }
-
-  .follow-link:nth-child(3) .social-circle svg {
-    width: 16px;
-    height: 16px;
-  }
-
-  .follow-sep {
-    height: 36px;
-  }
-}
-
-/* Teléfonos muy bajos: ajuste extremo para que siga entrando todo */
-@media (max-width: 700px) and (max-height: 680px) {
-  :root {
-    --button-width: min(300px, calc(100vw - 38px));
-    --button-gap: 8px;
-  }
-
-  .hero-logo {
-    width: min(68vw, 285px);
+    width: min(46vw, 185px);
+    margin-bottom: 4px;
   }
 
   .hero-slogan-wrap {
@@ -1717,14 +1753,52 @@ button:focus-visible {
   }
 
   .hero-slogan {
-    max-width: 17ch;
-    font-size: clamp(21px, 6vw, 27px);
-    line-height: 1.06;
+    max-width: 19ch;
+    font-size: clamp(21px, 6.2vw, 28px);
+    line-height: 1.08;
   }
 
   .hero-ctas {
-    gap: 8px;
     margin-bottom: 10px;
+  }
+
+  .follow-title {
+    margin-top: 5px;
+    font-size: 10px;
+  }
+
+  .follow-links {
+    margin-top: 8px;
+    gap: 18px;
+  }
+
+  .social-circle {
+    width: 40px;
+    height: 40px;
+  }
+
+  .follow-sep {
+    height: 34px;
+  }
+
+  .site-footer {
+    margin-top: 8px;
+  }
+}
+
+@media (max-width: 700px) and (max-height: 680px) {
+  :root {
+    --button-width: min(290px, calc(100vw - 38px));
+    --button-gap: 7px;
+  }
+
+  .hero-logo {
+    width: min(40vw, 160px);
+  }
+
+  .hero-slogan {
+    max-width: 18ch;
+    font-size: clamp(19px, 5.8vw, 25px);
   }
 
   .magic-button__icon {
@@ -1737,222 +1811,18 @@ button:focus-visible {
     font-size: clamp(13px, 3.8vw, 16px);
   }
 
-  .follow-divider {
-    gap: 8px;
-  }
-
   .follow-title {
-    margin-top: 5px;
     font-size: 9px;
     letter-spacing: 0.13em;
   }
 
-  .follow-links {
-    margin-top: 8px;
-    gap: 16px;
-  }
-
   .social-circle {
-    width: 38px;
-    height: 38px;
-  }
-
-  .social-circle svg {
-    width: 17px;
-    height: 17px;
-  }
-
-  .follow-link:nth-child(3) .social-circle svg {
-    width: 15px;
-    height: 15px;
+    width: 36px;
+    height: 36px;
   }
 
   .follow-sep {
-    height: 32px;
-  }
-}
-
-/* ============================================================
-   NOTEBOOKS DE POCA ALTURA
-   ============================================================ */
-
-@media (min-width: 901px) {
-  /* Centrado con un leve empuje hacia arriba para equilibrar el aire
-     (el logo tiene padding transparente arriba que lo hace ver bajo). */
-  .hero-content {
-    padding-top: clamp(28px, 4.5vh, 72px);
-    padding-bottom: clamp(28px, 4.5vh, 72px);
-    transform: translateY(-70px);
-  }
-
-  .site-footer {
-    margin-top: 46px;
-  }
-
-  .hero-logo {
-    width: clamp(340px, min(54vw, 46vh), 560px);
-    margin-top: -20px;
-    margin-bottom: 4px;
-  }
-
-  .hero-slogan-wrap {
-    padding-bottom: 4px;
-    margin-top: -6px;
-    margin-bottom: 10px;
-  }
-
-  .hero-slogan {
-    font-size: clamp(40px, 3.15vw, 50px);
-    line-height: 1.06;
-    letter-spacing: -0.012em;
-  }
-
-  .hero-ctas {
-    margin-bottom: 22px;
-  }
-
-  .follow-title {
-    margin-top: 14px;
-  }
-
-  .follow-links {
-    margin-top: 16px;
-  }
-
-  .social-circle {
-    width: 52px;
-    height: 52px;
-  }
-
-  .social-circle svg {
-    width: 23px;
-    height: 23px;
-  }
-
-  .follow-link:nth-child(3) .social-circle svg {
-    width: 20px;
-    height: 20px;
-  }
-
-  .follow-sep {
-    height: 50px;
-  }
-}
-
-/* Laptops / MacBook 13" (≤850px de alto): logo grande igual, compactando
-   el resto del espacio para que entre todo sin scroll. */
-@media (max-height: 850px) and (min-width: 901px) {
-  .hero-content {
-    padding-top: clamp(14px, 2vh, 28px);
-    padding-bottom: clamp(14px, 2vh, 28px);
-  }
-
-  .hero-slogan-wrap {
-    margin-top: -4px;
-    margin-bottom: 6px;
-  }
-
-  .hero-ctas {
-    margin-bottom: 16px;
-  }
-
-  .hero-logo {
-    width: clamp(400px, min(56vw, 53vh), 580px);
-    margin-top: -18px;
-    margin-bottom: -8px;
-  }
-
-  .site-footer {
-    margin-top: 26px;
-  }
-}
-
-/* Laptops muy bajas (≤790px): logo un poco menor para que siga entrando. */
-@media (max-height: 790px) and (min-width: 901px) {
-  .hero-logo {
-    width: clamp(360px, 48vh, 470px);
-  }
-
-  .site-footer {
-    margin-top: 26px;
-  }
-}
-
-/* Pantallas altas (≥1001px): logo grande y más aire alrededor del footer. */
-@media (min-height: 1001px) and (min-width: 901px) {
-  .hero-content {
-    padding-top: clamp(32px, 4.5vh, 80px);
-    padding-bottom: clamp(32px, 4.5vh, 80px);
-  }
-
-  .hero-logo {
-    width: clamp(560px, min(62vw, 59vh), 820px);
-    margin-top: -34px;
-    margin-bottom: 2px;
-  }
-
-  .site-footer {
-    margin-top: 42px;
-  }
-}
-
-/* ============================================================
-   VIEWPORTS MUY BAJOS
-   ============================================================ */
-
-@media (max-height: 700px) and (min-width: 701px) {
-  .hero {
-    min-height: 100svh;
-    height: auto;
-  }
-
-  .hero-content {
-    transform: translateY(-6px);
-    padding-top: 2px;
-    padding-bottom: 34px;
-  }
-
-  .hero-logo {
-    width: min(86vw, 408px);
-    margin-top: -26px;
-    margin-bottom: 0;
-  }
-
-  .hero-slogan-wrap {
-    margin-top: -4px;
-    margin-bottom: 12px;
-  }
-
-  .hero-slogan {
-    font-size: clamp(32px, 4.8vh, 40px);
-    line-height: 1.08;
-    letter-spacing: -0.01em;
-  }
-
-  .hero-ctas {
-    margin-bottom: 22px;
-  }
-
-  .follow-links {
-    margin-top: 14px;
-  }
-
-  .social-circle {
-    width: 46px;
-    height: 46px;
-  }
-
-  .social-circle svg {
-    width: 20px;
-    height: 20px;
-  }
-
-  .follow-name {
-    font-size: 13px;
-  }
-
-  .follow-sep {
-    height: 42px;
+    height: 30px;
   }
 }
 
@@ -2021,29 +1891,144 @@ button:focus-visible {
 }
 
 /* ============================================================
-   AJUSTE FINAL DE ALINEACIÓN DEL SLOGAN
+   AJUSTE VISUAL FINAL — COMPOSICIÓN DESKTOP
+   Logo más protagonista, mayor aire entre bloques y footer abajo.
    ============================================================ */
 
 @media (min-width: 901px) {
+  /* El contenido principal se centra sin incluir el footer */
+  .hero-content {
+    justify-content: center;
+    padding:
+      clamp(38px, 5vh, 68px)
+      20px
+      clamp(118px, 15vh, 155px);
+    transform: translateY(-8px);
+  }
+
+  /* Logo más grande y protagonista */
+  .hero-logo {
+    width: clamp(330px, min(25vw, 36vh), 430px);
+    margin: 0 0 clamp(24px, 3vh, 34px);
+  }
+
+  /* El slogan ocupa el mismo ancho general que los dos botones */
   .hero-slogan-wrap {
     width: min(var(--cta-group-width), calc(100vw - 40px));
     max-width: var(--cta-group-width);
+    margin: 0 0 clamp(28px, 3.4vh, 40px);
+    padding: 0;
   }
 
   .hero-slogan {
     width: 100%;
+    font-size: clamp(47px, 3.55vw, 58px);
+    line-height: 1.04;
+    letter-spacing: 0.006em;
     white-space: nowrap;
   }
-}
-/* ============================================================
-   AJUSTE FINAL DEL FOOTER
-   ============================================================ */
 
-@media (min-width: 901px) {
-
-  .site-footer{
-    position: relative;
-    top: 60px;;
+  /* Más aire debajo de los botones antes de la línea */
+  .hero-ctas {
+    margin-bottom: clamp(38px, 4.8vh, 56px);
   }
 
+  /* Separación entre línea, subtítulo e iconos */
+  .follow-title {
+    margin-top: clamp(20px, 2.5vh, 28px);
+  }
+
+  .follow-links {
+    margin-top: clamp(28px, 3.5vh, 40px);
+  }
+
+  /* Footer independiente y anclado abajo */
+  .site-footer {
+    position: absolute;
+    left: 20px;
+    right: 20px;
+    bottom: clamp(22px, 3vh, 34px);
+    top: auto;
+    width: auto;
+    margin: 0;
+  }
+}
+
+/* Notebook / laptop de poca altura */
+@media (min-width: 901px) and (max-height: 850px) {
+  .hero-content {
+    padding:
+      18px
+      20px
+      112px;
+    transform: translateY(-4px);
+  }
+
+  .hero-logo {
+    width: clamp(285px, 34vh, 350px);
+    margin-bottom: 18px;
+  }
+
+  .hero-slogan-wrap {
+    margin-bottom: 22px;
+  }
+
+  .hero-slogan {
+    font-size: clamp(40px, 5vh, 48px);
+  }
+
+  .hero-ctas {
+    margin-bottom: 30px;
+  }
+
+  .follow-title {
+    margin-top: 16px;
+  }
+
+  .follow-links {
+    margin-top: 22px;
+  }
+
+  .site-footer {
+    bottom: 18px;
+  }
+}
+
+/* Notebook muy baja */
+@media (min-width: 901px) and (max-height: 740px) {
+  .hero-content {
+    padding:
+      10px
+      20px
+      96px;
+  }
+
+  .hero-logo {
+    width: clamp(245px, 31vh, 300px);
+    margin-bottom: 12px;
+  }
+
+  .hero-slogan-wrap {
+    margin-bottom: 16px;
+  }
+
+  .hero-slogan {
+    font-size: clamp(34px, 4.8vh, 41px);
+  }
+
+  .hero-ctas {
+    margin-bottom: 22px;
+  }
+
+  .follow-title {
+    margin-top: 10px;
+  }
+
+  .follow-links {
+    margin-top: 14px;
+  }
+
+  .site-footer {
+    bottom: 12px;
+  }
 }
