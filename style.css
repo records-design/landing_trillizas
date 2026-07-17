@@ -178,14 +178,15 @@ button:focus-visible {
   z-index: 2;
   width: 100%;
   max-width: 1180px;
+  min-height: 100%;
 
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   text-align: center;
 
-  padding: 0 20px 18px;
-  transform: translateY(-215px);
+  padding: clamp(20px, 3vh, 44px) 20px clamp(28px, 4vh, 52px);
 }
 
 .hero-glow {
@@ -1105,12 +1106,6 @@ button:focus-visible {
   row-gap: 20px;
 }
 
-@media (min-width: 901px) {
-  .follow-links {
-    transform: translateY(20%);
-  }
-}
-
 .follow-link {
   display: inline-flex;
   flex-direction: column;
@@ -1510,7 +1505,7 @@ button:focus-visible {
     justify-content: center;
 
     gap: var(--button-gap);
-    margin-bottom: 26px;
+    margin-bottom: 16px;
 
     opacity: 1;
     transform: none;
@@ -1591,13 +1586,13 @@ button:focus-visible {
   }
 
   .follow-links {
-    margin-top: 34px;
+    margin-top: 30px;
     gap: 20px;
     row-gap: 0;
   }
 
   .site-footer {
-    margin-top: 22px;
+    margin-top: 16px;
     gap: 6px;
   }
 
@@ -1779,20 +1774,20 @@ button:focus-visible {
    NOTEBOOKS DE POCA ALTURA
    ============================================================ */
 
-@media (max-height: 820px) and (min-width: 901px) {
-  .hero-content {
-    transform: translateY(-158px);
+@media (min-width: 901px) {
+  .site-footer {
+    margin-top: 44px;
   }
 
   .hero-logo {
-    width: clamp(600px, min(59vw, 50vh), 912px);
-    margin-top: -72px;
-    margin-bottom: -4px;
+    width: clamp(300px, min(46vw, 44vh), 540px);
+    margin-top: -8px;
+    margin-bottom: -34px;
   }
 
   .hero-slogan-wrap {
     padding-bottom: 4px;
-    margin-top: -8px;
+    margin-top: -6px;
     margin-bottom: 10px;
   }
 
@@ -1803,7 +1798,7 @@ button:focus-visible {
   }
 
   .hero-ctas {
-    margin-bottom: 28px;
+    margin-bottom: 22px;
   }
 
   .follow-title {
