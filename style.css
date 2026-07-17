@@ -1857,14 +1857,19 @@ button:focus-visible {
 
 /* Pantallas altas (≥1001px): logo grande y más aire alrededor del footer. */
 @media (min-height: 1001px) and (min-width: 901px) {
+  .hero-content {
+    padding-top: clamp(12px, 1.5vh, 24px);
+    padding-bottom: clamp(30px, 4vh, 72px);
+  }
+
   .hero-logo {
-    width: clamp(500px, min(58vw, 52vh), 720px);
-    margin-top: -28px;
-    margin-bottom: 8px;
+    width: clamp(560px, min(62vw, 59vh), 820px);
+    margin-top: -34px;
+    margin-bottom: 2px;
   }
 
   .site-footer {
-    margin-top: 64px;
+    margin-top: 42px;
   }
 }
 
