@@ -186,7 +186,9 @@ button:focus-visible {
   justify-content: center;
   text-align: center;
 
-  padding: clamp(20px, 3vh, 44px) 20px clamp(28px, 4vh, 52px);
+  /* Padding simétrico → el bloque queda centrado vertical de verdad,
+     con el mismo aire arriba del logo que debajo del footer. */
+  padding: clamp(24px, 4vh, 52px) 20px;
 }
 
 .hero-glow {
@@ -240,11 +242,11 @@ button:focus-visible {
 }
 
 .hero-logo {
-  width: clamp(768px, min(84vw, 92vh), 1584px);
+  width: clamp(240px, min(42vw, 38vh), 460px);
   height: auto;
 
-  margin-top: -155px;
-  margin-bottom: -5px;
+  margin-top: 0;
+  margin-bottom: clamp(10px, 1.6vh, 22px);
 
   opacity: 0;
   transform: translateY(-38px) scale(0.985);
@@ -1377,14 +1379,10 @@ button:focus-visible {
     --button-gap: 16px;
   }
 
-  .hero-content {
-    transform: translateY(-122px);
-  }
-
   .hero-logo {
-    width: clamp(648px, 79vw, 912px);
-    margin-top: -84px;
-    margin-bottom: 0;
+    width: clamp(280px, min(58vw, 34vh), 480px);
+    margin-top: 0;
+    margin-bottom: clamp(12px, 1.8vh, 24px);
   }
 
   .hero-slogan-wrap {
@@ -1465,9 +1463,9 @@ button:focus-visible {
   }
 
   .hero-logo {
-    width: min(105vw, 463px);
+    width: clamp(240px, min(64vw, 30vh), 360px);
     margin-top: 0;
-    margin-bottom: -2px;
+    margin-bottom: clamp(10px, 1.4vh, 18px);
   }
 
   .hero-slogan-wrap {
@@ -1635,8 +1633,8 @@ button:focus-visible {
   }
 
   .hero-logo {
-    width: min(76vw, 320px);
-    margin-bottom: -6px;
+    width: clamp(220px, min(56vw, 27vh), 320px);
+    margin-bottom: clamp(8px, 1.2vh, 14px);
   }
 
   .hero-slogan-wrap {
@@ -1707,7 +1705,7 @@ button:focus-visible {
   }
 
   .hero-logo {
-    width: min(68vw, 285px);
+    width: clamp(200px, min(50vw, 24vh), 285px);
   }
 
   .hero-slogan-wrap {
@@ -1775,11 +1773,10 @@ button:focus-visible {
    ============================================================ */
 
 @media (min-width: 901px) {
-  /* Padding asimétrico: empuja el contenido hacia arriba para dar
-     más aire debajo del footer (que no quede pegado al borde). */
+  /* Padding simétrico → centrado vertical real (mismo aire arriba y abajo). */
   .hero-content {
-    padding-top: clamp(16px, 2vh, 30px);
-    padding-bottom: clamp(52px, 7vh, 104px);
+    padding-top: clamp(28px, 4.5vh, 72px);
+    padding-bottom: clamp(28px, 4.5vh, 72px);
   }
 
   .site-footer {
@@ -1787,9 +1784,9 @@ button:focus-visible {
   }
 
   .hero-logo {
-    width: clamp(340px, min(54vw, 46vh), 560px);
-    margin-top: -20px;
-    margin-bottom: 4px;
+    width: clamp(300px, min(40vw, 30vh), 460px);
+    margin-top: 0;
+    margin-bottom: clamp(14px, 2vh, 26px);
   }
 
   .hero-slogan-wrap {
@@ -1840,8 +1837,8 @@ button:focus-visible {
    el resto del espacio para que entre todo sin scroll. */
 @media (max-height: 850px) and (min-width: 901px) {
   .hero-content {
-    padding-top: clamp(8px, 1vh, 16px);
-    padding-bottom: clamp(24px, 3vh, 42px);
+    padding-top: clamp(14px, 2vh, 28px);
+    padding-bottom: clamp(14px, 2vh, 28px);
   }
 
   .hero-slogan-wrap {
@@ -1854,9 +1851,9 @@ button:focus-visible {
   }
 
   .hero-logo {
-    width: clamp(400px, min(56vw, 53vh), 580px);
-    margin-top: -18px;
-    margin-bottom: -8px;
+    width: clamp(300px, min(44vw, 33vh), 440px);
+    margin-top: 0;
+    margin-bottom: clamp(10px, 1.6vh, 20px);
   }
 
   .site-footer {
@@ -1867,29 +1864,29 @@ button:focus-visible {
 /* Laptops muy bajas (≤790px): logo un poco menor para que siga entrando. */
 @media (max-height: 790px) and (min-width: 901px) {
   .hero-logo {
-    width: clamp(360px, 48vh, 470px);
+    width: clamp(280px, 30vh, 400px);
   }
 
   .site-footer {
-    margin-top: 26px;
+    margin-top: 24px;
   }
 }
 
 /* Pantallas altas (≥1001px): logo grande y más aire alrededor del footer. */
 @media (min-height: 1001px) and (min-width: 901px) {
   .hero-content {
-    padding-top: clamp(12px, 1.5vh, 24px);
-    padding-bottom: clamp(30px, 4vh, 72px);
+    padding-top: clamp(32px, 4.5vh, 80px);
+    padding-bottom: clamp(32px, 4.5vh, 80px);
   }
 
   .hero-logo {
-    width: clamp(560px, min(62vw, 59vh), 820px);
-    margin-top: -34px;
-    margin-bottom: 2px;
+    width: clamp(380px, min(46vw, 34vh), 560px);
+    margin-top: 0;
+    margin-bottom: clamp(18px, 2.4vh, 32px);
   }
 
   .site-footer {
-    margin-top: 42px;
+    margin-top: 56px;
   }
 }
 
@@ -1904,19 +1901,18 @@ button:focus-visible {
   }
 
   .hero-content {
-    transform: translateY(-6px);
-    padding-top: 2px;
-    padding-bottom: 34px;
+    padding-top: 10px;
+    padding-bottom: 10px;
   }
 
   .hero-logo {
-    width: min(86vw, 408px);
-    margin-top: -26px;
-    margin-bottom: 0;
+    width: clamp(200px, 26vh, 340px);
+    margin-top: 0;
+    margin-bottom: 10px;
   }
 
   .hero-slogan-wrap {
-    margin-top: -4px;
+    margin-top: 0;
     margin-bottom: 12px;
   }
 
