@@ -1305,6 +1305,39 @@ button:focus-visible {
 }
 
 /* ============================================================
+   FOOTER
+   ============================================================ */
+
+.site-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+
+  margin-top: clamp(28px, 4vh, 46px);
+
+  opacity: 0;
+  transform: translateY(12px);
+  animation: fadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) 5.3s forwards;
+}
+
+.footer-logo {
+  width: clamp(110px, 12vw, 150px);
+  height: auto;
+  opacity: 0.85;
+  filter: drop-shadow(0 0 12px rgba(232, 201, 123, 0.14));
+}
+
+.footer-text {
+  color: var(--muted, #b3a4cc);
+  font-family: var(--font-ui);
+  font-size: clamp(10px, 1vw, 12px);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.65;
+}
+
+/* ============================================================
    TABLET
    ============================================================ */
 
@@ -1442,7 +1475,7 @@ button:focus-visible {
     justify-content: center;
 
     gap: var(--button-gap);
-    margin-bottom: 34px;
+    margin-bottom: 26px;
 
     opacity: 1;
     transform: none;
@@ -1523,9 +1556,14 @@ button:focus-visible {
   }
 
   .follow-links {
-    margin-top: 52px;
+    margin-top: 34px;
     gap: 20px;
     row-gap: 0;
+  }
+
+  .site-footer {
+    margin-top: 22px;
+    gap: 6px;
   }
 
   .follow-name {
