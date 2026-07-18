@@ -1657,11 +1657,11 @@ button:focus-visible {
 
   .hero-slogan {
     width: 100%;
-    max-width: 19ch;
+    max-width: var(--cta-group-width);
     margin-inline: auto;
     padding: 0;
 
-    font-size: clamp(38px, 10.7vw, 47px);
+    font-size: clamp(29px, 8.5vw, 34px);
     line-height: 1.06;
     letter-spacing: -0.018em;
 
@@ -1846,8 +1846,8 @@ button:focus-visible {
   }
 
   .hero-slogan {
-    max-width: 17ch;
-    font-size: clamp(27px, 7.7vw, 32px);
+    max-width: var(--cta-group-width);
+    font-size: clamp(24px, 6.9vw, 29px);
     line-height: 1.01;
   }
 
@@ -1918,8 +1918,8 @@ button:focus-visible {
   }
 
   .hero-slogan {
-    max-width: 19.5ch;
-    font-size: clamp(25px, 7.1vw, 29px);
+    max-width: var(--cta-group-width);
+    font-size: clamp(22px, 6.4vw, 26px);
   }
 
   .magic-button__icon {

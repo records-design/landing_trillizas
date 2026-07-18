@@ -9,13 +9,20 @@ escrito**; acá se explica qué subir, qué crear en la base de datos y qué com
 
 | Archivo / carpeta | Qué es |
 |---|---|
-| `index.html` | Se le agregó la metaetiqueta de verificación de Meta, IDs de tracking en los botones y la carga de `tracking.js`. |
-| `tracking.js` | Script que registra `page_view` y `click`, y captura los parámetros de campaña de la URL. |
-| `config.js` | Ahora tiene `ANALYTICS_CONFIG` con la ruta del endpoint. |
-| `backend/` | Todo el PHP: captura de eventos, geolocalización, envío a Meta CAPI. |
+| `index.html` | Metaetiqueta de verificación de Meta, **snippet del Meta Pixel** (base, sin `PageView` automático), IDs de tracking en los botones y la carga de `tracking.js`. |
+| `tracking.js` | Registra `page_view` y `click`, captura los parámetros de campaña de la URL, y dispara **tanto** el Pixel del navegador **como** el envío al servidor con el mismo `event_id` (deduplicación). |
+| `config.js` | `ANALYTICS_CONFIG` con la ruta del endpoint. |
+| `backend/` | Todo el PHP: captura de eventos, geolocalización, envío a Meta CAPI (server-side). |
 | `statics-8f2k1/` | El panel privado (login + dashboard + export CSV). |
 | `backend/schema.sql` | Las tablas MySQL a importar. |
 | `robots.txt` | Bloquea la indexación del panel y del backend. |
+
+**Sobre el Pixel + Conversions API:** el proyecto usa las dos vías de Meta al mismo
+tiempo, como recomienda Meta: el Pixel (navegador, vía `index.html`/`tracking.js`) y
+la Conversions API (servidor, vía `backend/`). Ambas mandan el **mismo `event_id`**
+por cada evento, así Meta las reconoce como un solo evento y no duplica el conteo
+en Ads Manager. No hay que configurar nada aparte en Meta para esto — usan el mismo
+Pixel/Dataset ID (`1608591474024181`) que ya está en el código.
 
 La landing visible **no cambió** en diseño.
 
@@ -125,10 +132,17 @@ https://TUDOMINIO.com/?utm_source={{site_source_name}}&utm_medium=paid_social&ut
    `https://TUDOMINIO.com/?utm_source=test&ad_id=123&placement=instagram_reels`
    Después, tocar un botón. En phpMyAdmin, la tabla `events` debería tener las filas.
 2. **Panel:** entrar a `https://TUDOMINIO.com/statics-8f2k1/` → loguear → ver los datos.
-3. **Meta CAPI:** en Meta Events Manager → pestaña **Test Events**, cargar el
-   `test_event_code` temporal en `config.php` (`meta.test_event_code`) y recargar la
-   landing: deberían aparecer los eventos `PageView` / `ClicBoton`. Al terminar la
-   prueba, **vaciar** ese `test_event_code` en producción.
+3. **Meta Pixel (navegador):** instalar la extensión **Meta Pixel Helper** en Chrome,
+   abrir la landing y confirmar que detecta el pixel `1608591474024181` y el evento
+   `PageView`.
+4. **Meta CAPI (servidor) + deduplicación:** en Meta Events Manager → pestaña
+   **Test Events**, cargar el `test_event_code` temporal en `config.php`
+   (`meta.test_event_code`) y recargar la landing. Deberían aparecer los eventos
+   `PageView` / `ClicBoton` marcados con **dos fuentes: "Navegador" y "Servidor"**,
+   pero **contados una sola vez** cada uno (no duplicados). Si aparecen duplicados,
+   revisar que el `event_id` que llega por ambas vías sea idéntico (se genera una
+   vez por evento en `tracking.js`, función `send()`).
+   Al terminar la prueba, **vaciar** el `test_event_code` en producción.
 
 ---
 
@@ -140,6 +154,10 @@ https://TUDOMINIO.com/?utm_source={{site_source_name}}&utm_medium=paid_social&ut
   tráfico simultáneo, considerar un proveedor con API key (ver `config.php → geo`).
 - **Retención de datos**: definir cada cuánto borrar eventos crudos viejos (privacidad).
 - **Rotar el Access Token** de Meta cuando esté todo andando.
+- Si se rota el Pixel/Dataset ID (no solo el token), actualizarlo en **dos lugares**:
+  `backend/config.php` (`meta.pixel_id`, usado por la Conversions API) **y**
+  `index.html` (`fbq('init', '...')`, usado por el Pixel del navegador). El Access
+  Token, en cambio, solo va en `config.php` — nunca en `index.html`.
 
 ---
 

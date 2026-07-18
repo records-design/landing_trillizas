@@ -110,10 +110,10 @@
   // ----------------------------------------------------------
   // Envío de eventos
   // ----------------------------------------------------------
-  function buildPayload(eventName, extra) {
+  function buildPayload(eventName, eventId, extra) {
     var payload = {
       event_name: eventName,          // 'page_view' | 'click'
-      event_id: uid(),                // para deduplicar con el Pixel (CAPI)
+      event_id: eventId,              // mismo id que recibe el Pixel del navegador (dedup)
       session_id: sessionId,
       url: window.location.href,
       referrer: document.referrer || '',
@@ -130,9 +130,23 @@
     return payload;
   }
 
+  // Dispara el Pixel del navegador (si está cargado) con el MISMO event_id
+  // que se manda al servidor, para que Meta deduplique entre ambas vías.
+  function trackPixel(eventName, eventId) {
+    if (typeof fbq !== 'function') return;
+    try {
+      var metaEvent = eventName === 'page_view' ? 'PageView' : 'ClicBoton';
+      var isStandard = metaEvent === 'PageView';
+      fbq(isStandard ? 'track' : 'trackCustom', metaEvent, {}, { eventID: eventId });
+    } catch (e) { /* el Pixel nunca debe romper la navegación */ }
+  }
+
   function send(eventName, extra) {
-    var payload = buildPayload(eventName, extra);
+    var eventId = uid();
+    var payload = buildPayload(eventName, eventId, extra);
     var body = JSON.stringify(payload);
+
+    trackPixel(eventName, eventId);
 
     // sendBeacon es el método más confiable cuando el clic navega a otra página.
     if (navigator.sendBeacon) {

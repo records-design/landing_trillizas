@@ -17,6 +17,21 @@
   <!-- Verificación de dominio de Meta (NO mover a JS, debe estar en el HTML estático) -->
   <meta name="facebook-domain-verification" content="wpaf3wqvov0he4v25y9coh9aplzuin" />
 
+  <!-- Meta Pixel (base) — sin PageView automático: tracking.js dispara los
+       eventos a mano compartiendo el mismo event_id con la Conversions API
+       del servidor, para que Meta deduplique y no infle los números. -->
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1608591474024181');
+  </script>
+
   <meta
     name="description"
     content="Tres hermanas, un libro, música y magia. Mirá el videoclip y escuchá &quot;La Locomotora llega a la estación&quot;."
@@ -60,7 +75,7 @@
   />
 
   <!-- CSS -->
-  <link rel="stylesheet" href="style.css?v=20260717204158" />
+  <link rel="stylesheet" href="style.css?v=20260717210445" />
 </head>
 
 <body>
@@ -430,9 +445,9 @@
 
   </section>
 
-  <script src="config.js?v=20260717204158"></script>
+  <script src="config.js?v=20260717210445"></script>
   <script src="tracking.js?v=20260714151543"></script>
-  <script src="script.js?v=20260717204158"></script>
+  <script src="script.js?v=20260717210445"></script>
 
 </body>
 </html>
