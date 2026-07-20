@@ -1690,7 +1690,8 @@ button:focus-visible {
      no margin en el logo). Es seguro: la fila 1 no tiene vecinos con
      contenido de los que "robar" espacio, así que no genera overlap. */
   .logo-wrap {
-    padding-top: clamp(32px, calc(3dvh + 22px), 60px);
+    /* Mobile: logo más abajo, pero 10–15 px más arriba que la prueba brusca. */
+    padding-top: clamp(90px, 12dvh, 120px);
   }
 
   .logo-wrap        { grid-row: 1; }
@@ -1736,7 +1737,8 @@ button:focus-visible {
      celular angosto-y-alto que en uno ancho-y-bajo (ej. Duo).
      -------------------------------------------------------- */
   .hero-logo {
-    width: clamp(140px, min(38vw, 20dvh), 220px);
+    /* Mobile: 25% más grande que el tamaño anterior. */
+    width: clamp(193px, min(52.5vw, 27.5dvh), 303px);
   }
 
   .hero-slogan {
