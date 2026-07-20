@@ -1690,7 +1690,7 @@ button:focus-visible {
      no margin en el logo). Es seguro: la fila 1 no tiene vecinos con
      contenido de los que "robar" espacio, así que no genera overlap. */
   .logo-wrap {
-    padding-top: clamp(32px, calc(3dvh + 20px), 40px);
+    padding-top: clamp(32px, calc(3dvh + 22px), 60px);
   }
 
   .logo-wrap        { grid-row: 1; }
