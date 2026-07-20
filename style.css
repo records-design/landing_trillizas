@@ -1549,57 +1549,355 @@ button:focus-visible {
   }
 }
 
-/* ---------------- TABLET ---------------- */
-@media (min-width: 701px) and (max-width: 900px) {
+/* ---------------- TABLET / IPAD ---------------- */
+/*
+  ARQUITECTURA FINAL PARA IPAD
+
+  En tablet no conviene concentrar todo arriba ni dejar un único hueco central.
+  Los cinco bloques principales se distribuyen con space-between:
+
+  logo / slogan / botones / redes / footer
+
+  Así el aire vertical queda repartido de forma uniforme en cualquier iPad.
+  No se usan translateY, top, footer absoluto ni filas 1fr.
+*/
+@media
+  (min-width: 701px) and (max-width: 1024px),
+  (min-width: 1025px) and (max-width: 1366px) and (orientation: landscape) and (pointer: coarse) {
+
   :root {
-    --button-width: clamp(290px, 40vw, 350px);
-    --button-gap: 16px;
+    --button-width: clamp(278px, min(36vw, 36dvh), 348px);
+    --button-gap: clamp(14px, 2vw, 22px);
+    --cta-group-width: calc((var(--button-width) * 2) + var(--button-gap));
+  }
+
+  html,
+  body {
+    height: 100%;
+    overscroll-behavior: none;
+  }
+
+  .hero {
+    height: 100vh;
+    height: 100dvh;
+    min-height: 100svh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    align-items: stretch;
   }
 
   .hero-content {
-    padding: clamp(18px, 3vh, 32px) 18px;
-    transform: translateY(-12px);
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 1180px;
+    height: 100vh;
+    height: 100dvh;
+    min-height: 100svh;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+    padding:
+      max(24px, env(safe-area-inset-top))
+      clamp(22px, 4vw, 52px)
+      max(18px, env(safe-area-inset-bottom));
+
+    transform: none;
+  }
+
+  .logo-wrap,
+  .hero-slogan-wrap,
+  .hero-ctas,
+  .hero-follow,
+  .site-footer {
+    flex: 0 0 auto;
+    margin: 0;
+  }
+
+  .logo-wrap {
+    padding: 0;
   }
 
   .hero-logo {
-    width: clamp(210px, 29vw, 270px);
-    margin-bottom: 14px;
+    width: clamp(250px, min(34vw, 25dvh), 350px);
+    height: auto;
+    margin: 0;
   }
 
   .hero-slogan-wrap {
-    width: min(var(--cta-group-width), calc(100vw - 32px));
-    margin: 0 0 14px;
-    padding-inline: 8px;
+    width: min(760px, calc(100vw - 56px));
+    max-width: 760px;
+    padding: 0;
   }
 
   .hero-slogan {
-    font-size: clamp(34px, 4.7vw, 44px);
-    line-height: 1.08;
-    white-space: nowrap;
+    width: 100%;
+    font-size: clamp(50px, min(6.2vw, 6.4dvh), 72px);
+    line-height: 1;
+    letter-spacing: -0.025em;
+    white-space: normal;
+    text-wrap: balance;
+    text-align: center;
+  }
+
+  .slogan-break {
+    display: block;
   }
 
   .hero-ctas {
-    margin-bottom: 28px;
+    width: min(var(--cta-group-width), calc(100vw - 48px));
+    animation-delay: 1.25s;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--button-gap);
   }
 
   .hero-follow {
-    margin-top: 14px;
+    width: 100%;
   }
 
   .follow-title {
-    margin-top: 18px;
+    margin-top: clamp(12px, 1.4dvh, 18px);
+    font-size: clamp(18px, 2.25vw, 22px);
+    letter-spacing: 0.26em;
   }
 
   .follow-links {
-    margin-top: 28px;
+    margin-top: clamp(20px, 2.4dvh, 30px);
+    gap: clamp(34px, 4.5vw, 50px);
+    row-gap: 0;
+  }
+
+  .social-circle {
+    width: clamp(58px, 6.6vw, 66px);
+    height: clamp(58px, 6.6vw, 66px);
+  }
+
+  .social-circle svg {
+    width: clamp(25px, 2.8vw, 29px);
+    height: clamp(25px, 2.8vw, 29px);
+  }
+
+  .follow-link:nth-child(3) .social-circle svg {
+    width: clamp(22px, 2.5vw, 26px);
+    height: clamp(22px, 2.5vw, 26px);
+  }
+
+  .follow-name {
+    font-size: clamp(15px, 1.7vw, 17px);
+  }
+
+  .follow-sep {
+    height: clamp(52px, 5.8vw, 62px);
   }
 
   .site-footer {
     position: relative;
-    top: 18px;
-    margin-top: 24px;
+    inset: auto;
+    width: 100%;
+    gap: clamp(8px, 1dvh, 12px);
+  }
+
+  .footer-rule,
+  .footer-inner {
+    width: min(760px, calc(100vw - 56px));
+  }
+
+  .footer-inner {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
   }
 }
+
+
+/* iPad mini — 768 × 1024 */
+@media (min-width: 701px) and (max-width: 799px) and (orientation: portrait) {
+  :root {
+    --button-width: clamp(264px, 36vw, 280px);
+    --button-gap: 14px;
+  }
+
+  .hero-content {
+    padding:
+      max(18px, env(safe-area-inset-top))
+      18px
+      max(14px, env(safe-area-inset-bottom));
+  }
+
+  .hero-logo {
+    width: clamp(230px, min(34vw, 23dvh), 270px);
+  }
+
+  .hero-slogan-wrap {
+    width: min(620px, calc(100vw - 36px));
+  }
+
+  .hero-slogan {
+    font-size: clamp(44px, min(5.9vw, 5.8dvh), 52px);
+  }
+
+  .follow-links {
+    margin-top: clamp(14px, 1.8dvh, 22px);
+  }
+
+  .social-circle {
+    width: 56px;
+    height: 56px;
+  }
+
+  .follow-title {
+    font-size: 18px;
+  }
+
+  .follow-name {
+    font-size: 15px;
+  }
+
+  .follow-sep {
+    height: 50px;
+  }
+}
+
+
+/* iPad Air — 820 × 1180 */
+@media (min-width: 800px) and (max-width: 899px) and (orientation: portrait) {
+  :root {
+    --button-width: clamp(284px, 35.5vw, 304px);
+  }
+
+  .hero-logo {
+    width: clamp(265px, min(33vw, 24dvh), 310px);
+  }
+
+  .hero-slogan {
+    font-size: clamp(52px, min(6vw, 5.9dvh), 62px);
+  }
+}
+
+
+/* iPad Pro — 1024 × 1366 */
+@media (min-width: 900px) and (max-width: 1024px) and (orientation: portrait) {
+  :root {
+    --button-width: clamp(316px, 33vw, 338px);
+    --button-gap: clamp(18px, 2vw, 22px);
+  }
+
+  .hero-content {
+    padding:
+      max(30px, env(safe-area-inset-top))
+      30px
+      max(22px, env(safe-area-inset-bottom));
+  }
+
+  .hero-logo {
+    width: clamp(310px, 34vw, 348px);
+  }
+
+  .hero-slogan-wrap {
+    width: min(760px, calc(100vw - 72px));
+  }
+
+  .hero-slogan {
+    font-size: clamp(64px, 6.8vw, 72px);
+    line-height: 0.98;
+  }
+
+  .follow-title {
+    font-size: 21px;
+  }
+
+  .social-circle {
+    width: 66px;
+    height: 66px;
+  }
+
+  .social-circle svg {
+    width: 29px;
+    height: 29px;
+  }
+
+  .follow-link:nth-child(3) .social-circle svg {
+    width: 26px;
+    height: 26px;
+  }
+
+  .follow-name {
+    font-size: 17px;
+  }
+
+  .follow-sep {
+    height: 60px;
+  }
+}
+
+
+/* iPad horizontal */
+@media
+  (min-width: 701px) and (max-width: 1366px)
+  and (orientation: landscape)
+  and (max-height: 1024px)
+  and (pointer: coarse) {
+
+  :root {
+    --button-width: clamp(248px, min(29vw, 35dvh), 322px);
+    --button-gap: clamp(14px, 1.8vw, 20px);
+  }
+
+  .hero-content {
+    padding:
+      max(14px, env(safe-area-inset-top))
+      clamp(24px, 4vw, 52px)
+      max(12px, env(safe-area-inset-bottom));
+  }
+
+  .hero-logo {
+    width: clamp(205px, min(23vw, 24dvh), 270px);
+  }
+
+  .hero-slogan-wrap {
+    width: min(700px, calc(100vw - 48px));
+  }
+
+  .hero-slogan {
+    font-size: clamp(40px, min(4.7vw, 5.9dvh), 56px);
+  }
+
+  .follow-title {
+    margin-top: 9px;
+  }
+
+  .follow-links {
+    margin-top: clamp(12px, 1.8dvh, 20px);
+  }
+
+  .social-circle {
+    width: 52px;
+    height: 52px;
+  }
+
+  .follow-title {
+    font-size: 17px;
+  }
+
+  .follow-name {
+    font-size: 14px;
+  }
+
+  .follow-sep {
+    height: 46px;
+  }
+
+  .footer-logo {
+    width: 64px;
+  }
+}
+
 
 /* ---------------- MOBILE ---------------- */
 /* Arquitectura: 5 grupos de alto natural (auto) + 4 separadores fluidos
