@@ -1651,14 +1651,15 @@ button:focus-visible {
     grid-template-columns: 1fr;
     grid-template-rows:
       auto    /* 1: logo-wrap */
-      1fr     /* 2: separador logo → título — aire suficiente */
+      1.15fr  /* 2: separador logo → título */
       auto    /* 3: hero-slogan-wrap */
-      0.65fr  /* 4: separador título → botones — bastante reducido */
+      0.55fr  /* 4: separador título → botones — claramente más chico */
       auto    /* 5: hero-ctas */
-      0.8fr   /* 6: separador botones → portal social — moderado */
+      0.70fr  /* 6: separador botones → portal social — moderado */
       auto    /* 7: hero-follow */
-      1.55fr  /* 8: separador social → footer — el más generoso */
-      auto;   /* 9: site-footer */
+      0.75fr  /* 8: separador portal → footer — más chico que antes */
+      auto    /* 9: site-footer */
+      0.45fr; /* 10: aire inferior — fila propia, el footer ya no ancla al borde */
 
     align-items: center;
     justify-items: center;
@@ -1685,10 +1686,12 @@ button:focus-visible {
   .hero-logo { margin: 0; }
   .hero-slogan-wrap { padding: 0; }
 
-  /* Baja el logo dentro de su propia fila (row 1), sin tocar su tamaño
-     ni el resto de la distribución: padding en el contenedor, no
-     margin en el logo. */
-  .logo-wrap { padding-top: clamp(12px, 3dvh, 20px); }
+  /* Logo: baja ~20px dentro de la fila 1 (padding en el contenedor,
+     no margin en el logo). Es seguro: la fila 1 no tiene vecinos con
+     contenido de los que "robar" espacio, así que no genera overlap. */
+  .logo-wrap {
+    padding-top: clamp(32px, calc(3dvh + 20px), 40px);
+  }
 
   .logo-wrap        { grid-row: 1; }
   .hero-slogan-wrap { grid-row: 3; width: 100%; max-width: 100%; }
