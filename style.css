@@ -1685,6 +1685,11 @@ button:focus-visible {
   .hero-logo { margin: 0; }
   .hero-slogan-wrap { padding: 0; }
 
+  /* Baja el logo dentro de su propia fila (row 1), sin tocar su tamaño
+     ni el resto de la distribución: padding en el contenedor, no
+     margin en el logo. */
+  .logo-wrap { padding-top: clamp(12px, 3dvh, 20px); }
+
   .logo-wrap        { grid-row: 1; }
   .hero-slogan-wrap { grid-row: 3; width: 100%; max-width: 100%; }
   .hero-ctas        { grid-row: 5; width: 100%; max-width: 100%; }
