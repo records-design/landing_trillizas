@@ -1757,8 +1757,19 @@ button:focus-visible {
     flex: 0 0 auto;
   }
 
+  .magic-button__icon {
+    width: 41px;
+    height: 41px;
+    flex: 0 0 41px;
+  }
+
+  .magic-button__icon svg {
+    width: 18px;
+    height: 18px;
+  }
+
   .magic-button__label {
-    font-size: 20px;
+    font-size: 24px;
   }
 
   .follow-links {
@@ -1825,8 +1836,19 @@ button:focus-visible {
     flex: 0 0 auto;
   }
 
+  .magic-button__icon {
+    width: 41px;
+    height: 41px;
+    flex: 0 0 41px;
+  }
+
+  .magic-button__icon svg {
+    width: 18px;
+    height: 18px;
+  }
+
   .magic-button__label {
-    font-size: 20px;
+    font-size: 24px;
   }
 
   .social-circle {
@@ -1886,8 +1908,19 @@ button:focus-visible {
     flex: 0 0 auto;
   }
 
+  .magic-button__icon {
+    width: 41px;
+    height: 41px;
+    flex: 0 0 41px;
+  }
+
+  .magic-button__icon svg {
+    width: 18px;
+    height: 18px;
+  }
+
   .magic-button__label {
-    font-size: 20px;
+    font-size: 24px;
   }
 
   .follow-title {
