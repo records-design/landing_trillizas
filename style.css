@@ -1650,15 +1650,15 @@ button:focus-visible {
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows:
-      auto  /* 1: logo-wrap */
-      1fr   /* 2: separador — se lleva 1 parte del sobrante */
-      auto  /* 3: hero-slogan-wrap */
-      2fr   /* 4: separador — 2 partes, más aire antes de los botones */
-      auto  /* 5: hero-ctas */
-      2fr   /* 6: separador — 2 partes, más aire antes de redes */
-      auto  /* 7: hero-follow */
-      1fr   /* 8: separador — 1 parte, antes del footer */
-      auto; /* 9: site-footer */
+      auto    /* 1: logo-wrap */
+      1fr     /* 2: separador logo → título — aire suficiente */
+      auto    /* 3: hero-slogan-wrap */
+      0.65fr  /* 4: separador título → botones — bastante reducido */
+      auto    /* 5: hero-ctas */
+      0.8fr   /* 6: separador botones → portal social — moderado */
+      auto    /* 7: hero-follow */
+      1.55fr  /* 8: separador social → footer — el más generoso */
+      auto;   /* 9: site-footer */
 
     align-items: center;
     justify-items: center;
