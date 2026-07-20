@@ -1727,7 +1727,11 @@ button:focus-visible {
     padding:
       max(18px, env(safe-area-inset-top))
       18px
-      max(14px, env(safe-area-inset-bottom));
+      max(40px, env(safe-area-inset-bottom));
+  }
+
+  .logo-wrap {
+    padding-top: clamp(20px, 3dvh, 30px);
   }
 
   .hero-logo {
@@ -1736,10 +1740,25 @@ button:focus-visible {
 
   .hero-slogan-wrap {
     width: min(620px, calc(100vw - 36px));
+    margin-top: -14px;
+    margin-bottom: clamp(27px, 3.1dvh, 36px);
   }
 
   .hero-slogan {
-    font-size: clamp(44px, min(5.9vw, 5.8dvh), 52px);
+    font-size: clamp(62px, min(9.6vw, 9.4dvh), 79px);
+  }
+
+  .hero-ctas {
+    flex-direction: column;
+    animation-delay: 2.2s;
+  }
+
+  .magic-button {
+    flex: 0 0 auto;
+  }
+
+  .magic-button__label {
+    font-size: 17px;
   }
 
   .follow-links {
@@ -1747,16 +1766,26 @@ button:focus-visible {
   }
 
   .social-circle {
-    width: 56px;
-    height: 56px;
+    width: 74px;
+    height: 74px;
+  }
+
+  .social-circle svg {
+    width: 33px;
+    height: 33px;
+  }
+
+  .follow-link:nth-child(3) .social-circle svg {
+    width: 29px;
+    height: 29px;
   }
 
   .follow-title {
-    font-size: 18px;
+    font-size: 21px;
   }
 
   .follow-name {
-    font-size: 15px;
+    font-size: 17px;
   }
 
   .follow-sep {
@@ -1771,12 +1800,48 @@ button:focus-visible {
     --button-width: clamp(284px, 35.5vw, 304px);
   }
 
+  .hero-content {
+    padding-bottom: max(40px, env(safe-area-inset-bottom));
+  }
+
+  .logo-wrap {
+    padding-top: clamp(20px, 3dvh, 30px);
+  }
+
   .hero-logo {
     width: clamp(265px, min(33vw, 24dvh), 310px);
   }
 
   .hero-slogan {
-    font-size: clamp(52px, min(6vw, 5.9dvh), 62px);
+    font-size: clamp(62px, min(7.2vw, 7.1dvh), 74px);
+  }
+
+  .hero-ctas {
+    flex-direction: column;
+    animation-delay: 2.2s;
+  }
+
+  .magic-button {
+    flex: 0 0 auto;
+  }
+
+  .magic-button__label {
+    font-size: 17px;
+  }
+
+  .social-circle {
+    width: 64px;
+    height: 64px;
+  }
+
+  .social-circle svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  .follow-link:nth-child(3) .social-circle svg {
+    width: 24px;
+    height: 24px;
   }
 }
 
@@ -1792,7 +1857,11 @@ button:focus-visible {
     padding:
       max(30px, env(safe-area-inset-top))
       30px
-      max(22px, env(safe-area-inset-bottom));
+      max(48px, env(safe-area-inset-bottom));
+  }
+
+  .logo-wrap {
+    padding-top: clamp(20px, 3dvh, 30px);
   }
 
   .hero-logo {
@@ -1804,27 +1873,40 @@ button:focus-visible {
   }
 
   .hero-slogan {
-    font-size: clamp(64px, 6.8vw, 72px);
+    font-size: clamp(76px, 8.1vw, 85px);
     line-height: 0.98;
   }
 
+  .hero-ctas {
+    flex-direction: column;
+    animation-delay: 2.2s;
+  }
+
+  .magic-button {
+    flex: 0 0 auto;
+  }
+
+  .magic-button__label {
+    font-size: 17px;
+  }
+
   .follow-title {
-    font-size: 21px;
+    font-size: 24px;
   }
 
   .social-circle {
-    width: 66px;
-    height: 66px;
+    width: 73px;
+    height: 73px;
   }
 
   .social-circle svg {
-    width: 29px;
-    height: 29px;
+    width: 32px;
+    height: 32px;
   }
 
   .follow-link:nth-child(3) .social-circle svg {
-    width: 26px;
-    height: 26px;
+    width: 29px;
+    height: 29px;
   }
 
   .follow-name {
