@@ -1805,6 +1805,42 @@ button:focus-visible {
   .footer-text {
     font-size: 8.5px;
   }
+
+  /* --------------------------------------------------------
+     SIN ANIMACIÓN DE ENTRADA EN MOBILE para logo/botones/portal/footer
+     (aparecen al toque, sin esperar). El título letra por letra y sus
+     destellos flotantes SÍ se mantienen animados — eso no se toca.
+     Desktop no se toca (queda fuera de este @media).
+     -------------------------------------------------------- */
+  .hero-logo {
+    opacity: 1;
+    transform: none;
+    animation: logoGlowPulse 3.6s ease-in-out 0s infinite;
+  }
+
+  .hero-ctas {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+
+  .magic-button,
+  .magic-button--gold {
+    opacity: 1;
+    transform: none;
+    animation: btnIdle 7s ease-in-out 0s infinite;
+  }
+
+  .follow-divider,
+  .follow-title,
+  .follow-link,
+  .follow-sep,
+  .site-footer {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    animation: none;
+  }
 }
 
 @keyframes ctaRevealSoft {
