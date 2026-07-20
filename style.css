@@ -435,6 +435,12 @@ button:focus-visible {
     text-shadow .35s ease;
 }
 
+/* Salto de línea forzado para mobile (ver script.js) — oculto acá,
+   habilitado dentro de @media (max-width: 700px). */
+.slogan-break {
+  display: none;
+}
+
 /* Cada palabra se devela por separado — pausado y con brillo propio */
 .hero-slogan .word {
   display: inline-block;
@@ -1596,161 +1602,158 @@ button:focus-visible {
 }
 
 /* ---------------- MOBILE ---------------- */
+/* Arquitectura: 5 grupos de alto natural (auto) + 4 separadores fluidos
+   (fr) que absorben el espacio sobrante de 100dvh. Sin porcentajes
+   rígidos por elemento, sin position:absolute, sin overflow oculto. */
 @media (max-width: 700px) {
   :root {
-    --button-width: clamp(270px, 78vw, 310px);
-    --button-gap: 10px;
+    /* En mobile los botones van apilados (no en fila), así que el ancho
+       "del grupo de CTAs" pasa a ser simplemente el ancho de un botón.
+       Una sola fórmula: todo lo que depende de --cta-group-width
+       (hero-slogan, hero-slogan-wrap, hero-ctas, footer-rule) se ajusta
+       solo al redefinir esta variable, sin declarar anchos aparte. */
+    --button-width: clamp(240px, min(78vw, 44dvh), 320px);
+    --button-gap: clamp(8px, 1.8dvh, 16px);
     --cta-group-width: var(--button-width);
   }
 
-  html,
-  body {
-    width: 100%;
+  html, body {
     height: 100%;
-    min-height: 100%;
-    overflow: hidden;
     overscroll-behavior: none;
+    /* Sin overflow:hidden: si algo no entrara, se puede hacer scroll
+       en vez de recortar contenido en silencio. */
   }
 
   .hero {
-    width: 100%;
+    height: 100vh;
     height: 100dvh;
-    min-height: 100dvh;
-    max-height: 100dvh;
-    overflow: hidden;
+    min-height: 100svh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    align-items: stretch;
   }
 
   .hero-content {
+    box-sizing: border-box;
     width: 100%;
-    max-width: 100%;
-    height: 100%;
-    min-height: 100%;
+    height: 100vh;
+    height: 100dvh;
+    min-height: 100svh;
 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
+    /* El padding entra en la caja (border-box): el Grid de abajo reparte
+       únicamente el área interior que queda después de restar el
+       safe-area y estos 16px laterales, no los 100dvh completos. */
     padding:
-      max(8px, env(safe-area-inset-top))
-      16px
-      max(80px, calc(env(safe-area-inset-bottom) + 58px));
+      max(6px, env(safe-area-inset-top)) 16px
+      max(8px, env(safe-area-inset-bottom));
+
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows:
+      auto  /* 1: logo-wrap */
+      1fr   /* 2: separador — se lleva 1 parte del sobrante */
+      auto  /* 3: hero-slogan-wrap */
+      2fr   /* 4: separador — 2 partes, más aire antes de los botones */
+      auto  /* 5: hero-ctas */
+      2fr   /* 6: separador — 2 partes, más aire antes de redes */
+      auto  /* 7: hero-follow */
+      1fr   /* 8: separador — 1 parte, antes del footer */
+      auto; /* 9: site-footer */
+
+    align-items: center;
+    justify-items: center;
 
     transform: none;
   }
 
-  .logo-wrap {
-    margin: 0 0 10px;
-  }
-
-  .hero-logo {
-    width: min(40vw, 168px);
+  /* --------------------------------------------------------
+     Resets de márgenes/padding heredados: el Grid es el único que
+     gobierna la separación ENTRE los 5 grupos. Las separaciones
+     DENTRO de cada grupo (p. ej. entre el título "portal mágico" y
+     los íconos) se declaran explícitas más abajo, fluidas — nunca
+     como márgenes compensatorios recuperando espacio externo.
+     -------------------------------------------------------- */
+  .logo-wrap,
+  .hero-slogan-wrap,
+  .hero-ctas,
+  .hero-follow,
+  .site-footer {
+    grid-column: 1;
     margin: 0;
   }
 
-  .hero-slogan-wrap {
-    width: min(100%, calc(100vw - 24px));
-    max-width: none;
-    padding: 0;
-    margin: 0 0 14px;
-  }
+  .hero-logo { margin: 0; }
+  .hero-slogan-wrap { padding: 0; }
 
-  .hero-slogan {
-    width: 100%;
-    max-width: var(--cta-group-width);
-    margin-inline: auto;
-    padding: 0;
+  .logo-wrap        { grid-row: 1; }
+  .hero-slogan-wrap { grid-row: 3; width: 100%; max-width: 100%; }
+  .hero-ctas        { grid-row: 5; width: 100%; max-width: 100%; }
+  .hero-follow      { grid-row: 7; width: 100%; max-width: 100%; }
+  .site-footer      { grid-row: 9; width: 100%; max-width: 100%; position: static; }
 
-    font-size: clamp(29px, 8.5vw, 34px);
-    line-height: 1.06;
-    letter-spacing: -0.018em;
-
-    white-space: normal;
-    text-align: center;
-    text-wrap: balance;
-  }
-
+  /* --------------------------------------------------------
+     Botones: apilados, el ancho real lo pone --button-width en
+     .magic-button (regla base, sin redeclarar la fórmula acá).
+     -------------------------------------------------------- */
   .hero-ctas {
-    width: 100%;
-    max-width: 100%;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    gap: 16px;
-    margin: 0 0 28px;
-
-    opacity: 1;
-    transform: none;
-    animation: none;
-  }
-
-  .magic-button {
-    width: var(--button-width);
-    max-width: 100%;
-    flex: 0 0 auto;
-
-    opacity: 0;
-    transform: translateY(14px);
-
-    animation:
-      ctaRevealSoft 1.3s cubic-bezier(0.16, 0.8, 0.24, 1) 3.9s forwards,
-      btnIdle 7s ease-in-out 4.9s infinite;
-  }
-
-  .magic-button--gold {
-    animation:
-      ctaRevealSoft 1.3s cubic-bezier(0.16, 0.8, 0.24, 1) 4.2s forwards,
-      btnIdle 7s ease-in-out 8.3s infinite;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--button-gap);
+    justify-items: center;
   }
 
   .magic-button__content {
-    gap: 9px;
-    padding-inline: 22px;
+    gap: 8px;
+    padding: 0 20px;
   }
 
   .magic-button__icon {
-    width: 30px;
-    height: 30px;
-    flex-basis: 30px;
+    width: clamp(26px, 8vw, 32px);
+    height: clamp(26px, 8vw, 32px);
+    flex-basis: clamp(26px, 8vw, 32px);
   }
 
   .magic-button__icon svg {
-    width: 13px;
-    height: 13px;
+    width: clamp(12px, 4vw, 14px);
+    height: clamp(12px, 4vw, 14px);
   }
 
   .magic-button__label {
-    font-size: clamp(15px, 4.1vw, 18px);
+    font-size: clamp(14px, 4.2vw, 17px);
   }
 
-  .hero-follow {
-    width: 100%;
-    margin: 0;
+  /* --------------------------------------------------------
+     Logo y título: tamaño fluido dependiente del lado más chico
+     entre ancho y alto (min(vw,dvh)) — así responden igual en un
+     celular angosto-y-alto que en uno ancho-y-bajo (ej. Duo).
+     -------------------------------------------------------- */
+  .hero-logo {
+    width: clamp(140px, min(38vw, 20dvh), 220px);
   }
 
-  .follow-divider {
-    gap: 10px;
+  .hero-slogan {
+    font-size: clamp(26px, min(9vw, 5.2dvh), 34px);
+    line-height: 1.1;
   }
 
-  .follow-line {
-    width: clamp(46px, 15vw, 68px);
+  /* Salto de línea explícito (ver script.js): garantiza 2 líneas sin
+     depender de que el ancho/fuente calcen justo. Oculto en desktop. */
+  .slogan-break {
+    display: inline;
   }
 
+  /* --------------------------------------------------------
+     Portal mágico + redes: separaciones internas fluidas, propias
+     del grupo (no recuperan espacio externo del Grid).
+     -------------------------------------------------------- */
   .follow-title {
-    max-width: calc(100vw - 32px);
-    margin-top: 16px;
-
-    font-size: 17px;
-    line-height: 1.2;
-    letter-spacing: 0.16em;
-    text-align: center;
+    margin-top: clamp(8px, 1.6dvh, 16px);
+    font-size: clamp(11px, 3vw, 13px);
   }
 
   .follow-links {
-    margin-top: 26px;
-    gap: 24px;
+    margin-top: clamp(14px, 2.4dvh, 24px);
+    gap: 22px;
     row-gap: 0;
   }
 
@@ -1759,78 +1762,45 @@ button:focus-visible {
   }
 
   .social-circle {
-    width: 63px;
-    height: 63px;
+    width: clamp(44px, 12vw, 54px);
+    height: clamp(44px, 12vw, 54px);
   }
 
-  .social-circle svg {
-    width: 28px;
-    height: 28px;
-  }
-
-  .follow-link:nth-child(3) .social-circle svg {
-    width: 25px;
-    height: 25px;
+  .follow-link {
+    /* Área táctil mínima de 44px en el link, no en el círculo visible. */
+    min-width: 44px;
+    min-height: 44px;
+    justify-content: center;
   }
 
   .follow-sep {
-    height: 42px;
-  }
-
-  .site-footer {
-    position: absolute;
-    left: 16px;
-    right: 16px;
-    bottom: max(18px, env(safe-area-inset-bottom));
-    top: auto;
-
-    width: auto;
-    margin: 0;
-    gap: 4px;
-  }
-
-  .footer-rule {
-    width: 100%;
+    height: clamp(30px, 6dvh, 46px);
   }
 
   .footer-inner {
-    width: 100%;
-    gap: 4px;
+    gap: 6px;
   }
 
   .footer-logo {
-    width: 60px;
+    width: 56px;
   }
 
   .footer-text {
-    font-size: 8.5px;
+    font-size: 9px;
   }
 
   /* --------------------------------------------------------
-     SIN ANIMACIÓN DE ENTRADA EN MOBILE para logo/botones/portal/footer
-     (aparecen al toque, sin esperar). El título letra por letra y sus
-     destellos flotantes SÍ se mantienen animados — eso no se toca.
-     Desktop no se toca (queda fuera de este @media).
+     Sin animación de entrada para logo/botones/portal/redes/footer:
+     aparecen al instante al abrir el link. El título letra por letra
+     y sus destellos flotantes NO se tocan (siguen animados).
+     El logo conserva solo el brillo ambiente; los botones, el
+     balanceo ambiente — ninguno de los dos interfiere con el layout
+     porque no mueven tamaño/posición del elemento, solo filter/transform
+     de baja amplitud sobre su propio eje.
      -------------------------------------------------------- */
-  .hero-logo {
-    opacity: 1;
-    transform: none;
-    animation: logoGlowPulse 3.6s ease-in-out 0s infinite;
-  }
-
-  .hero-ctas {
-    opacity: 1;
-    transform: none;
-    animation: none;
-  }
-
+  .hero-logo,
+  .hero-ctas,
   .magic-button,
-  .magic-button--gold {
-    opacity: 1;
-    transform: none;
-    animation: btnIdle 7s ease-in-out 0s infinite;
-  }
-
   .follow-divider,
   .follow-title,
   .follow-link,
@@ -1839,161 +1809,27 @@ button:focus-visible {
     opacity: 1;
     transform: none;
     filter: none;
+  }
+
+  .hero-ctas,
+  .follow-divider,
+  .follow-title,
+  .follow-link,
+  .follow-sep,
+  .site-footer {
     animation: none;
   }
-}
-
-@keyframes ctaRevealSoft {
-  from {
-    opacity: 0;
-    transform: translateY(14px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* ---------------- MOBILE BAJO: iPhone SE y similares ---------------- */
-@media (max-width: 700px) and (max-height: 760px) {
-  :root {
-    --button-width: min(304px, calc(100vw - 36px));
-    --button-gap: 7px;
-  }
-
-  .hero-content {
-    padding:
-      max(7px, env(safe-area-inset-top))
-      13px
-      max(62px, calc(env(safe-area-inset-bottom) + 50px));
-  }
-
-  .logo-wrap {
-    margin-bottom: 8px;
-  }
 
   .hero-logo {
-    width: min(39vw, 150px);
+    animation: logoGlowPulse 3.6s ease-in-out 0s infinite;
   }
 
-  .hero-slogan-wrap {
-    margin-bottom: 11px;
-  }
-
-  .hero-slogan {
-    max-width: var(--cta-group-width);
-    font-size: clamp(24px, 6.9vw, 29px);
-    line-height: 1.01;
-  }
-
-  .hero-ctas {
-    gap: 7px;
-    margin-bottom: 13px;
-  }
-
-  .magic-button__content {
-    padding-inline: 18px;
-  }
-
-  .magic-button__icon {
-    width: 27px;
-    height: 27px;
-    flex-basis: 27px;
-  }
-
-  .magic-button__label {
-    font-size: clamp(13px, 3.7vw, 16px);
-  }
-
-  .follow-title {
-    margin-top: 8px;
-    font-size: 10px;
-    letter-spacing: 0.13em;
-  }
-
-  .follow-links {
-    margin-top: 12px;
-    gap: 17px;
-  }
-
-  .social-circle {
-    width: 40px;
-    height: 40px;
-  }
-
-  .follow-sep {
-    height: 29px;
-  }
-
-  .footer-logo {
-    width: 52px;
-  }
-
-  .footer-text {
-    font-size: 7.8px;
+  .magic-button,
+  .magic-button--gold {
+    animation: btnIdle 7s ease-in-out 0s infinite;
   }
 }
 
-/* ---------------- MOBILE MUY BAJO ---------------- */
-@media (max-width: 700px) and (max-height: 680px) {
-  :root {
-    --button-width: min(286px, calc(100vw - 40px));
-    --button-gap: 6px;
-  }
-
-  .hero-content {
-    padding:
-      max(4px, env(safe-area-inset-top))
-      12px
-      max(56px, calc(env(safe-area-inset-bottom) + 44px));
-  }
-
-  .hero-logo {
-    width: min(36vw, 134px);
-  }
-
-  .hero-slogan {
-    max-width: var(--cta-group-width);
-    font-size: clamp(22px, 6.4vw, 26px);
-  }
-
-  .magic-button__icon {
-    width: 24px;
-    height: 24px;
-    flex-basis: 24px;
-  }
-
-  .magic-button__label {
-    font-size: clamp(12px, 3.5vw, 15px);
-  }
-
-  .follow-title {
-    margin-top: 6px;
-    font-size: 9px;
-  }
-
-  .follow-links {
-    margin-top: 9px;
-  }
-
-  .social-circle {
-    width: 36px;
-    height: 36px;
-  }
-
-  .follow-sep {
-    height: 26px;
-  }
-
-  .footer-logo {
-    width: 48px;
-  }
-
-  .footer-text {
-    font-size: 7.2px;
-  }
-}
 
 /* ============================================================
    ACCESIBILIDAD

@@ -83,6 +83,15 @@ function splitSloganIntoWords() {
       el.appendChild(document.createTextNode(' '));
     }
 
+    // Salto de línea explícito y fijo: garantiza exactamente 2 líneas
+    // en mobile sin depender de que el ancho/fuente calcen justo.
+    // Oculto por CSS fuera de mobile (.slogan-break { display: none }).
+    if (i === 2) {
+      const br = document.createElement('br');
+      br.className = 'slogan-break';
+      el.appendChild(br);
+    }
+
     const delayMs = (i * 0.24 + 1.3) * 1000 + 250;
     setTimeout(() => spawnWordBurst(wordSpan, wrapEl), delayMs);
   });
