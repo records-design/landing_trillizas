@@ -1719,7 +1719,7 @@ button:focus-visible {
 /* iPad mini — 768 × 1024 */
 @media (min-width: 701px) and (max-width: 799px) and (orientation: portrait) {
   :root {
-    --button-width: clamp(264px, 36vw, 280px);
+    --button-width: clamp(304px, 41.4vw, 322px);
     --button-gap: 14px;
   }
 
@@ -1731,7 +1731,7 @@ button:focus-visible {
   }
 
   .logo-wrap {
-    padding-top: clamp(20px, 3dvh, 30px);
+    padding-top: clamp(30px, calc(3dvh + 10px), 40px);
   }
 
   .hero-logo {
@@ -1797,7 +1797,7 @@ button:focus-visible {
 /* iPad Air — 820 × 1180 */
 @media (min-width: 800px) and (max-width: 899px) and (orientation: portrait) {
   :root {
-    --button-width: clamp(284px, 35.5vw, 304px);
+    --button-width: clamp(327px, 40.8vw, 350px);
   }
 
   .hero-content {
@@ -1805,7 +1805,7 @@ button:focus-visible {
   }
 
   .logo-wrap {
-    padding-top: clamp(20px, 3dvh, 30px);
+    padding-top: clamp(30px, calc(3dvh + 10px), 40px);
   }
 
   .hero-logo {
@@ -1849,7 +1849,7 @@ button:focus-visible {
 /* iPad Pro — 1024 × 1366 */
 @media (min-width: 900px) and (max-width: 1024px) and (orientation: portrait) {
   :root {
-    --button-width: clamp(316px, 33vw, 338px);
+    --button-width: clamp(363px, 38vw, 389px);
     --button-gap: clamp(18px, 2vw, 22px);
   }
 
@@ -1861,7 +1861,7 @@ button:focus-visible {
   }
 
   .logo-wrap {
-    padding-top: clamp(20px, 3dvh, 30px);
+    padding-top: clamp(30px, calc(3dvh + 10px), 40px);
   }
 
   .hero-logo {
