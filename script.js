@@ -139,9 +139,8 @@ document.querySelectorAll('a[data-placeholder="true"]').forEach((el) => {
 
 // ============================================================
 // Formulario de suscripción — submit controlado, sin recargar.
-// TODO: conectar acá Mailchimp/Brevo (o el endpoint propio en
-// backend/) cuando estén las credenciales. Por ahora solo valida
-// el email y muestra el mensaje de éxito/error.
+// Guarda el email en backend/subscribe.php (tabla `subscribers`),
+// descargable como CSV desde el panel privado.
 // ============================================================
 
 const newsletterForm = document.getElementById('newsletterForm');
@@ -161,11 +160,22 @@ if (newsletterForm) {
       return;
     }
 
-    // TODO: reemplazar por el envío real (Mailchimp/Brevo/API propia).
-    // Ejemplo: fetch('/backend/subscribe.php', { method: 'POST', body: ... })
+    feedbackEl.removeAttribute('data-state');
+    feedbackEl.textContent = 'Enviando...';
 
-    feedbackEl.textContent = '¡Gracias! Pronto vas a recibir novedades.';
-    feedbackEl.setAttribute('data-state', 'success');
-    newsletterForm.reset();
+    fetch('backend/subscribe.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    })
+      .then(() => {
+        feedbackEl.textContent = '¡Gracias! Pronto vas a recibir novedades.';
+        feedbackEl.setAttribute('data-state', 'success');
+        newsletterForm.reset();
+      })
+      .catch(() => {
+        feedbackEl.textContent = 'No pudimos guardar tu email. Probá de nuevo.';
+        feedbackEl.setAttribute('data-state', 'error');
+      });
   });
 }

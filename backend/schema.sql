@@ -98,6 +98,23 @@ CREATE TABLE IF NOT EXISTS ad_reference (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ------------------------------------------------------------
+-- Suscriptores del formulario de newsletter (hero de la landing).
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS subscribers (
+    id          BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    email       VARCHAR(255) NOT NULL,
+    created_at  DATETIME     NOT NULL,
+
+    utm_source   VARCHAR(120) DEFAULT NULL,
+    utm_campaign VARCHAR(255) DEFAULT NULL,
+    ip_hint      VARCHAR(64)  DEFAULT NULL,
+
+    PRIMARY KEY (id),
+    UNIQUE KEY uniq_email (email),
+    KEY idx_created_at (created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ------------------------------------------------------------
 -- Intentos de login al panel (protección fuerza bruta).
 -- ------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS login_attempts (

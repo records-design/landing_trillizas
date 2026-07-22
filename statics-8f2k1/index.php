@@ -71,6 +71,7 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
       <button class="preset" data-days="6">7 días</button>
       <button class="preset" data-days="29">30 días</button>
       <button class="exp" id="exportBtn">Exportar CSV</button>
+      <a class="exp" href="export-subscribers.php" style="text-decoration:none; display:inline-flex; align-items:center;">Suscriptores CSV</a>
     </div>
 
     <div class="cards">

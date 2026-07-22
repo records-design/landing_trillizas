@@ -12,8 +12,8 @@ escrito**; acá se explica qué subir, qué crear en la base de datos y qué com
 | `index.html` | Metaetiqueta de verificación de Meta, **snippet del Meta Pixel** (base, sin `PageView` automático), IDs de tracking en los botones y la carga de `tracking.js`. |
 | `tracking.js` | Registra `page_view` y `click`, captura los parámetros de campaña de la URL, y dispara **tanto** el Pixel del navegador **como** el envío al servidor con el mismo `event_id` (deduplicación). |
 | `config.js` | `ANALYTICS_CONFIG` con la ruta del endpoint. |
-| `backend/` | Todo el PHP: captura de eventos, geolocalización, envío a Meta CAPI (server-side). |
-| `statics-8f2k1/` | El panel privado (login + dashboard + export CSV). |
+| `backend/` | Todo el PHP: captura de eventos, geolocalización, envío a Meta CAPI (server-side), y `subscribe.php` (guarda los emails del formulario de suscripción del hero). |
+| `statics-8f2k1/` | El panel privado (login + dashboard + export CSV de eventos + export CSV de suscriptores). |
 | `backend/schema.sql` | Las tablas MySQL a importar. |
 | `robots.txt` | Bloquea la indexación del panel y del backend. |
 
@@ -71,7 +71,13 @@ public_html/
    Anotar: **host** (normalmente `localhost`), **nombre de la base**, **usuario** y **contraseña**.
 2. Entrar a **phpMyAdmin** → seleccionar esa base → pestaña **Importar** →
    subir `backend/schema.sql` → **Continuar**.
-   Esto crea las tablas `sessions`, `events`, `ad_reference` y `login_attempts`.
+   Esto crea las tablas `sessions`, `events`, `ad_reference`, `login_attempts` y
+   `subscribers` (los emails del formulario de suscripción del hero).
+
+> **Si ya habías importado `schema.sql` antes** (instalación previa sin
+> suscripción): volvé a importarlo. Todas las tablas usan
+> `CREATE TABLE IF NOT EXISTS`, así que no borra ni pisa nada existente —
+> solo agrega la tabla `subscribers` que falta.
 
 ---
 
@@ -132,6 +138,9 @@ https://TUDOMINIO.com/?utm_source={{site_source_name}}&utm_medium=paid_social&ut
    `https://TUDOMINIO.com/?utm_source=test&ad_id=123&placement=instagram_reels`
    Después, tocar un botón. En phpMyAdmin, la tabla `events` debería tener las filas.
 2. **Panel:** entrar a `https://TUDOMINIO.com/statics-8f2k1/` → loguear → ver los datos.
+2.1. **Suscripción:** completar el formulario de email en el hero de la landing →
+   en phpMyAdmin, la tabla `subscribers` debería tener la fila. En el panel, el
+   botón **"Suscriptores CSV"** descarga todos los emails acumulados.
 3. **Meta Pixel (navegador):** instalar la extensión **Meta Pixel Helper** en Chrome,
    abrir la landing y confirmar que detecta el pixel `1608591474024181` y el evento
    `PageView`.

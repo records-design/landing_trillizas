@@ -1328,8 +1328,6 @@ button:focus-visible {
 }
 
 .hero-newsletter .follow-divider {
-    position: relative;
-    top: -30px;
   margin-bottom: clamp(28px, 3vh, 42px);
 }
 
@@ -1345,6 +1343,10 @@ button:focus-visible {
   text-transform: uppercase;
   text-align: center;
   white-space: nowrap;
+}
+
+.newsletter-title-break {
+  display: none;
 }
 
 .newsletter-text {
@@ -1621,11 +1623,11 @@ button:focus-visible {
   }
 
   .follow-title {
-    margin-top: clamp(12px, 1.6dvh, 18px);
+    margin-top: clamp(22px, 2.8dvh, 30px);
   }
 
   .follow-links {
-    margin-top: clamp(18px, 2.4dvh, 28px);
+    margin-top: clamp(30px, 3.5dvh, 40px);
   }
 
   .social-circle {
@@ -1655,7 +1657,8 @@ button:focus-visible {
   }
 
   .hero-newsletter .follow-divider {
-    margin-top: -82px;
+    position: relative;
+    top: -10px;
     margin-bottom: clamp(16px, 2dvh, 24px);
   }
 
@@ -2207,11 +2210,11 @@ button:focus-visible {
     grid-template-columns: 1fr;
     grid-template-rows:
       auto    /* 1: logo-wrap */
-      1.15fr  /* 2: separador logo → título */
+      0.05fr  /* 2: separador logo → título */
       auto    /* 3: hero-slogan-wrap */
-      0.55fr  /* 4: separador título → botones — claramente más chico */
+      0.02fr  /* 4: separador título → botones — reducido para subir todo el bloque inferior */
       auto    /* 5: hero-ctas */
-      0.70fr  /* 6: separador botones → portal social — moderado */
+      0.20fr  /* 6: separador botones → portal social — reducido para subir el bloque de redes */
       auto    /* 7: hero-follow */
       0.45fr  /* 8: separador portal → suscripción */
       auto    /* 9: hero-newsletter */
@@ -2266,6 +2269,15 @@ button:focus-visible {
 
   .newsletter-title {
     white-space: normal;
+  }
+
+  .newsletter-title-break {
+    display: block;
+  }
+
+  .newsletter-text {
+    max-width: none;
+    white-space: nowrap;
   }
 
   /* --------------------------------------------------------
@@ -2355,6 +2367,10 @@ button:focus-visible {
     height: clamp(30px, 6dvh, 46px);
   }
 
+  .footer-rule {
+    display: none;
+  }
+
   .footer-inner {
     gap: 6px;
   }
@@ -2406,6 +2422,12 @@ button:focus-visible {
   .magic-button--gold {
     animation: btnIdle 7s ease-in-out 0s infinite;
   }
+
+  /* Mobile: eliminar la línea divisoria entre redes y newsletter */
+  .hero-newsletter .follow-divider{
+    display:none;
+  }
+
 }
 
 
@@ -2477,4 +2499,33 @@ button:focus-visible {
 
 .magic-button--gold .magic-button__label {
     letter-spacing: 0.01em;
+}
+/* ==========================================================
+   AJUSTE EXCLUSIVO · VIEWPORTS BAJOS (400x700 aprox.)
+   No afecta iPhone 12, Pixel 7, Samsung A7, etc.
+   ========================================================== */
+
+@media (max-width: 430px) and (max-height: 720px) {
+
+  /* Más aire entre redes y newsletter */
+  .hero-newsletter{
+    margin-top: 20px;
+  }
+
+  /* Separa el título del newsletter de los íconos */
+  .newsletter-title{
+    margin-top: 8px;
+    margin-bottom: 8px;
+  }
+
+  /* Un poco más de aire debajo del subtítulo */
+  .newsletter-text{
+    margin-bottom: 14px;
+  }
+
+  /* Ocultar el divisor debajo de los botones solo en este viewport */
+  .hero-follow > .follow-divider{
+    display: none;
+  }
+
 }
