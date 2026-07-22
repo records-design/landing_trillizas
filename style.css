@@ -1398,6 +1398,53 @@ button:focus-visible {
   border-bottom-color: rgba(240, 217, 152, 0.85);
 }
 
+/* El navegador pinta el fondo del autocompletado blanco/amarillo por
+   default; lo forzamos a que siga transparente sobre el violeta. */
+.newsletter-input:-webkit-autofill,
+.newsletter-input:-webkit-autofill:hover,
+.newsletter-input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--ivory);
+  -webkit-box-shadow: 0 0 0 1000px var(--violet-deep) inset;
+  box-shadow: 0 0 0 1000px var(--violet-deep) inset;
+  caret-color: var(--ivory);
+  transition: background-color 0s 600000s, color 0s 600000s;
+}
+
+.newsletter-status {
+  position: relative;
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  margin-left: -4px;
+  pointer-events: none;
+}
+
+.newsletter-check,
+.newsletter-cross {
+  position: absolute;
+  inset: 0;
+  width: 18px;
+  height: 18px;
+
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.newsletter-check {
+  color: #5fd48a;
+}
+
+.newsletter-cross {
+  color: #e8747a;
+}
+
+.newsletter-form.is-valid .newsletter-check,
+.newsletter-form.is-invalid .newsletter-cross {
+  opacity: 1;
+  transform: scale(1);
+}
+
 .newsletter-button {
   flex: 0 0 auto;
   width: 28px;

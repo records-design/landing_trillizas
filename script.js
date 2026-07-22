@@ -148,11 +148,28 @@ if (newsletterForm) {
   const feedbackEl = document.getElementById('newsletterFeedback');
   const emailInput = newsletterForm.querySelector('.newsletter-input');
 
+  // Regex estricta: exige un dominio con al menos un punto y un TLD
+  // real (rechaza "a@b", "a@@b.com", espacios, puntos sueltos, etc.)
+  // para filtrar mails truchos antes de que lleguen al backend.
+  const EMAIL_RE =
+    /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
+
+  emailInput.addEventListener('input', () => {
+    const value = emailInput.value.trim();
+    const valid = EMAIL_RE.test(value);
+    newsletterForm.classList.toggle('is-valid', valid);
+    newsletterForm.classList.toggle('is-invalid', value.length > 0 && !valid);
+    if (feedbackEl.getAttribute('data-state') === 'error') {
+      feedbackEl.textContent = '';
+      feedbackEl.removeAttribute('data-state');
+    }
+  });
+
   newsletterForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
     const email = emailInput.value.trim();
-    const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    const isValid = EMAIL_RE.test(email);
 
     if (!isValid) {
       feedbackEl.textContent = 'Ingresá un correo electrónico válido.';
@@ -172,6 +189,7 @@ if (newsletterForm) {
         feedbackEl.textContent = '¡Gracias! Pronto vas a recibir novedades.';
         feedbackEl.setAttribute('data-state', 'success');
         newsletterForm.reset();
+        newsletterForm.classList.remove('is-valid', 'is-invalid');
       })
       .catch(() => {
         feedbackEl.textContent = 'No pudimos guardar tu email. Probá de nuevo.';
