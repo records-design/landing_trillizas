@@ -61,11 +61,17 @@ button:focus-visible {
   width: 100%;
   height: 100svh;
   min-height: 100vh;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: none;
   display: flex;
   align-items: flex-start;
   justify-content: center;
   background: var(--violet-deep);
+}
+
+.hero::-webkit-scrollbar {
+  display: none;
 }
 
 .hero-video,
@@ -73,7 +79,7 @@ button:focus-visible {
 .hero-vignette,
 .hero-shadow,
 .hero-particles {
-  position: absolute;
+  position: fixed;
   inset: 0;
 }
 
@@ -1303,6 +1309,133 @@ button:focus-visible {
 }
 
 /* ============================================================
+   SUSCRIPCIÓN
+   ============================================================ */
+
+.hero-newsletter {
+  width: min(720px, calc(100vw - 48px));
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  margin-top: clamp(24px, 3vh, 32px);
+  margin-bottom: clamp(24px, 2.8vh, 32px);
+
+  opacity: 0;
+  transform: translateY(12px);
+  animation: fadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) 5.1s forwards;
+}
+
+.hero-newsletter .follow-divider {
+  margin-bottom: clamp(28px, 3vh, 42px);
+}
+
+.newsletter-title {
+  margin: 0 0 5px;
+
+  color: var(--gold-light);
+  font-family: var(--font-ui);
+  font-size: clamp(10px, 0.8vw, 12px);
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.newsletter-text {
+  width: min(54ch, 100%);
+  max-width: 54ch;
+  margin: 0 auto 10px;
+  text-wrap: balance;
+
+  color: var(--ivory);
+  font-family: var(--font-ui);
+  font-size: clamp(8px, 0.64vw, 9.6px);
+  font-weight: 400;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.newsletter-form {
+  width: 100%;
+  max-width: 380px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.newsletter-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 32px;
+
+  padding: 0;
+  border: none;
+  border-bottom: 1px solid rgba(216, 178, 92, 0.4);
+  border-radius: 0;
+  background: transparent;
+
+  color: var(--ivory);
+  font-family: var(--font-ui);
+  font-size: 13px;
+
+  transition: border-color 0.25s ease;
+}
+
+.newsletter-input::placeholder {
+  color: var(--ivory);
+  opacity: 0.5;
+}
+
+.newsletter-input:focus {
+  outline: none;
+  border-bottom-color: rgba(240, 217, 152, 0.85);
+}
+
+.newsletter-button {
+  flex: 0 0 auto;
+  width: 28px;
+  height: 28px;
+
+  padding: 6px;
+  border: 1px solid rgba(216, 178, 92, 0.4);
+  border-radius: 50%;
+  background: none;
+
+  color: var(--gold);
+  cursor: pointer;
+
+  transition: transform 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+.newsletter-button svg {
+  width: 100%;
+  height: 100%;
+}
+
+.newsletter-button:hover {
+  color: var(--gold-light);
+  transform: translateX(3px);
+}
+
+.newsletter-feedback {
+  min-height: 1.4em;
+  margin: 10px 0 0;
+
+  color: var(--gold-light);
+  font-family: var(--font-ui);
+  font-size: 12.5px;
+}
+
+.newsletter-feedback[data-state="error"] {
+  color: #e8a2a2;
+}
+
+/* ============================================================
    FOOTER
    ============================================================ */
 
@@ -1313,7 +1446,7 @@ button:focus-visible {
   gap: 14px;
   width: 100%;
 
-  margin-top: clamp(24px, 3.5vh, 40px);
+  margin-top: 0;
 
   opacity: 0;
   transform: translateY(12px);
@@ -1446,7 +1579,7 @@ button:focus-visible {
     position: absolute;
     left: 20px;
     right: 20px;
-    bottom: clamp(22px, 3vh, 34px);
+    bottom: clamp(10px, 1.4vh, 16px);
     top: auto;
     width: auto;
     margin: 0;
@@ -2070,9 +2203,11 @@ button:focus-visible {
       auto    /* 5: hero-ctas */
       0.70fr  /* 6: separador botones → portal social — moderado */
       auto    /* 7: hero-follow */
-      0.75fr  /* 8: separador portal → footer — más chico que antes */
-      auto    /* 9: site-footer */
-      0.45fr; /* 10: aire inferior — fila propia, el footer ya no ancla al borde */
+      0.45fr  /* 8: separador portal → suscripción */
+      auto    /* 9: hero-newsletter */
+      0.5fr   /* 10: separador suscripción → footer */
+      auto    /* 11: site-footer */
+      0.45fr; /* 12: aire inferior — fila propia, el footer ya no ancla al borde */
 
     align-items: center;
     justify-items: center;
@@ -2091,6 +2226,7 @@ button:focus-visible {
   .hero-slogan-wrap,
   .hero-ctas,
   .hero-follow,
+  .hero-newsletter,
   .site-footer {
     grid-column: 1;
     margin: 0;
@@ -2103,15 +2239,24 @@ button:focus-visible {
      no margin en el logo). Es seguro: la fila 1 no tiene vecinos con
      contenido de los que "robar" espacio, así que no genera overlap. */
   .logo-wrap {
-    /* Mobile: logo más abajo, pero 10–15 px más arriba que la prueba brusca. */
-    padding-top: clamp(90px, 12dvh, 120px);
+    /* Mobile: sube todo el bloque ~24-40px para ganar aire abajo. */
+    padding-top: clamp(58px, calc(12dvh - 32px), 88px);
   }
 
   .logo-wrap        { grid-row: 1; }
   .hero-slogan-wrap { grid-row: 3; width: 100%; max-width: 100%; }
   .hero-ctas        { grid-row: 5; width: 100%; max-width: 100%; }
   .hero-follow      { grid-row: 7; width: 100%; max-width: 100%; }
-  .site-footer      { grid-row: 9; width: 100%; max-width: 100%; position: static; }
+  .hero-newsletter  { grid-row: 9; width: 100%; max-width: 100%; }
+  .site-footer      { grid-row: 11; width: 100%; max-width: 100%; position: static; }
+
+  .newsletter-form {
+    max-width: min(300px, 100%);
+  }
+
+  .newsletter-title {
+    white-space: normal;
+  }
 
   /* --------------------------------------------------------
      Botones: apilados, el ancho real lo pone --button-width en
@@ -2150,8 +2295,8 @@ button:focus-visible {
      celular angosto-y-alto que en uno ancho-y-bajo (ej. Duo).
      -------------------------------------------------------- */
   .hero-logo {
-    /* Mobile: 25% más grande que el tamaño anterior. */
-    width: clamp(193px, min(52.5vw, 27.5dvh), 303px);
+    /* Mobile: ~10% más chico para ganar aire vertical. */
+    width: clamp(174px, min(47.3vw, 24.8dvh), 273px);
   }
 
   .hero-slogan {
@@ -2281,6 +2426,7 @@ button:focus-visible {
   .follow-link,
   .follow-sep,
   .follow-diamond,
+  .hero-newsletter,
   .hero-particles i {
     animation: none !important;
   }
@@ -2291,7 +2437,8 @@ button:focus-visible {
   .follow-divider,
   .follow-title,
   .follow-link,
-  .follow-sep {
+  .follow-sep,
+  .hero-newsletter {
     opacity: 1 !important;
     transform: none !important;
     filter: none !important;

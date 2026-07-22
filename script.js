@@ -136,3 +136,36 @@ if (heroVideo) {
 document.querySelectorAll('a[data-placeholder="true"]').forEach((el) => {
   el.addEventListener('click', (e) => e.preventDefault());
 });
+
+// ============================================================
+// Formulario de suscripción — submit controlado, sin recargar.
+// TODO: conectar acá Mailchimp/Brevo (o el endpoint propio en
+// backend/) cuando estén las credenciales. Por ahora solo valida
+// el email y muestra el mensaje de éxito/error.
+// ============================================================
+
+const newsletterForm = document.getElementById('newsletterForm');
+if (newsletterForm) {
+  const feedbackEl = document.getElementById('newsletterFeedback');
+  const emailInput = newsletterForm.querySelector('.newsletter-input');
+
+  newsletterForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const email = emailInput.value.trim();
+    const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+    if (!isValid) {
+      feedbackEl.textContent = 'Ingresá un correo electrónico válido.';
+      feedbackEl.setAttribute('data-state', 'error');
+      return;
+    }
+
+    // TODO: reemplazar por el envío real (Mailchimp/Brevo/API propia).
+    // Ejemplo: fetch('/backend/subscribe.php', { method: 'POST', body: ... })
+
+    feedbackEl.textContent = '¡Gracias! Pronto vas a recibir novedades.';
+    feedbackEl.setAttribute('data-state', 'success');
+    newsletterForm.reset();
+  });
+}
