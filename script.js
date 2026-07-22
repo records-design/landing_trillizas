@@ -154,15 +154,28 @@ if (newsletterForm) {
   const EMAIL_RE =
     /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
 
+  // El tilde/cruz se muestra al salir del campo (blur), no mientras se
+  // escribe: ver una cruz a mitad de tipear se siente como que bloquea.
+  emailInput.addEventListener('focus', () => {
+    newsletterForm.classList.remove('is-valid', 'is-invalid');
+  });
+
   emailInput.addEventListener('input', () => {
-    const value = emailInput.value.trim();
-    const valid = EMAIL_RE.test(value);
-    newsletterForm.classList.toggle('is-valid', valid);
-    newsletterForm.classList.toggle('is-invalid', value.length > 0 && !valid);
     if (feedbackEl.getAttribute('data-state') === 'error') {
       feedbackEl.textContent = '';
       feedbackEl.removeAttribute('data-state');
     }
+  });
+
+  emailInput.addEventListener('blur', () => {
+    const value = emailInput.value.trim();
+    if (!value) {
+      newsletterForm.classList.remove('is-valid', 'is-invalid');
+      return;
+    }
+    const valid = EMAIL_RE.test(value);
+    newsletterForm.classList.toggle('is-valid', valid);
+    newsletterForm.classList.toggle('is-invalid', !valid);
   });
 
   newsletterForm.addEventListener('submit', (e) => {
