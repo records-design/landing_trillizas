@@ -1,6 +1,6 @@
 /* ============================================================
-   LAS TRILLIZAS DE ORO Y EL LIBRO MÁGICO
-   Landing cinematográfica — hero de video + refuerzo mínimo.
+   LAS TRILLIZAS DE ORO Y EL LIBRO MÃGICO
+   Landing cinematogrÃ¡fica â€” hero de video + refuerzo mÃ­nimo.
    ============================================================ */
 
 :root {
@@ -130,7 +130,7 @@ button:focus-visible {
   );
 }
 
-/* Polvo mágico suave */
+/* Polvo mÃ¡gico suave */
 .hero-particles {
   overflow: hidden;
 }
@@ -192,7 +192,7 @@ button:focus-visible {
   justify-content: center;
   text-align: center;
 
-  /* Padding simétrico → el bloque queda centrado vertical de verdad,
+  /* Padding simÃ©trico â†’ el bloque queda centrado vertical de verdad,
      con el mismo aire arriba del logo que debajo del footer. */
   padding: clamp(24px, 4vh, 52px) 20px;
 }
@@ -381,7 +381,7 @@ button:focus-visible {
   pointer-events: none;
 
   /*
-    Primera capa: oscurece suavemente el video detrás del slogan.
+    Primera capa: oscurece suavemente el video detrÃ¡s del slogan.
     Segunda capa: aporta un halo dorado uniforme, sin focos localizados.
   */
   background:
@@ -441,13 +441,13 @@ button:focus-visible {
     text-shadow .35s ease;
 }
 
-/* Salto de línea forzado para mobile (ver script.js) — oculto acá,
+/* Salto de lÃ­nea forzado para mobile (ver script.js) â€” oculto acÃ¡,
    habilitado dentro de @media (max-width: 700px). */
 .slogan-break {
   display: none;
 }
 
-/* Cada palabra se devela por separado — pausado y con brillo propio */
+/* Cada palabra se devela por separado â€” pausado y con brillo propio */
 .hero-slogan .word {
   display: inline-block;
   white-space: nowrap;
@@ -677,7 +677,7 @@ button:focus-visible {
   }
 }
 
-/* Shimmer corregido: más corto y nace fuera del texto */
+/* Shimmer corregido: mÃ¡s corto y nace fuera del texto */
 .slogan-shimmer {
   position: absolute;
   top: 50%;
@@ -1309,7 +1309,7 @@ button:focus-visible {
 }
 
 /* ============================================================
-   SUSCRIPCIÓN
+   SUSCRIPCIÃ“N
    ============================================================ */
 
 .hero-newsletter {
@@ -1455,7 +1455,7 @@ button:focus-visible {
   animation: fadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) 5.3s forwards;
 }
 
-/* Línea divisoria dorada finita */
+/* LÃ­nea divisoria dorada finita */
 .footer-rule {
   width: min(var(--cta-group-width), calc(100vw - 40px));
   height: 1px;
@@ -1513,9 +1513,9 @@ button:focus-visible {
 /* ---------------- DESKTOP ---------------- */
 /*
   Arquitectura base sin scroll:
-  logo / título / botones / redes / espacio flexible / suscripción / footer
+  logo / tÃ­tulo / botones / redes / espacio flexible / suscripciÃ³n / footer
 
-  El espacio sobrante se absorbe antes de la suscripción.
+  El espacio sobrante se absorbe antes de la suscripciÃ³n.
   Newsletter y footer quedan juntos, sin hueco excesivo.
   No hay footer absoluto, translateY ni breakpoints por altura.
 */
@@ -1608,8 +1608,8 @@ button:focus-visible {
     margin: 0 0 clamp(28px, 3.4dvh, 42px);
   }
 
-  /* Botón dorado:
-     conserva el mismo tamaño exterior, tipografía e icono que el violeta.
+  /* BotÃ³n dorado:
+     conserva el mismo tamaÃ±o exterior, tipografÃ­a e icono que el violeta.
      Solo se compacta el espacio interno para que el texto entre con aire. */
   .magic-button--gold .magic-button__content {
     justify-content: center;
@@ -1699,12 +1699,12 @@ button:focus-visible {
 /*
   ARQUITECTURA FINAL PARA IPAD
 
-  En tablet no conviene concentrar todo arriba ni dejar un único hueco central.
+  En tablet no conviene concentrar todo arriba ni dejar un Ãºnico hueco central.
   Los cinco bloques principales se distribuyen con space-between:
 
   logo / slogan / botones / redes / footer
 
-  Así el aire vertical queda repartido de forma uniforme en cualquier iPad.
+  AsÃ­ el aire vertical queda repartido de forma uniforme en cualquier iPad.
   No se usan translateY, top, footer absoluto ni filas 1fr.
 */
 @media
@@ -1862,7 +1862,7 @@ button:focus-visible {
 }
 
 
-/* iPad mini — 768 × 1024 */
+/* iPad mini â€” 768 Ã— 1024 */
 @media (min-width: 701px) and (max-width: 799px) and (orientation: portrait) {
   :root {
     --button-width: clamp(365px, 49.7vw, 386px);
@@ -1951,7 +1951,7 @@ button:focus-visible {
 }
 
 
-/* iPad Air — 820 × 1180 */
+/* iPad Air â€” 820 Ã— 1180 */
 @media (min-width: 800px) and (max-width: 899px) and (orientation: portrait) {
   :root {
     --button-width: clamp(392px, 49vw, 420px);
@@ -2014,7 +2014,7 @@ button:focus-visible {
 }
 
 
-/* iPad Pro — 1024 × 1366 */
+/* iPad Pro â€” 1024 Ã— 1366 */
 @media (min-width: 900px) and (max-width: 1024px) and (orientation: portrait) {
   :root {
     --button-width: clamp(436px, 45.6vw, 467px);
@@ -2163,12 +2163,12 @@ button:focus-visible {
 /* ---------------- MOBILE ---------------- */
 /* Arquitectura: 5 grupos de alto natural (auto) + 4 separadores fluidos
    (fr) que absorben el espacio sobrante de 100dvh. Sin porcentajes
-   rígidos por elemento, sin position:absolute, sin overflow oculto. */
+   rÃ­gidos por elemento, sin position:absolute, sin overflow oculto. */
 @media (max-width: 700px) {
   :root {
-    /* En mobile los botones van apilados (no en fila), así que el ancho
-       "del grupo de CTAs" pasa a ser simplemente el ancho de un botón.
-       Una sola fórmula: todo lo que depende de --cta-group-width
+    /* En mobile los botones van apilados (no en fila), asÃ­ que el ancho
+       "del grupo de CTAs" pasa a ser simplemente el ancho de un botÃ³n.
+       Una sola fÃ³rmula: todo lo que depende de --cta-group-width
        (hero-slogan, hero-slogan-wrap, hero-ctas, footer-rule) se ajusta
        solo al redefinir esta variable, sin declarar anchos aparte. */
     --button-width: clamp(240px, min(78vw, 44dvh), 320px);
@@ -2200,7 +2200,7 @@ button:focus-visible {
     min-height: 100svh;
 
     /* El padding entra en la caja (border-box): el Grid de abajo reparte
-       únicamente el área interior que queda después de restar el
+       Ãºnicamente el Ã¡rea interior que queda despuÃ©s de restar el
        safe-area y estos 16px laterales, no los 100dvh completos. */
     padding:
       max(6px, env(safe-area-inset-top)) 16px
@@ -2210,17 +2210,17 @@ button:focus-visible {
     grid-template-columns: 1fr;
     grid-template-rows:
       auto    /* 1: logo-wrap */
-      0.05fr  /* 2: separador logo → título */
+      0.05fr  /* 2: separador logo â†’ tÃ­tulo */
       auto    /* 3: hero-slogan-wrap */
-      0.02fr  /* 4: separador título → botones — reducido para subir todo el bloque inferior */
+      0.02fr  /* 4: separador tÃ­tulo â†’ botones â€” reducido para subir todo el bloque inferior */
       auto    /* 5: hero-ctas */
-      0.20fr  /* 6: separador botones → portal social — reducido para subir el bloque de redes */
+      0.20fr  /* 6: separador botones â†’ portal social â€” reducido para subir el bloque de redes */
       auto    /* 7: hero-follow */
-      0.45fr  /* 8: separador portal → suscripción */
+      0.45fr  /* 8: separador portal â†’ suscripciÃ³n */
       auto    /* 9: hero-newsletter */
-      0.5fr   /* 10: separador suscripción → footer */
+      0.5fr   /* 10: separador suscripciÃ³n â†’ footer */
       auto    /* 11: site-footer */
-      0.45fr; /* 12: aire inferior — fila propia, el footer ya no ancla al borde */
+      0.45fr; /* 12: aire inferior â€” fila propia, el footer ya no ancla al borde */
 
     align-items: center;
     justify-items: center;
@@ -2229,11 +2229,11 @@ button:focus-visible {
   }
 
   /* --------------------------------------------------------
-     Resets de márgenes/padding heredados: el Grid es el único que
-     gobierna la separación ENTRE los 5 grupos. Las separaciones
-     DENTRO de cada grupo (p. ej. entre el título "portal mágico" y
-     los íconos) se declaran explícitas más abajo, fluidas — nunca
-     como márgenes compensatorios recuperando espacio externo.
+     Resets de mÃ¡rgenes/padding heredados: el Grid es el Ãºnico que
+     gobierna la separaciÃ³n ENTRE los 5 grupos. Las separaciones
+     DENTRO de cada grupo (p. ej. entre el tÃ­tulo "portal mÃ¡gico" y
+     los Ã­conos) se declaran explÃ­citas mÃ¡s abajo, fluidas â€” nunca
+     como mÃ¡rgenes compensatorios recuperando espacio externo.
      -------------------------------------------------------- */
   .logo-wrap,
   .hero-slogan-wrap,
@@ -2250,7 +2250,7 @@ button:focus-visible {
 
   /* Logo: baja ~20px dentro de la fila 1 (padding en el contenedor,
      no margin en el logo). Es seguro: la fila 1 no tiene vecinos con
-     contenido de los que "robar" espacio, así que no genera overlap. */
+     contenido de los que "robar" espacio, asÃ­ que no genera overlap. */
   .logo-wrap {
     /* Mobile: sube todo el bloque ~24-40px para ganar aire abajo. */
     padding-top: clamp(58px, calc(12dvh - 32px), 88px);
@@ -2282,7 +2282,7 @@ button:focus-visible {
 
   /* --------------------------------------------------------
      Botones: apilados, el ancho real lo pone --button-width en
-     .magic-button (regla base, sin redeclarar la fórmula acá).
+     .magic-button (regla base, sin redeclarar la fÃ³rmula acÃ¡).
      -------------------------------------------------------- */
   .hero-ctas {
     display: grid;
@@ -2312,12 +2312,12 @@ button:focus-visible {
   }
 
   /* --------------------------------------------------------
-     Logo y título: tamaño fluido dependiente del lado más chico
-     entre ancho y alto (min(vw,dvh)) — así responden igual en un
+     Logo y tÃ­tulo: tamaÃ±o fluido dependiente del lado mÃ¡s chico
+     entre ancho y alto (min(vw,dvh)) â€” asÃ­ responden igual en un
      celular angosto-y-alto que en uno ancho-y-bajo (ej. Duo).
      -------------------------------------------------------- */
   .hero-logo {
-    /* Mobile: ~10% más chico para ganar aire vertical. */
+    /* Mobile: ~10% mÃ¡s chico para ganar aire vertical. */
     width: clamp(174px, min(47.3vw, 24.8dvh), 273px);
   }
 
@@ -2326,14 +2326,14 @@ button:focus-visible {
     line-height: 1.1;
   }
 
-  /* Salto de línea explícito (ver script.js): garantiza 2 líneas sin
+  /* Salto de lÃ­nea explÃ­cito (ver script.js): garantiza 2 lÃ­neas sin
      depender de que el ancho/fuente calcen justo. Oculto en desktop. */
   .slogan-break {
     display: inline;
   }
 
   /* --------------------------------------------------------
-     Portal mágico + redes: separaciones internas fluidas, propias
+     Portal mÃ¡gico + redes: separaciones internas fluidas, propias
      del grupo (no recuperan espacio externo del Grid).
      -------------------------------------------------------- */
   .follow-title {
@@ -2357,7 +2357,7 @@ button:focus-visible {
   }
 
   .follow-link {
-    /* Área táctil mínima de 44px en el link, no en el círculo visible. */
+    /* Ãrea tÃ¡ctil mÃ­nima de 44px en el link, no en el cÃ­rculo visible. */
     min-width: 44px;
     min-height: 44px;
     justify-content: center;
@@ -2384,12 +2384,12 @@ button:focus-visible {
   }
 
   /* --------------------------------------------------------
-     Sin animación de entrada para logo/botones/portal/redes/footer:
-     aparecen al instante al abrir el link. El título letra por letra
+     Sin animaciÃ³n de entrada para logo/botones/portal/redes/footer:
+     aparecen al instante al abrir el link. El tÃ­tulo letra por letra
      y sus destellos flotantes NO se tocan (siguen animados).
      El logo conserva solo el brillo ambiente; los botones, el
-     balanceo ambiente — ninguno de los dos interfiere con el layout
-     porque no mueven tamaño/posición del elemento, solo filter/transform
+     balanceo ambiente â€” ninguno de los dos interfiere con el layout
+     porque no mueven tamaÃ±o/posiciÃ³n del elemento, solo filter/transform
      de baja amplitud sobre su propio eje.
      -------------------------------------------------------- */
   .hero-logo,
@@ -2423,7 +2423,7 @@ button:focus-visible {
     animation: btnIdle 7s ease-in-out 0s infinite;
   }
 
-  /* Mobile: eliminar la línea divisoria entre redes y newsletter */
+  /* Mobile: eliminar la lÃ­nea divisoria entre redes y newsletter */
   .hero-newsletter .follow-divider{
     display:none;
   }
@@ -2501,24 +2501,24 @@ button:focus-visible {
     letter-spacing: 0.01em;
 }
 /* ==========================================================
-   AJUSTE EXCLUSIVO · VIEWPORTS BAJOS (400x700 aprox.)
+   AJUSTE EXCLUSIVO Â· VIEWPORTS BAJOS (400x700 aprox.)
    No afecta iPhone 12, Pixel 7, Samsung A7, etc.
    ========================================================== */
 
 @media (max-width: 430px) and (max-height: 720px) {
 
-  /* Más aire entre redes y newsletter */
+  /* MÃ¡s aire entre redes y newsletter */
   .hero-newsletter{
     margin-top: 20px;
   }
 
-  /* Separa el título del newsletter de los íconos */
+  /* Separa el tÃ­tulo del newsletter de los Ã­conos */
   .newsletter-title{
     margin-top: 8px;
     margin-bottom: 8px;
   }
 
-  /* Un poco más de aire debajo del subtítulo */
+  /* Un poco mÃ¡s de aire debajo del subtÃ­tulo */
   .newsletter-text{
     margin-bottom: 14px;
   }
