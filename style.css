@@ -1540,20 +1540,23 @@ button:focus-visible {
   gap: 8px;
 }
 
+/* El de Records es más bajo que el de TV (proporción real de cada
+   archivo): se alinea por abajo para que ambos "pisen" la misma
+   línea en vez de quedar centrado con aire de más debajo. */
 .footer-logo {
-  width: clamp(70px, 6vw, 84px);
+  align-self: flex-end;
+}
+
+.footer-logo,
+.footer-logo-tv {
+  width: clamp(95px, 8vw, 115px);
   height: auto;
   opacity: 0.72;
   filter: drop-shadow(0 0 10px rgba(232, 201, 123, 0.12));
 }
 
-/* Mismo ancho de caja que .footer-logo, para que ocupen el mismo
-   espacio visual uno junto al otro. */
 .footer-logo-tv {
-  width: clamp(70px, 6vw, 84px);
-  height: auto;
-  opacity: 0.72;
-  filter: drop-shadow(0 0 10px rgba(232, 201, 123, 0.12));
+  width: calc(clamp(95px, 8vw, 115px) * 1.155);
 }
 
 .footer-text {
@@ -2234,12 +2237,14 @@ button:focus-visible {
     height: 46px;
   }
 
-  .footer-logo {
-    width: 64px;
+  .footer-logo,
+  .footer-logo-tv {
+    width: 83px;
+    height: auto;
   }
 
   .footer-logo-tv {
-    width: 64px;
+    width: calc(83px * 1.155);
   }
 }
 
@@ -2465,12 +2470,14 @@ button:focus-visible {
     text-align: center;
   }
 
-  .footer-logo {
-    width: 56px;
+  .footer-logo,
+  .footer-logo-tv {
+    width: 73px;
+    height: auto;
   }
 
   .footer-logo-tv {
-    width: 56px;
+    width: calc(73px * 1.155);
   }
 
   /* --------------------------------------------------------
