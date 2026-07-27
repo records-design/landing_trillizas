@@ -1313,6 +1313,11 @@ button:focus-visible {
    ============================================================ */
 
 .hero-newsletter {
+  /* Ãšnica fuente de verdad para el ancho del formulario: el subtÃ­tulo
+     usa la misma variable para arrancar y terminar exactamente donde
+     arranca el placeholder y termina la flechita. */
+  --newsletter-form-width: 380px;
+
   width: min(720px, calc(100vw - 48px));
 
   display: flex;
@@ -1332,7 +1337,7 @@ button:focus-visible {
 }
 
 .newsletter-title {
-  margin: 0 0 5px;
+  margin: 0 0 14px;
 
   color: var(--gold-light);
   font-family: var(--font-ui);
@@ -1349,21 +1354,27 @@ button:focus-visible {
   display: none;
 }
 
+/* Una sola lÃ­nea siempre, sin scroll: el contenedor completo de
+   hero-newsletter (no el ancho mÃ¡s angosto del formulario) le da
+   lugar de sobra en desktop/tablet; en mobile el tamaÃ±o se achica
+   con el viewport (ver @media max-width:700px) para que nunca
+   necesite mÃ¡s ancho del que hay disponible. */
 .newsletter-text {
-  max-width: 40ch;
+  width: 100%;
   margin: 0 auto 10px;
 
   color: var(--ivory);
   font-family: var(--font-ui);
-  font-size: clamp(8px, 0.64vw, 9.6px);
+  font-size: 13px;
   font-weight: 400;
   line-height: 1.4;
   text-align: center;
+  white-space: nowrap;
 }
 
 .newsletter-form {
   width: 100%;
-  max-width: 380px;
+  max-width: var(--newsletter-form-width);
 
   display: flex;
   align-items: center;
@@ -1373,19 +1384,21 @@ button:focus-visible {
 .newsletter-input {
   flex: 1 1 auto;
   min-width: 0;
-  height: 32px;
+  height: 44px;
 
-  padding: 0;
-  border: none;
-  border-bottom: 1px solid rgba(216, 178, 92, 0.4);
-  border-radius: 0;
-  background: transparent;
+  padding: 0 18px;
+  border: 1px solid rgba(216, 178, 92, 0.35);
+  border-radius: 999px;
+  background: rgba(124, 86, 199, 0.22);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 
   color: var(--ivory);
   font-family: var(--font-ui);
   font-size: 13px;
+  text-align: center;
 
-  transition: border-color 0.25s ease;
+  transition: border-color 0.25s ease, background-color 0.25s ease;
 }
 
 .newsletter-input::placeholder {
@@ -1395,17 +1408,19 @@ button:focus-visible {
 
 .newsletter-input:focus {
   outline: none;
-  border-bottom-color: rgba(240, 217, 152, 0.85);
+  border-color: rgba(240, 217, 152, 0.85);
+  background: rgba(124, 86, 199, 0.32);
 }
 
 /* El navegador pinta el fondo del autocompletado blanco/amarillo por
-   default; lo forzamos a que siga transparente sobre el violeta. */
+   default; lo forzamos a un violeta sÃ³lido cercano al del campo (el
+   blur no se puede replicar dentro del box-shadow del autofill). */
 .newsletter-input:-webkit-autofill,
 .newsletter-input:-webkit-autofill:hover,
 .newsletter-input:-webkit-autofill:focus {
   -webkit-text-fill-color: var(--ivory);
-  -webkit-box-shadow: 0 0 0 1000px var(--violet-deep) inset;
-  box-shadow: 0 0 0 1000px var(--violet-deep) inset;
+  -webkit-box-shadow: 0 0 0 1000px #3a2159 inset;
+  box-shadow: 0 0 0 1000px #3a2159 inset;
   caret-color: var(--ivory);
   transition: background-color 0s 600000s, color 0s 600000s;
 }
@@ -1447,18 +1462,20 @@ button:focus-visible {
 
 .newsletter-button {
   flex: 0 0 auto;
-  width: 28px;
-  height: 28px;
+  width: 44px;
+  height: 44px;
 
-  padding: 6px;
-  border: 1px solid rgba(216, 178, 92, 0.4);
+  padding: 11px;
+  border: 1px solid rgba(216, 178, 92, 0.35);
   border-radius: 50%;
-  background: none;
+  background: rgba(124, 86, 199, 0.22);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 
   color: var(--gold);
   cursor: pointer;
 
-  transition: transform 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+  transition: transform 0.25s ease, color 0.25s ease, border-color 0.25s ease, background-color 0.25s ease;
 }
 
 .newsletter-button svg {
@@ -1468,6 +1485,7 @@ button:focus-visible {
 
 .newsletter-button:hover {
   color: var(--gold-light);
+  background: rgba(124, 86, 199, 0.32);
   transform: translateX(3px);
 }
 
@@ -1529,6 +1547,15 @@ button:focus-visible {
   filter: drop-shadow(0 0 10px rgba(232, 201, 123, 0.12));
 }
 
+/* Mismo ancho de caja que .footer-logo, para que ocupen el mismo
+   espacio visual uno junto al otro. */
+.footer-logo-tv {
+  width: clamp(70px, 6vw, 84px);
+  height: auto;
+  opacity: 0.72;
+  filter: drop-shadow(0 0 10px rgba(232, 201, 123, 0.12));
+}
+
 .footer-text {
   color: var(--muted, #b3a4cc);
   font-family: var(--font-ui);
@@ -1560,10 +1587,13 @@ button:focus-visible {
 /* ---------------- DESKTOP ---------------- */
 /*
   Arquitectura base sin scroll:
-  logo / tÃ­tulo / botones / redes / espacio flexible / suscripciÃ³n / footer
+  logo / tÃ­tulo / botones / espacio / redes / espacio / suscripciÃ³n / espacio / footer
 
-  El espacio sobrante se absorbe antes de la suscripciÃ³n.
-  Newsletter y footer quedan juntos, sin hueco excesivo.
+  El espacio sobrante se reparte entre TRES huecos flexibles (antes de
+  redes, antes de suscripciÃ³n, antes del footer) en vez de uno solo:
+  cada hueco tiene su propio piso (igual que antes, no encoge de mÃ¡s en
+  pantallas bajas) y su propio techo (no crece sin lÃ­mite en pantallas
+  muy altas), asÃ­ el aire queda repartido sea cual sea el alto real.
   No hay footer absoluto, translateY ni breakpoints por altura.
 */
 @media (min-width: 901px) {
@@ -1590,15 +1620,21 @@ button:focus-visible {
     height: 100dvh;
     min-height: 100svh;
 
+    /* El espacio sobrante en pantallas muy altas se reparte entre TRES
+       huecos flexibles (antes de redes, antes de suscripción y antes
+       del footer) en vez de concentrarse en uno solo: así ningún hueco
+       puede volverse desproporcionado sea cual sea el alto de pantalla. */
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows:
       auto
       auto
       auto
+      minmax(clamp(28px, 3.4dvh, 42px), clamp(28px, 5dvh, 70px))
       auto
-      minmax(12px, 1fr)
+      minmax(12px, clamp(12px, 4dvh, 64px))
       auto
+      minmax(0px, clamp(0px, 1dvh, 20px))
       auto;
 
     align-items: center;
@@ -1652,7 +1688,7 @@ button:focus-visible {
 
   .hero-ctas {
     grid-row: 3;
-    margin: 0 0 clamp(28px, 3.4dvh, 42px);
+    margin: 0;
   }
 
   /* BotÃ³n dorado:
@@ -1664,7 +1700,7 @@ button:focus-visible {
     padding-inline: 18px;
 }
 .hero-follow {
-    grid-row: 4;
+    grid-row: 5;
     width: 100%;
     margin: 0;
   }
@@ -1697,7 +1733,7 @@ button:focus-visible {
   }
 
   .hero-newsletter {
-    grid-row: 6;
+    grid-row: 7;
     width: min(720px, calc(100vw - 48px));
     margin-top: clamp(14px, 1.8dvh, 22px);
     margin-bottom: clamp(14px, 1.8dvh, 22px);
@@ -1710,18 +1746,15 @@ button:focus-visible {
   }
 
   .newsletter-title {
-    margin-bottom: clamp(7px, 0.9dvh, 10px);
+    margin-bottom: clamp(14px, 1.8dvh, 20px);
   }
 
   .newsletter-text {
-    width: min(54ch, 100%);
-    max-width: 54ch;
     margin: 0 auto clamp(12px, 1.5dvh, 16px);
-    text-wrap: balance;
   }
 
   .site-footer {
-    grid-row: 7;
+    grid-row: 9;
     position: static;
     inset: auto;
     width: 100%;
@@ -2204,6 +2237,10 @@ button:focus-visible {
   .footer-logo {
     width: 64px;
   }
+
+  .footer-logo-tv {
+    width: 64px;
+  }
 }
 
 
@@ -2307,12 +2344,8 @@ button:focus-visible {
   .hero-slogan-wrap { grid-row: 3; width: 100%; max-width: 100%; }
   .hero-ctas        { grid-row: 5; width: 100%; max-width: 100%; }
   .hero-follow      { grid-row: 7; width: 100%; max-width: 100%; }
-  .hero-newsletter  { grid-row: 9; width: 100%; max-width: 100%; }
+  .hero-newsletter  { grid-row: 9; width: 100%; max-width: 100%; --newsletter-form-width: min(300px, 100%); }
   .site-footer      { grid-row: 11; width: 100%; max-width: 100%; position: static; }
-
-  .newsletter-form {
-    max-width: min(300px, 100%);
-  }
 
   .newsletter-title {
     white-space: normal;
@@ -2322,9 +2355,11 @@ button:focus-visible {
     display: block;
   }
 
+  /* Una sola lÃ­nea siempre, sin scroll horizontal: el tamaÃ±o se achica
+     en proporciÃ³n al ancho real del telÃ©fono (mÃ¡s chico que el piso
+     nunca hace falta ni en el celular mÃ¡s angosto, 320px). */
   .newsletter-text {
-    max-width: none;
-    white-space: nowrap;
+    font-size: clamp(8.5px, calc(3vw - 1px), 14px);
   }
 
   /* --------------------------------------------------------
@@ -2419,15 +2454,23 @@ button:focus-visible {
   }
 
   .footer-inner {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 6px;
+  }
+
+  .footer-text {
+    flex-basis: 100%;
+    text-align: center;
   }
 
   .footer-logo {
     width: 56px;
   }
 
-  .footer-text {
-    font-size: 9px;
+  .footer-logo-tv {
+    width: 56px;
   }
 
   /* --------------------------------------------------------
