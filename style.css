@@ -1633,9 +1633,9 @@ button:focus-visible {
       auto
       auto
       auto
-      minmax(clamp(28px, 3.4dvh, 42px), clamp(28px, 5dvh, 70px))
+      minmax(clamp(14px, 2.4dvh, 42px), clamp(28px, 5dvh, 70px))
       auto
-      minmax(12px, clamp(12px, 4dvh, 64px))
+      minmax(6px, clamp(6px, 3dvh, 64px))
       auto
       minmax(0px, clamp(0px, 1dvh, 20px))
       auto;
@@ -1644,9 +1644,9 @@ button:focus-visible {
     justify-items: center;
 
     padding:
-      clamp(12px, 2dvh, 24px)
+      clamp(8px, 1.5dvh, 24px)
       20px
-      clamp(10px, 1.5dvh, 18px);
+      clamp(6px, 1.2dvh, 18px);
 
     transform: none;
   }
@@ -1745,15 +1745,15 @@ button:focus-visible {
   .hero-newsletter .follow-divider {
     position: relative;
     top: -10px;
-    margin-bottom: clamp(16px, 2dvh, 24px);
+    margin-bottom: clamp(8px, 1.4dvh, 24px);
   }
 
   .newsletter-title {
-    margin-bottom: clamp(14px, 1.8dvh, 20px);
+    margin-bottom: clamp(8px, 1.2dvh, 20px);
   }
 
   .newsletter-text {
-    margin: 0 auto clamp(12px, 1.5dvh, 16px);
+    margin: 0 auto clamp(6px, 1dvh, 16px);
   }
 
   .site-footer {
@@ -1762,7 +1762,7 @@ button:focus-visible {
     inset: auto;
     width: 100%;
     margin: 0;
-    gap: clamp(8px, 1dvh, 12px);
+    gap: clamp(4px, 0.6dvh, 12px);
   }
 
   .footer-rule {
