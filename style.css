@@ -1925,6 +1925,15 @@ button:focus-visible {
     height: clamp(52px, 5.8vw, 62px);
   }
 
+  .newsletter-title {
+    font-size: clamp(15px, 1.8vw, 19px);
+  }
+
+  .newsletter-text {
+    font-size: clamp(14px, 1.5vw, 16px);
+    margin: 0 auto 24px;
+  }
+
   .site-footer {
     position: relative;
     inset: auto;
@@ -2354,6 +2363,7 @@ button:focus-visible {
 
   .newsletter-title {
     white-space: normal;
+    font-size: clamp(11px, 3.4vw, 13px);
   }
 
   .newsletter-title-break {
