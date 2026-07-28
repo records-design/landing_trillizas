@@ -2360,11 +2360,15 @@ button:focus-visible {
     display: block;
   }
 
-  /* Una sola lÃ­nea siempre, sin scroll horizontal: el tamaÃ±o se achica
-     en proporciÃ³n al ancho real del telÃ©fono (mÃ¡s chico que el piso
-     nunca hace falta ni en el celular mÃ¡s angosto, 320px). */
+  /* Solo en mobile: dos líneas en vez de una sola achicada, con un
+     tamaño de letra más cómodo de leer. */
   .newsletter-text {
-    font-size: clamp(8.5px, calc(3vw - 1px), 14px);
+    width: 100%;
+    max-width: var(--newsletter-form-width);
+    margin: 0 auto 20px;
+    white-space: normal;
+    font-size: clamp(12px, 3.2vw, 15px);
+    text-wrap: balance;
   }
 
   /* --------------------------------------------------------
