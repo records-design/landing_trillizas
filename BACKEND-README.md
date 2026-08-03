@@ -170,7 +170,21 @@ https://TUDOMINIO.com/?utm_source={{site_source_name}}&utm_medium=paid_social&ut
 
 ---
 
-## 8. Nombres de los botones que se trackean
+## 8. Estado de los píxeles de publicidad
+
+| Píxel | Estado | Dónde está en el código |
+|---|---|---|
+| **Meta Pixel + Conversions API** | ✅ Activo y verificado en vivo | `index.html` (`fbq('init', '1608591474024181')`) + `backend/config.php` (`meta.pixel_id` / `meta.access_token`) |
+| **Google Analytics (gtag.js)** | ✅ Activo | `index.html`, ID real `G-B54Q7S8X9M` |
+| **TikTok Pixel** | ⏳ Pendiente | `index.html` (`ttq.load('PLACEHOLDER_TIKTOK_PIXEL_ID')`) — el snippet ya está instalado, solo falta el ID real. Mientras diga `PLACEHOLDER_TIKTOK_PIXEL_ID`, no manda datos a ningún lado (no rompe nada, simplemente no hace nada). |
+
+Cuando se tenga el ID real de TikTok (TikTok Ads Manager → Assets → Events),
+reemplazar el texto `PLACEHOLDER_TIKTOK_PIXEL_ID` en `index.html` por el ID real
+— es la misma mecánica que ya se usó para completar el de Google.
+
+---
+
+## 9. Nombres de los botones que se trackean
 
 | `data-track-button` | Botón en la landing |
 |---|---|
