@@ -40,17 +40,26 @@ $utmSource = isset($campaign['utm_source']) ? (string) $campaign['utm_source'] :
 $utmCampaign = isset($campaign['utm_campaign']) ? (string) $campaign['utm_campaign'] : null;
 
 $pdo = db();
-$stmt = $pdo->prepare(
-    'INSERT IGNORE INTO subscribers (email, created_at, utm_source, utm_campaign, ip_hint)
-     VALUES (?, ?, ?, ?, ?)'
-);
-$stmt->execute([
-    clip($email, 255),
-    gmdate('Y-m-d H:i:s'),
-    clip($utmSource, 120),
-    clip($utmCampaign, 255),
-    $ipHint,
-]);
+
+try {
+    $stmt = $pdo->prepare(
+        'INSERT IGNORE INTO subscribers (email, created_at, utm_source, utm_campaign, ip_hint)
+         VALUES (?, ?, ?, ?, ?)'
+    );
+    $stmt->execute([
+        clip($email, 255),
+        gmdate('Y-m-d H:i:s'),
+        clip($utmSource, 120),
+        clip($utmCampaign, 255),
+        $ipHint,
+    ]);
+} catch (PDOException $e) {
+    // No exponemos detalles del error al cliente, pero lo dejamos en el
+    // log del servidor para poder diagnosticar (p. ej. tabla inexistente).
+    error_log('subscribe.php insert failed: ' . $e->getMessage());
+    http_response_code(500);
+    exit('{"ok":false,"error":"db_error"}');
+}
 
 http_response_code(200);
 echo '{"ok":true}';

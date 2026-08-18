@@ -129,22 +129,25 @@ $cities = q($pdo,
     $range);
 
 // ------------------------------------------------------------
-// Por anuncio (ad_id) con nombre legible + clics de esas sesiones
+// Por anuncio (ad_id) con nombre legible + clics.
+// Se lee de `events`, no de `sessions`: la sesión solo guarda el
+// ad_id de la primera visita de ese navegador (atribución "primer
+// toque"), así que un anuncio de remarketing que le llega a alguien
+// que ya había visitado antes quedaría invisible si se leyera de ahí.
+// Cada evento, en cambio, siempre lleva el ad_id real de ESE clic.
 // ------------------------------------------------------------
 $ads = q($pdo,
-    "SELECT s.ad_id,
-            COALESCE(r.ad_name, s.utm_content, s.ad_id) ad_name,
-            COALESCE(r.campaign_name, s.utm_campaign) campaign_name,
-            COUNT(DISTINCT s.session_id) visitas,
-            (SELECT COUNT(*) FROM events e
-               WHERE e.event_name='click' AND e.ad_id = s.ad_id
-               AND e.created_at BETWEEN ? AND ?) clics
-     FROM sessions s
-     LEFT JOIN ad_reference r ON r.ad_id = s.ad_id
-     WHERE s.ad_id IS NOT NULL AND s.first_seen BETWEEN ? AND ?
-     GROUP BY s.ad_id, ad_name, campaign_name
+    "SELECT e.ad_id,
+            COALESCE(r.ad_name, e.utm_campaign, e.ad_id) ad_name,
+            COALESCE(r.campaign_name, e.utm_campaign) campaign_name,
+            COUNT(DISTINCT e.session_id) visitas,
+            SUM(CASE WHEN e.event_name = 'click' THEN 1 ELSE 0 END) clics
+     FROM events e
+     LEFT JOIN ad_reference r ON r.ad_id = e.ad_id
+     WHERE e.ad_id IS NOT NULL AND e.created_at BETWEEN ? AND ?
+     GROUP BY e.ad_id, ad_name, campaign_name
      ORDER BY visitas DESC LIMIT 50",
-    [$fromDt, $toDt, $fromDt, $toDt]);
+    $range);
 
 // ------------------------------------------------------------
 // Respuesta

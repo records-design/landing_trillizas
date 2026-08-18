@@ -198,7 +198,8 @@ if (newsletterForm) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email }),
     })
-      .then(() => {
+      .then((res) => {
+        if (!res.ok) throw new Error('subscribe_failed');
         feedbackEl.textContent = '¡Gracias! Pronto vas a recibir novedades.';
         feedbackEl.setAttribute('data-state', 'success');
         newsletterForm.reset();
