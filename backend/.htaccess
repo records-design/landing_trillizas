@@ -1,13 +1,14 @@
-# Solo track.php debe ser accesible por URL desde el navegador.
+# Solo track.php y subscribe.php deben ser accesibles por URL desde
+# el navegador (son los dos endpoints que llama el JS de la landing).
 # El resto (config, librerías, schema) queda bloqueado.
 
 <FilesMatch "\.(php)$">
     Require all denied
 </FilesMatch>
 
-<Files "track.php">
+<FilesMatch "^(track\.php|subscribe\.php)$">
     Require all granted
-</Files>
+</FilesMatch>
 
 # Bloquear explícitamente config y esquema por las dudas.
 <FilesMatch "^(config\.php|config\.example\.php|schema\.sql)$">
