@@ -13,6 +13,13 @@
 (function () {
   'use strict';
 
+  // Momento en que arrancó a cargar la página — sirve para calcular
+  // cuánto tiempo pasó hasta cada clic (señal de interés real vs.
+  // un clic accidental apenas entra alguien).
+  var PAGE_LOAD_TS = (window.performance && performance.timeOrigin)
+    ? performance.timeOrigin
+    : Date.now();
+
   // ANALYTICS_CONFIG se declara en config.js. Como es `const`, no queda en
   // window (scripts clásicos), así que se accede por nombre con guarda typeof.
   var CFG =
@@ -44,6 +51,27 @@
 
   function setStore(key, value) {
     try { window.sessionStorage.setItem(key, value); } catch (e) { /* modo privado */ }
+  }
+
+  // localStorage persiste entre pestañas y visitas (a diferencia de
+  // sessionStorage, que se borra al cerrar la pestaña) — es lo que
+  // permite reconocer a un visitante que vuelve otro día.
+  function getLocal(key) {
+    try { return window.localStorage.getItem(key); } catch (e) { return null; }
+  }
+
+  function setLocal(key, value) {
+    try { window.localStorage.setItem(key, value); } catch (e) { /* modo privado */ }
+  }
+
+  // ----------------------------------------------------------
+  // Identificador de visitante (persiste entre visitas, en este navegador)
+  // ----------------------------------------------------------
+  var VISITOR_KEY = 'trk_visitor_id';
+  var visitorId = getLocal(VISITOR_KEY);
+  if (!visitorId) {
+    visitorId = uid();
+    setLocal(VISITOR_KEY, visitorId);
   }
 
   // ----------------------------------------------------------
@@ -115,6 +143,7 @@
       event_name: eventName,          // 'page_view' | 'click'
       event_id: eventId,              // mismo id que recibe el Pixel del navegador (dedup)
       session_id: sessionId,
+      visitor_id: visitorId,          // persiste entre visitas: distingue nuevo vs. recurrente
       url: window.location.href,
       referrer: document.referrer || '',
       screen_w: window.screen ? window.screen.width : null,
@@ -196,6 +225,7 @@
         button: el.getAttribute('data-track-button'),
         destination: el.getAttribute('data-destination') || '',
         href: el.getAttribute('href') || '',
+        dwell_ms: Math.max(0, Math.round(Date.now() - PAGE_LOAD_TS)),
       });
     },
     true // captura: se dispara aunque el <a> navegue enseguida

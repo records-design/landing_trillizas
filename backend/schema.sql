@@ -12,6 +12,7 @@ SET NAMES utf8mb4;
 -- ------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS sessions (
     session_id     VARCHAR(64)  NOT NULL,
+    visitor_id     VARCHAR(64)  DEFAULT NULL,  -- persiste entre visitas (localStorage): nuevo vs. recurrente
     first_seen     DATETIME     NOT NULL,
     last_seen      DATETIME     NOT NULL,
 
@@ -44,7 +45,8 @@ CREATE TABLE IF NOT EXISTS sessions (
     KEY idx_first_seen (first_seen),
     KEY idx_ad_id (ad_id),
     KEY idx_campaign_id (campaign_id),
-    KEY idx_utm_source (utm_source)
+    KEY idx_utm_source (utm_source),
+    KEY idx_visitor_id (visitor_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ------------------------------------------------------------
@@ -57,6 +59,7 @@ CREATE TABLE IF NOT EXISTS events (
     event_name     VARCHAR(30)  NOT NULL,      -- page_view | click
     button         VARCHAR(60)  DEFAULT NULL,  -- videoclip, cancion_spotify, social_*, ...
     destination    VARCHAR(60)  DEFAULT NULL,
+    dwell_ms       INT UNSIGNED DEFAULT NULL,  -- ms desde que cargó la página hasta el clic
     created_at     DATETIME     NOT NULL,
 
     url            VARCHAR(1000) DEFAULT NULL,
@@ -107,11 +110,15 @@ CREATE TABLE IF NOT EXISTS subscribers (
 
     utm_source   VARCHAR(120) DEFAULT NULL,
     utm_campaign VARCHAR(255) DEFAULT NULL,
+    ad_id        VARCHAR(64)  DEFAULT NULL,  -- qué anuncio generó esta suscripción
+    session_id   VARCHAR(64)  DEFAULT NULL,  -- para cruzar con los clics de esa misma sesión
     ip_hint      VARCHAR(64)  DEFAULT NULL,
 
     PRIMARY KEY (id),
     UNIQUE KEY uniq_email (email),
-    KEY idx_created_at (created_at)
+    KEY idx_created_at (created_at),
+    KEY idx_ad_id (ad_id),
+    KEY idx_session_id (session_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ------------------------------------------------------------
@@ -125,3 +132,22 @@ CREATE TABLE IF NOT EXISTS login_attempts (
     PRIMARY KEY (id),
     KEY idx_ip_time (ip_hint, attempted_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ------------------------------------------------------------
+-- Migraciones: agrega columnas nuevas a tablas que ya existan de
+-- una importación anterior de este archivo. Si la tabla se crea
+-- recién ahora (arriba), ya nace con estas columnas y esto no hace
+-- nada. Seguro de re-ejecutar las veces que haga falta.
+-- ------------------------------------------------------------
+ALTER TABLE sessions
+    ADD COLUMN IF NOT EXISTS visitor_id VARCHAR(64) DEFAULT NULL AFTER session_id,
+    ADD KEY IF NOT EXISTS idx_visitor_id (visitor_id);
+
+ALTER TABLE subscribers
+    ADD COLUMN IF NOT EXISTS ad_id VARCHAR(64) DEFAULT NULL,
+    ADD KEY IF NOT EXISTS idx_ad_id (ad_id),
+    ADD COLUMN IF NOT EXISTS session_id VARCHAR(64) DEFAULT NULL,
+    ADD KEY IF NOT EXISTS idx_session_id (session_id);
+
+ALTER TABLE events
+    ADD COLUMN IF NOT EXISTS dwell_ms INT UNSIGNED DEFAULT NULL AFTER destination;

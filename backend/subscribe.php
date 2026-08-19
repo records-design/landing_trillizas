@@ -38,19 +38,23 @@ $ipHint = !empty($cfg['privacy']['anonymize_ip']) ? anonymize_ip($ipRaw) : $ipRa
 $campaign = is_array($in['campaign'] ?? null) ? $in['campaign'] : [];
 $utmSource = isset($campaign['utm_source']) ? (string) $campaign['utm_source'] : null;
 $utmCampaign = isset($campaign['utm_campaign']) ? (string) $campaign['utm_campaign'] : null;
+$adId = isset($campaign['ad_id']) ? (string) $campaign['ad_id'] : null;
+$sessionId = isset($in['session_id']) ? (string) $in['session_id'] : null;
 
 $pdo = db();
 
 try {
     $stmt = $pdo->prepare(
-        'INSERT IGNORE INTO subscribers (email, created_at, utm_source, utm_campaign, ip_hint)
-         VALUES (?, ?, ?, ?, ?)'
+        'INSERT IGNORE INTO subscribers (email, created_at, utm_source, utm_campaign, ad_id, session_id, ip_hint)
+         VALUES (?, ?, ?, ?, ?, ?, ?)'
     );
     $stmt->execute([
         clip($email, 255),
         gmdate('Y-m-d H:i:s'),
         clip($utmSource, 120),
         clip($utmCampaign, 255),
+        clip($adId, 64),
+        clip($sessionId, 64),
         $ipHint,
     ]);
 } catch (PDOException $e) {

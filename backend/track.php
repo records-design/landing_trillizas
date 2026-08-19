@@ -81,18 +81,18 @@ if (!$session) {
     // llegan casi al mismo tiempo (solo refresca last_seen en ese caso).
     $ins = $pdo->prepare(
         'INSERT INTO sessions
-          (session_id, first_seen, last_seen,
+          (session_id, visitor_id, first_seen, last_seen,
            utm_source, utm_medium, utm_campaign, utm_content,
            campaign_id, adset_id, ad_id, placement, fbclid, gclid,
            device_type, os, browser,
            country, country_code, region, city,
            referrer, ip_hint, user_agent)
          VALUES
-          (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
          ON DUPLICATE KEY UPDATE last_seen = VALUES(last_seen)'
     );
     $ins->execute([
-        $in['session_id'], $now, $now,
+        $in['session_id'], clip($in['visitor_id'] ?? null, 64), $now, $now,
         clip($get('utm_source'), 120), clip($get('utm_medium'), 120),
         clip($get('utm_campaign'), 255), clip($get('utm_content'), 255),
         clip($get('campaign_id'), 64), clip($get('adset_id'), 64),
@@ -121,15 +121,16 @@ if (!$session) {
 // ------------------------------------------------------------
 $evt = $pdo->prepare(
     'INSERT IGNORE INTO events
-       (event_id, session_id, event_name, button, destination, created_at,
+       (event_id, session_id, event_name, button, destination, dwell_ms, created_at,
         url, referrer, utm_source, utm_campaign, ad_id, placement,
         device_type, country_code, city, sent_to_meta)
      VALUES
-       (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0)'
+       (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0)'
 );
+$dwellMs = isset($in['dwell_ms']) && is_numeric($in['dwell_ms']) ? (int) $in['dwell_ms'] : null;
 $evt->execute([
     $in['event_id'], $in['session_id'], $eventName,
-    clip($in['button'] ?? null, 60), clip($in['destination'] ?? null, 60), $now,
+    clip($in['button'] ?? null, 60), clip($in['destination'] ?? null, 60), $dwellMs, $now,
     clip($in['url'] ?? null, 1000), clip($in['referrer'] ?? null, 512),
     clip($get('utm_source'), 120), clip($get('utm_campaign'), 255),
     clip($get('ad_id'), 64), clip($get('placement'), 80),

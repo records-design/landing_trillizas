@@ -1,7 +1,7 @@
 <?php
 /**
- * Exporta a CSV todos los emails de la tabla `subscribers`.
- * Requiere sesión.
+ * Exporta a CSV los emails de la tabla `subscribers` del rango filtrado.
+ * Requiere sesión. Uso: export-subscribers.php?from=YYYY-MM-DD&to=YYYY-MM-DD
  */
 
 require_once __DIR__ . '/auth.php';
@@ -9,8 +9,18 @@ require_login();
 
 $pdo = db();
 
+$from = $_GET['from'] ?? gmdate('Y-m-d', time() - 6 * 86400);
+$to   = $_GET['to']   ?? gmdate('Y-m-d');
+$reDate = '/^\d{4}-\d{2}-\d{2}$/';
+if (!preg_match($reDate, $from)) $from = gmdate('Y-m-d', time() - 6 * 86400);
+if (!preg_match($reDate, $to))   $to   = gmdate('Y-m-d');
+
+$fromDt = $from . ' 00:00:00';
+$toDt   = $to   . ' 23:59:59';
+
+$filename = "suscriptores_{$from}_a_{$to}.csv";
 header('Content-Type: text/csv; charset=utf-8');
-header('Content-Disposition: attachment; filename="suscriptores.csv"');
+header('Content-Disposition: attachment; filename="' . $filename . '"');
 
 $out = fopen('php://output', 'w');
 // BOM para que Excel abra bien los acentos.
@@ -18,11 +28,13 @@ fwrite($out, "\xEF\xBB\xBF");
 
 fputcsv($out, ['email', 'fecha_utc', 'utm_source', 'utm_campaign'], ',', '"', '');
 
-$stmt = $pdo->query(
+$stmt = $pdo->prepare(
     'SELECT email, created_at, utm_source, utm_campaign
      FROM subscribers
+     WHERE created_at BETWEEN ? AND ?
      ORDER BY created_at ASC'
 );
+$stmt->execute([$fromDt, $toDt]);
 
 while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
     fputcsv($out, $row, ',', '"', '');

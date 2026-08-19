@@ -18,7 +18,7 @@ if (!preg_match($reDate, $to))   $to   = gmdate('Y-m-d');
 $fromDt = $from . ' 00:00:00';
 $toDt   = $to   . ' 23:59:59';
 
-$filename = "eventos_{$from}_a_{$to}.csv";
+$filename = "visitas_y_clics_{$from}_a_{$to}.csv";
 header('Content-Type: text/csv; charset=utf-8');
 header('Content-Disposition: attachment; filename="' . $filename . '"');
 

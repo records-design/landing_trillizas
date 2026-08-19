@@ -141,13 +141,103 @@ $ads = q($pdo,
             COALESCE(r.ad_name, e.utm_campaign, e.ad_id) ad_name,
             COALESCE(r.campaign_name, e.utm_campaign) campaign_name,
             COUNT(DISTINCT e.session_id) visitas,
-            SUM(CASE WHEN e.event_name = 'click' THEN 1 ELSE 0 END) clics
+            SUM(CASE WHEN e.event_name = 'click' THEN 1 ELSE 0 END) clics,
+            (SELECT COUNT(*) FROM subscribers s
+               WHERE s.ad_id = e.ad_id AND s.created_at BETWEEN ? AND ?) suscripciones
      FROM events e
      LEFT JOIN ad_reference r ON r.ad_id = e.ad_id
      WHERE e.ad_id IS NOT NULL AND e.created_at BETWEEN ? AND ?
      GROUP BY e.ad_id, ad_name, campaign_name
      ORDER BY visitas DESC LIMIT 50",
+    [$fromDt, $toDt, $fromDt, $toDt]);
+
+// ------------------------------------------------------------
+// Nuevos vs. recurrentes: un visitante es "recurrente" si su
+// visitor_id (persiste entre visitas, ver tracking.js) ya tenía
+// una sesión ANTERIOR a esta, sin importar cuándo. "(sin dato)"
+// son sesiones de antes de este cambio, o con localStorage
+// bloqueado (modo privado), donde no hay visitor_id para comparar.
+// ------------------------------------------------------------
+$newVsReturning = q($pdo,
+    "SELECT
+        CASE
+          WHEN visitor_id IS NULL THEN '(sin dato)'
+          WHEN EXISTS (
+            SELECT 1 FROM sessions s2
+             WHERE s2.visitor_id = sessions.visitor_id
+               AND s2.first_seen < sessions.first_seen
+          ) THEN 'recurrente'
+          ELSE 'nuevo'
+        END AS tipo,
+        COUNT(*) n
+     FROM sessions
+     WHERE first_seen BETWEEN ? AND ?
+     GROUP BY tipo",
     $range);
+
+// ------------------------------------------------------------
+// Interés real en el video y la canción: tasa de clic sobre el
+// total de visitantes (no solo el número absoluto) y cuánto tiempo
+// pasó, en promedio, antes de que alguien clickeara cada uno —
+// un clic a los 2 segundos de entrar vale distinto que uno a los 30.
+// ------------------------------------------------------------
+$buttonInterest = q($pdo,
+    "SELECT button,
+            COUNT(DISTINCT session_id) sesiones,
+            AVG(dwell_ms) avg_dwell_ms
+     FROM events
+     WHERE event_name = 'click' AND button IN ('videoclip', 'cancion_spotify')
+       AND created_at BETWEEN ? AND ?
+     GROUP BY button",
+    $range);
+foreach ($buttonInterest as &$b) {
+    $b['pct_visitantes'] = $uniqueVisitors ? round($b['sesiones'] / $uniqueVisitors * 100, 1) : 0;
+    $b['avg_dwell_ms'] = $b['avg_dwell_ms'] !== null ? round($b['avg_dwell_ms']) : null;
+}
+unset($b);
+
+// ------------------------------------------------------------
+// Cruce interés musical <-> suscripción: de la gente que clickeó
+// el video o la canción, ¿cuántos además dejaron el mail? Y cuántos
+// clickearon LOS DOS (el segmento más interesado de todos).
+// ------------------------------------------------------------
+$videoClicks = (int) q($pdo,
+    "SELECT COUNT(DISTINCT session_id) n FROM events
+     WHERE event_name='click' AND button='videoclip' AND created_at BETWEEN ? AND ?",
+    $range)[0]['n'];
+
+$videoSubs = (int) q($pdo,
+    "SELECT COUNT(DISTINCT e.session_id) n FROM events e
+     JOIN subscribers s ON s.session_id = e.session_id
+     WHERE e.event_name='click' AND e.button='videoclip' AND e.created_at BETWEEN ? AND ?",
+    $range)[0]['n'];
+
+$songClicks = (int) q($pdo,
+    "SELECT COUNT(DISTINCT session_id) n FROM events
+     WHERE event_name='click' AND button='cancion_spotify' AND created_at BETWEEN ? AND ?",
+    $range)[0]['n'];
+
+$songSubs = (int) q($pdo,
+    "SELECT COUNT(DISTINCT e.session_id) n FROM events e
+     JOIN subscribers s ON s.session_id = e.session_id
+     WHERE e.event_name='click' AND e.button='cancion_spotify' AND e.created_at BETWEEN ? AND ?",
+    $range)[0]['n'];
+
+$bothClicks = (int) q($pdo,
+    "SELECT COUNT(DISTINCT e1.session_id) n FROM events e1
+     WHERE e1.event_name='click' AND e1.button='videoclip' AND e1.created_at BETWEEN ? AND ?
+       AND EXISTS (
+         SELECT 1 FROM events e2
+          WHERE e2.session_id = e1.session_id AND e2.event_name='click'
+            AND e2.button='cancion_spotify' AND e2.created_at BETWEEN ? AND ?
+       )",
+    [$fromDt, $toDt, $fromDt, $toDt])[0]['n'];
+
+$musicEngagement = [
+    'video' => ['clics' => $videoClicks, 'suscripciones' => $videoSubs],
+    'cancion' => ['clics' => $songClicks, 'suscripciones' => $songSubs],
+    'ambos_clics' => $bothClicks,
+];
 
 // ------------------------------------------------------------
 // Respuesta
@@ -172,4 +262,7 @@ echo json_encode([
     'countries'        => $countries,
     'cities'           => $cities,
     'ads'              => $ads,
+    'new_vs_returning' => $newVsReturning,
+    'button_interest'  => $buttonInterest,
+    'music_engagement' => $musicEngagement,
 ], JSON_UNESCAPED_UNICODE);

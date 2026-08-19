@@ -54,7 +54,7 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
 </head>
 <body>
   <header>
-    <h1>📊 Analíticas · Las Trillizas de Oro y El Libro Mágico</h1>
+    <h1><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-3px; margin-right:6px;"><rect x="3" y="12" width="4" height="8"/><rect x="10" y="7" width="4" height="13"/><rect x="17" y="3" width="4" height="17"/></svg>Analíticas · Las Trillizas de Oro y El Libro Mágico</h1>
     <div class="right">
       <span class="live"><span class="dot"></span><span id="activeNow">0</span> activos ahora</span>
       <span class="muted"><?= $panelUser ?></span>
@@ -70,8 +70,8 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
       <button class="preset" data-days="0">Hoy</button>
       <button class="preset" data-days="6">7 días</button>
       <button class="preset" data-days="29">30 días</button>
-      <button class="exp" id="exportBtn">Exportar CSV</button>
-      <a class="exp" href="export-subscribers.php" style="text-decoration:none; display:inline-flex; align-items:center;">Suscriptores CSV</a>
+      <button class="exp" id="exportBtn">Visitas y clics CSV</button>
+      <button class="exp" id="exportSubsBtn">Suscriptores CSV</button>
     </div>
 
     <div class="cards">
@@ -93,33 +93,60 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
 
     <div class="grid2">
       <div class="panel">
-        <h2>Embudo de conversión</h2>
-        <div id="funnel"></div>
+        <h2>Nuevos vs. recurrentes</h2>
+        <canvas id="chartNewReturning"></canvas>
+        <p class="muted">"Nuevo": es la primera vez que esa persona entra a la web. "Recurrente": ya había entrado antes (por ejemplo, volvió por un anuncio de remarketing).</p>
       </div>
       <div class="panel">
-        <h2>Placement</h2>
-        <table id="tblPlacement"><thead><tr><th>Placement</th><th class="n">Sesiones</th></tr></thead><tbody></tbody></table>
+        <h2>Embudo de conversión</h2>
+        <div id="funnel"></div>
       </div>
     </div>
 
     <div class="grid2">
       <div class="panel">
+        <h2>Placement</h2>
+        <table id="tblPlacement"><thead><tr><th>Placement</th><th class="n">Sesiones</th></tr></thead><tbody></tbody></table>
+      </div>
+      <div class="panel">
         <h2>Países</h2>
         <table id="tblCountries"><thead><tr><th>País</th><th class="n">Sesiones</th></tr></thead><tbody></tbody></table>
       </div>
+    </div>
+
+    <div class="grid2">
       <div class="panel">
         <h2>Ciudades</h2>
         <table id="tblCities"><thead><tr><th>Ciudad</th><th class="n">Sesiones</th></tr></thead><tbody></tbody></table>
       </div>
     </div>
 
+    <div class="grid2">
+      <div class="panel">
+        <h2>¿Miran el video y escuchan la canción?</h2>
+        <table id="tblButtonInterest">
+          <thead><tr><th>Botón</th><th class="n">% que lo tocó</th><th class="n">Cuánto tardaron en tocarlo</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <p class="muted">"% que lo tocó" = de cada 100 personas que entran a la web, cuántas apretaron ese botón. "Cuánto tardaron" = el tiempo promedio desde que entraron hasta que lo apretaron — más tiempo suele significar que lo pensaron, no que fue un clic apurado sin querer.</p>
+      </div>
+      <div class="panel">
+        <h2>¿El interés en la música se transforma en suscriptores?</h2>
+        <table id="tblMusicEngagement">
+          <thead><tr><th></th><th class="n">Personas que lo tocaron</th><th class="n">De esas, cuántas dejaron el mail</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <p class="muted" id="bothClicksNote"></p>
+      </div>
+    </div>
+
     <div class="panel">
-      <h2>Por anuncio (ad_id)</h2>
+      <h2>Resultados por anuncio</h2>
       <table id="tblAds">
-        <thead><tr><th>Anuncio</th><th>Campaña</th><th class="n">Visitas</th><th class="n">Clics</th></tr></thead>
+        <thead><tr><th>Anuncio</th><th>Campaña</th><th class="n">Visitas</th><th class="n">Clics</th><th class="n">Mails dejados</th></tr></thead>
         <tbody></tbody>
       </table>
-      <p class="muted">Se agrupa por <code>ad_id</code>; el nombre es la última <code>ad.name</code> vista.</p>
+      <p class="muted">Cuánta gente entró, clickeó algo y dejó su mail, separado por cada anuncio de Meta.</p>
     </div>
   </div>
 
@@ -198,6 +225,8 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
         d.sources.map(r => r.src), d.sources.map(r => +r.n));
       drawChart('chartDevices', 'doughnut',
         d.devices.map(r => r.device), d.devices.map(r => +r.n));
+      drawChart('chartNewReturning', 'doughnut',
+        d.new_vs_returning.map(r => r.tipo), d.new_vs_returning.map(r => +r.n));
 
       // Embudo
       const v = d.funnel.visits || 0, c = d.funnel.sessions_with_click || 0;
@@ -213,7 +242,26 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
       rows('tblCountries', d.countries, r => `<td>${r.country}</td><td class="n">${fmt(+r.n)}</td>`);
       rows('tblCities', d.cities, r => `<td>${r.city}${r.cc ? ' · ' + r.cc : ''}</td><td class="n">${fmt(+r.n)}</td>`);
       rows('tblAds', d.ads, r =>
-        `<td>${r.ad_name ?? r.ad_id}</td><td>${r.campaign_name ?? ''}</td><td class="n">${fmt(+r.visitas)}</td><td class="n">${fmt(+r.clics)}</td>`);
+        `<td>${r.ad_name ?? r.ad_id}</td><td>${r.campaign_name ?? ''}</td><td class="n">${fmt(+r.visitas)}</td><td class="n">${fmt(+r.clics)}</td><td class="n">${fmt(+r.suscripciones)}</td>`);
+
+      // Interés real en video/canción
+      const buttonLabel = { videoclip: 'Mirá el videoclip', cancion_spotify: 'Escuchá la canción' };
+      const fmtDwell = (ms) => {
+        if (ms === null || ms === undefined) return '–';
+        return ms < 1000 ? `${ms} ms` : `${(ms / 1000).toFixed(1)} s`;
+      };
+      rows('tblButtonInterest', d.button_interest, r =>
+        `<td>${buttonLabel[r.button] ?? r.button}</td><td class="n">${r.pct_visitantes}%</td><td class="n">${fmtDwell(r.avg_dwell_ms)}</td>`);
+
+      // Cruce interés musical <-> suscripción
+      const me = d.music_engagement;
+      const pctSubs = (subs, clicks) => clicks ? (subs / clicks * 100).toFixed(1) : '0.0';
+      rows('tblMusicEngagement', [
+        { label: 'Video', clics: me.video.clics, subs: me.video.suscripciones },
+        { label: 'Canción', clics: me.cancion.clics, subs: me.cancion.suscripciones },
+      ], r => `<td>${r.label}</td><td class="n">${fmt(r.clics)}</td><td class="n">${fmt(r.subs)} (${pctSubs(r.subs, r.clics)}%)</td>`);
+      $('bothClicksNote').textContent =
+        `${fmt(me.ambos_clics)} persona(s) clickearon el video Y la canción — el segmento más interesado.`;
     }
 
     // Eventos UI
@@ -223,6 +271,9 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
     $('to').addEventListener('change', load);
     $('exportBtn').addEventListener('click', () => {
       location.href = `export.php?from=${$('from').value}&to=${$('to').value}`;
+    });
+    $('exportSubsBtn').addEventListener('click', () => {
+      location.href = `export-subscribers.php?from=${$('from').value}&to=${$('to').value}`;
     });
 
     // Inicio: últimos 7 días + auto-refresh de "activos ahora"

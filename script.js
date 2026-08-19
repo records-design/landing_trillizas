@@ -193,10 +193,22 @@ if (newsletterForm) {
     feedbackEl.removeAttribute('data-state');
     feedbackEl.textContent = 'Enviando...';
 
+    // Misma campaña que ya guardó tracking.js al entrar (sessionStorage),
+    // así se sabe qué anuncio generó esta suscripción puntual.
+    let campaign = {};
+    try {
+      campaign = JSON.parse(window.sessionStorage.getItem('trk_campaign') || '{}');
+    } catch (e) { /* sigue sin campaña si algo falla */ }
+
+    // Mismo session_id que usa tracking.js — permite cruzar en el panel
+    // "esta persona clickeó el video/la canción Y también se suscribió".
+    let sessionId = null;
+    try { sessionId = window.sessionStorage.getItem('trk_session_id'); } catch (e) { /* nada */ }
+
     fetch('backend/subscribe.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email }),
+      body: JSON.stringify({ email, campaign, session_id: sessionId }),
     })
       .then((res) => {
         if (!res.ok) throw new Error('subscribe_failed');
