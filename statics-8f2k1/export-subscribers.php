@@ -18,6 +18,10 @@ if (!preg_match($reDate, $to))   $to   = gmdate('Y-m-d');
 $fromDt = $from . ' 00:00:00';
 $toDt   = $to   . ' 23:59:59';
 
+$adFilter = (isset($_GET['ad_id']) && $_GET['ad_id'] !== '') ? substr((string) $_GET['ad_id'], 0, 64) : null;
+$adCond = $adFilter !== null ? ' AND ad_id = ?' : '';
+$adParam = $adFilter !== null ? [$adFilter] : [];
+
 $filename = "suscriptores_{$from}_a_{$to}.csv";
 header('Content-Type: text/csv; charset=utf-8');
 header('Content-Disposition: attachment; filename="' . $filename . '"');
@@ -29,12 +33,12 @@ fwrite($out, "\xEF\xBB\xBF");
 fputcsv($out, ['email', 'fecha_utc', 'utm_source', 'utm_campaign'], ',', '"', '');
 
 $stmt = $pdo->prepare(
-    'SELECT email, created_at, utm_source, utm_campaign
+    "SELECT email, created_at, utm_source, utm_campaign
      FROM subscribers
-     WHERE created_at BETWEEN ? AND ?
-     ORDER BY created_at ASC'
+     WHERE created_at BETWEEN ? AND ?{$adCond}
+     ORDER BY created_at ASC"
 );
-$stmt->execute([$fromDt, $toDt]);
+$stmt->execute(array_merge([$fromDt, $toDt], $adParam));
 
 while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
     fputcsv($out, $row, ',', '"', '');

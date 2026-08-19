@@ -28,7 +28,7 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
     a.logout { color: var(--muted); text-decoration: none; }
     .wrap { padding: 20px 24px 60px; max-width: 1200px; margin: 0 auto; }
     .controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 22px; }
-    .controls input[type=date], .controls button {
+    .controls input[type=date], .controls button, .controls select {
       background: var(--card); color: var(--text); border: 1px solid var(--line);
       border-radius: 8px; padding: 8px 12px; font-size: 13px; }
     .controls button { cursor: pointer; }
@@ -70,6 +70,7 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
       <button class="preset" data-days="0">Hoy</button>
       <button class="preset" data-days="6">7 días</button>
       <button class="preset" data-days="29">30 días</button>
+      <select id="adFilter"><option value="">Todos los anuncios</option></select>
       <button class="exp" id="exportBtn">Visitas y clics CSV</button>
       <button class="exp" id="exportSubsBtn">Suscriptores CSV</button>
     </div>
@@ -204,9 +205,25 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
 
     async function load() {
       const from = $('from').value, to = $('to').value;
-      const res = await fetch(`data.php?from=${from}&to=${to}`, { credentials: 'same-origin' });
+      const adId = $('adFilter').value;
+      const qs = new URLSearchParams({ from, to });
+      if (adId) qs.set('ad_id', adId);
+      const res = await fetch(`data.php?${qs}`, { credentials: 'same-origin' });
       if (res.status === 401) { location.href = 'login.php'; return; }
       const d = await res.json();
+
+      // Selector de anuncio: se completa una sola vez con el listado
+      // completo (no filtrado), para no perder la selección al recargar.
+      const adSel = $('adFilter');
+      if (adSel.dataset.loaded !== '1') {
+        d.ads_list.forEach((a) => {
+          const opt = document.createElement('option');
+          opt.value = a.ad_id;
+          opt.textContent = a.ad_name;
+          adSel.appendChild(opt);
+        });
+        adSel.dataset.loaded = '1';
+      }
 
       // KPIs
       $('kpiViews').textContent = fmt(d.totals.page_views);
@@ -269,11 +286,17 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
       b.addEventListener('click', () => { setPreset(+b.dataset.days); load(); }));
     $('from').addEventListener('change', load);
     $('to').addEventListener('change', load);
+    $('adFilter').addEventListener('change', load);
+    function exportQs() {
+      const qs = new URLSearchParams({ from: $('from').value, to: $('to').value });
+      if ($('adFilter').value) qs.set('ad_id', $('adFilter').value);
+      return qs.toString();
+    }
     $('exportBtn').addEventListener('click', () => {
-      location.href = `export.php?from=${$('from').value}&to=${$('to').value}`;
+      location.href = `export.php?${exportQs()}`;
     });
     $('exportSubsBtn').addEventListener('click', () => {
-      location.href = `export-subscribers.php?from=${$('from').value}&to=${$('to').value}`;
+      location.href = `export-subscribers.php?${exportQs()}`;
     });
 
     // Inicio: últimos 7 días + auto-refresh de "activos ahora"

@@ -41,24 +41,40 @@ function q($pdo, $sql, $params)
 $range = [$fromDt, $toDt];
 
 // ------------------------------------------------------------
+// Filtro opcional por anuncio específico (?ad_id=...). Cuando está
+// activo, todas las métricas de abajo se recalculan solo con el
+// tráfico de ese anuncio (la tabla "Resultados por anuncio" en
+// cambio siempre muestra el listado completo, para comparar).
+// ------------------------------------------------------------
+$adFilter = (isset($_GET['ad_id']) && $_GET['ad_id'] !== '') ? substr((string) $_GET['ad_id'], 0, 64) : null;
+
+$adEventsCond = $adFilter !== null ? ' AND ad_id = ?' : '';
+$adEventsParam = $adFilter !== null ? [$adFilter] : [];
+
+$adSessionsCond = $adFilter !== null
+    ? ' AND session_id IN (SELECT DISTINCT session_id FROM events WHERE ad_id = ? AND created_at BETWEEN ? AND ?)'
+    : '';
+$adSessionsParam = $adFilter !== null ? [$adFilter, $fromDt, $toDt] : [];
+
+// ------------------------------------------------------------
 // Totales
 // ------------------------------------------------------------
 $pageViews = (int) q($pdo,
-    "SELECT COUNT(*) n FROM events WHERE event_name='page_view' AND created_at BETWEEN ? AND ?",
-    $range)[0]['n'];
+    "SELECT COUNT(*) n FROM events WHERE event_name='page_view' AND created_at BETWEEN ? AND ?{$adEventsCond}",
+    array_merge($range, $adEventsParam))[0]['n'];
 
 $uniqueVisitors = (int) q($pdo,
-    "SELECT COUNT(DISTINCT session_id) n FROM events WHERE created_at BETWEEN ? AND ?",
-    $range)[0]['n'];
+    "SELECT COUNT(DISTINCT session_id) n FROM events WHERE created_at BETWEEN ? AND ?{$adEventsCond}",
+    array_merge($range, $adEventsParam))[0]['n'];
 
 $totalClicks = (int) q($pdo,
-    "SELECT COUNT(*) n FROM events WHERE event_name='click' AND created_at BETWEEN ? AND ?",
-    $range)[0]['n'];
+    "SELECT COUNT(*) n FROM events WHERE event_name='click' AND created_at BETWEEN ? AND ?{$adEventsCond}",
+    array_merge($range, $adEventsParam))[0]['n'];
 
 // Sesiones con al menos un clic (para el embudo).
 $sessionsWithClick = (int) q($pdo,
-    "SELECT COUNT(DISTINCT session_id) n FROM events WHERE event_name='click' AND created_at BETWEEN ? AND ?",
-    $range)[0]['n'];
+    "SELECT COUNT(DISTINCT session_id) n FROM events WHERE event_name='click' AND created_at BETWEEN ? AND ?{$adEventsCond}",
+    array_merge($range, $adEventsParam))[0]['n'];
 
 // ------------------------------------------------------------
 // Activos ahora (últimos 5 minutos)
@@ -72,61 +88,61 @@ $activeNow = (int) q($pdo,
 // ------------------------------------------------------------
 $timeline = q($pdo,
     "SELECT DATE(created_at) d, COUNT(*) views
-     FROM events WHERE event_name='page_view' AND created_at BETWEEN ? AND ?
+     FROM events WHERE event_name='page_view' AND created_at BETWEEN ? AND ?{$adEventsCond}
      GROUP BY DATE(created_at) ORDER BY d ASC",
-    $range);
+    array_merge($range, $adEventsParam));
 
 // ------------------------------------------------------------
 // Clics por botón
 // ------------------------------------------------------------
 $clicksByButton = q($pdo,
     "SELECT button, COUNT(*) n
-     FROM events WHERE event_name='click' AND button IS NOT NULL AND created_at BETWEEN ? AND ?
+     FROM events WHERE event_name='click' AND button IS NOT NULL AND created_at BETWEEN ? AND ?{$adEventsCond}
      GROUP BY button ORDER BY n DESC",
-    $range);
+    array_merge($range, $adEventsParam));
 
 // ------------------------------------------------------------
 // Fuentes de tráfico (utm_source; 'directo' si es NULL)
 // ------------------------------------------------------------
 $sources = q($pdo,
     "SELECT COALESCE(NULLIF(utm_source,''),'directo') src, COUNT(*) n
-     FROM sessions WHERE first_seen BETWEEN ? AND ?
+     FROM sessions WHERE first_seen BETWEEN ? AND ?{$adSessionsCond}
      GROUP BY src ORDER BY n DESC",
-    $range);
+    array_merge($range, $adSessionsParam));
 
 // ------------------------------------------------------------
 // Dispositivos
 // ------------------------------------------------------------
 $devices = q($pdo,
     "SELECT COALESCE(device_type,'?') device, COUNT(*) n
-     FROM sessions WHERE first_seen BETWEEN ? AND ?
+     FROM sessions WHERE first_seen BETWEEN ? AND ?{$adSessionsCond}
      GROUP BY device ORDER BY n DESC",
-    $range);
+    array_merge($range, $adSessionsParam));
 
 // ------------------------------------------------------------
 // Placement
 // ------------------------------------------------------------
 $placements = q($pdo,
     "SELECT COALESCE(NULLIF(placement,''),'(sin dato)') placement, COUNT(*) n
-     FROM sessions WHERE first_seen BETWEEN ? AND ?
+     FROM sessions WHERE first_seen BETWEEN ? AND ?{$adSessionsCond}
      GROUP BY placement ORDER BY n DESC",
-    $range);
+    array_merge($range, $adSessionsParam));
 
 // ------------------------------------------------------------
 // Países y ciudades
 // ------------------------------------------------------------
 $countries = q($pdo,
     "SELECT COALESCE(NULLIF(country,''),'(sin dato)') country, COUNT(*) n
-     FROM sessions WHERE first_seen BETWEEN ? AND ?
+     FROM sessions WHERE first_seen BETWEEN ? AND ?{$adSessionsCond}
      GROUP BY country ORDER BY n DESC LIMIT 15",
-    $range);
+    array_merge($range, $adSessionsParam));
 
 $cities = q($pdo,
     "SELECT COALESCE(NULLIF(city,''),'(sin dato)') city,
             COALESCE(NULLIF(country_code,''),'') cc, COUNT(*) n
-     FROM sessions WHERE first_seen BETWEEN ? AND ?
+     FROM sessions WHERE first_seen BETWEEN ? AND ?{$adSessionsCond}
      GROUP BY city, cc ORDER BY n DESC LIMIT 15",
-    $range);
+    array_merge($range, $adSessionsParam));
 
 // ------------------------------------------------------------
 // Por anuncio (ad_id) con nombre legible + clics.
@@ -171,9 +187,9 @@ $newVsReturning = q($pdo,
         END AS tipo,
         COUNT(*) n
      FROM sessions
-     WHERE first_seen BETWEEN ? AND ?
+     WHERE first_seen BETWEEN ? AND ?{$adSessionsCond}
      GROUP BY tipo",
-    $range);
+    array_merge($range, $adSessionsParam));
 
 // ------------------------------------------------------------
 // Interés real en el video y la canción: tasa de clic sobre el
@@ -187,9 +203,9 @@ $buttonInterest = q($pdo,
             AVG(dwell_ms) avg_dwell_ms
      FROM events
      WHERE event_name = 'click' AND button IN ('videoclip', 'cancion_spotify')
-       AND created_at BETWEEN ? AND ?
+       AND created_at BETWEEN ? AND ?{$adEventsCond}
      GROUP BY button",
-    $range);
+    array_merge($range, $adEventsParam));
 foreach ($buttonInterest as &$b) {
     $b['pct_visitantes'] = $uniqueVisitors ? round($b['sesiones'] / $uniqueVisitors * 100, 1) : 0;
     $b['avg_dwell_ms'] = $b['avg_dwell_ms'] !== null ? round($b['avg_dwell_ms']) : null;
@@ -203,35 +219,35 @@ unset($b);
 // ------------------------------------------------------------
 $videoClicks = (int) q($pdo,
     "SELECT COUNT(DISTINCT session_id) n FROM events
-     WHERE event_name='click' AND button='videoclip' AND created_at BETWEEN ? AND ?",
-    $range)[0]['n'];
+     WHERE event_name='click' AND button='videoclip' AND created_at BETWEEN ? AND ?{$adEventsCond}",
+    array_merge($range, $adEventsParam))[0]['n'];
 
 $videoSubs = (int) q($pdo,
     "SELECT COUNT(DISTINCT e.session_id) n FROM events e
      JOIN subscribers s ON s.session_id = e.session_id
-     WHERE e.event_name='click' AND e.button='videoclip' AND e.created_at BETWEEN ? AND ?",
-    $range)[0]['n'];
+     WHERE e.event_name='click' AND e.button='videoclip' AND e.created_at BETWEEN ? AND ?{$adEventsCond}",
+    array_merge($range, $adEventsParam))[0]['n'];
 
 $songClicks = (int) q($pdo,
     "SELECT COUNT(DISTINCT session_id) n FROM events
-     WHERE event_name='click' AND button='cancion_spotify' AND created_at BETWEEN ? AND ?",
-    $range)[0]['n'];
+     WHERE event_name='click' AND button='cancion_spotify' AND created_at BETWEEN ? AND ?{$adEventsCond}",
+    array_merge($range, $adEventsParam))[0]['n'];
 
 $songSubs = (int) q($pdo,
     "SELECT COUNT(DISTINCT e.session_id) n FROM events e
      JOIN subscribers s ON s.session_id = e.session_id
-     WHERE e.event_name='click' AND e.button='cancion_spotify' AND e.created_at BETWEEN ? AND ?",
-    $range)[0]['n'];
+     WHERE e.event_name='click' AND e.button='cancion_spotify' AND e.created_at BETWEEN ? AND ?{$adEventsCond}",
+    array_merge($range, $adEventsParam))[0]['n'];
 
 $bothClicks = (int) q($pdo,
     "SELECT COUNT(DISTINCT e1.session_id) n FROM events e1
-     WHERE e1.event_name='click' AND e1.button='videoclip' AND e1.created_at BETWEEN ? AND ?
+     WHERE e1.event_name='click' AND e1.button='videoclip' AND e1.created_at BETWEEN ? AND ?{$adEventsCond}
        AND EXISTS (
          SELECT 1 FROM events e2
           WHERE e2.session_id = e1.session_id AND e2.event_name='click'
-            AND e2.button='cancion_spotify' AND e2.created_at BETWEEN ? AND ?
+            AND e2.button='cancion_spotify' AND e2.created_at BETWEEN ? AND ?{$adEventsCond}
        )",
-    [$fromDt, $toDt, $fromDt, $toDt])[0]['n'];
+    array_merge([$fromDt, $toDt], $adEventsParam, [$fromDt, $toDt], $adEventsParam))[0]['n'];
 
 $musicEngagement = [
     'video' => ['clics' => $videoClicks, 'suscripciones' => $videoSubs],
@@ -240,10 +256,20 @@ $musicEngagement = [
 ];
 
 // ------------------------------------------------------------
+// Lista de anuncios para el selector de filtro (siempre completa,
+// sin aplicar el filtro, para que se puedan ver/elegir todos).
+// ------------------------------------------------------------
+$adsList = array_map(function ($r) {
+    return ['ad_id' => $r['ad_id'], 'ad_name' => $r['ad_name'] ?? $r['ad_id']];
+}, $ads);
+
+// ------------------------------------------------------------
 // Respuesta
 // ------------------------------------------------------------
 echo json_encode([
     'range' => ['from' => $from, 'to' => $to],
+    'ad_filter' => $adFilter,
+    'ads_list' => $adsList,
     'totals' => [
         'page_views'      => $pageViews,
         'unique_visitors' => $uniqueVisitors,
