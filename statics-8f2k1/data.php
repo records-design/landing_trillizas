@@ -50,6 +50,10 @@ $adFilter = (isset($_GET['ad_id']) && $_GET['ad_id'] !== '') ? substr((string) $
 
 $adEventsCond = $adFilter !== null ? ' AND ad_id = ?' : '';
 $adEventsParam = $adFilter !== null ? [$adFilter] : [];
+// Igual que $adEventsCond pero con el prefijo de tabla, para queries
+// que hacen JOIN con otra tabla que también tiene columna ad_id
+// (ej. subscribers) y sin el prefijo MySQL tira "ad_id is ambiguous".
+$adEventsCondE = $adFilter !== null ? ' AND e.ad_id = ?' : '';
 
 $adSessionsCond = $adFilter !== null
     ? ' AND session_id IN (SELECT DISTINCT session_id FROM events WHERE ad_id = ? AND created_at BETWEEN ? AND ?)'
@@ -225,7 +229,7 @@ $videoClicks = (int) q($pdo,
 $videoSubs = (int) q($pdo,
     "SELECT COUNT(DISTINCT e.session_id) n FROM events e
      JOIN subscribers s ON s.session_id = e.session_id
-     WHERE e.event_name='click' AND e.button='videoclip' AND e.created_at BETWEEN ? AND ?{$adEventsCond}",
+     WHERE e.event_name='click' AND e.button='videoclip' AND e.created_at BETWEEN ? AND ?{$adEventsCondE}",
     array_merge($range, $adEventsParam))[0]['n'];
 
 $songClicks = (int) q($pdo,
@@ -236,7 +240,7 @@ $songClicks = (int) q($pdo,
 $songSubs = (int) q($pdo,
     "SELECT COUNT(DISTINCT e.session_id) n FROM events e
      JOIN subscribers s ON s.session_id = e.session_id
-     WHERE e.event_name='click' AND e.button='cancion_spotify' AND e.created_at BETWEEN ? AND ?{$adEventsCond}",
+     WHERE e.event_name='click' AND e.button='cancion_spotify' AND e.created_at BETWEEN ? AND ?{$adEventsCondE}",
     array_merge($range, $adEventsParam))[0]['n'];
 
 $bothClicks = (int) q($pdo,
