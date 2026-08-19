@@ -39,6 +39,9 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
     .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; }
     .card .label { font-size: 12px; color: var(--muted); }
     .card .value { font-size: 28px; font-weight: 700; margin-top: 4px; }
+    .card .diff { font-size: 12px; margin-top: 6px; color: var(--muted); }
+    .card .diff.up { color: #48d17a; }
+    .card .diff.down { color: #ff6b9d; }
     .grid2 { display: grid; grid-template-columns: repeat(auto-fit,minmax(320px,1fr)); gap: 18px; margin-bottom: 18px; }
     .panel { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; }
     .panel h2 { font-size: 14px; margin: 0 0 14px; color: var(--muted); font-weight: 600; }
@@ -75,11 +78,13 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
       <button class="exp" id="exportSubsBtn">Suscriptores CSV</button>
     </div>
 
+    <p class="muted" id="comparisonNote" style="margin: -10px 0 14px;"></p>
     <div class="cards">
-      <div class="card"><div class="label">Visitas (page views)</div><div class="value" id="kpiViews">–</div></div>
-      <div class="card"><div class="label">Visitantes únicos</div><div class="value" id="kpiVisitors">–</div></div>
-      <div class="card"><div class="label">Clics en botones</div><div class="value" id="kpiClicks">–</div></div>
+      <div class="card"><div class="label">Visitas (page views)</div><div class="value" id="kpiViews">–</div><div class="diff" id="diffViews"></div></div>
+      <div class="card"><div class="label">Visitantes únicos</div><div class="value" id="kpiVisitors">–</div><div class="diff" id="diffVisitors"></div></div>
+      <div class="card"><div class="label">Clics en botones</div><div class="value" id="kpiClicks">–</div><div class="diff" id="diffClicks"></div></div>
       <div class="card"><div class="label">Tasa de clic</div><div class="value" id="kpiCTR">–</div></div>
+      <div class="card"><div class="label">Suscripciones</div><div class="value" id="kpiSubs">–</div><div class="diff" id="diffSubs"></div></div>
     </div>
 
     <div class="grid2">
@@ -229,9 +234,28 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
       $('kpiViews').textContent = fmt(d.totals.page_views);
       $('kpiVisitors').textContent = fmt(d.totals.unique_visitors);
       $('kpiClicks').textContent = fmt(d.totals.clicks);
+      $('kpiSubs').textContent = fmt(d.totals.subscriptions);
       $('activeNow').textContent = fmt(d.totals.active_now);
       const ctr = d.totals.unique_visitors ? (d.totals.clicks / d.totals.unique_visitors * 100) : 0;
       $('kpiCTR').textContent = ctr.toFixed(1) + '%';
+
+      // Comparación con el período anterior (misma cantidad de días,
+      // justo antes del rango elegido).
+      const pr = d.comparison.prev_range;
+      $('comparisonNote').textContent =
+        `Comparado con el período anterior (${pr.from} a ${pr.to}):`;
+      function setDiff(elId, actual, previo) {
+        const el = $(elId);
+        if (!previo) { el.textContent = actual ? 'sin datos del período anterior' : ''; el.className = 'diff'; return; }
+        const pct = ((actual - previo) / previo) * 100;
+        const sign = pct > 0 ? '+' : '';
+        el.textContent = `${sign}${pct.toFixed(0)}% vs. anterior`;
+        el.className = 'diff' + (pct > 0 ? ' up' : pct < 0 ? ' down' : '');
+      }
+      setDiff('diffViews', d.totals.page_views, d.comparison.prev_totals.page_views);
+      setDiff('diffVisitors', d.totals.unique_visitors, d.comparison.prev_totals.unique_visitors);
+      setDiff('diffClicks', d.totals.clicks, d.comparison.prev_totals.clicks);
+      setDiff('diffSubs', d.totals.subscriptions, d.comparison.prev_totals.subscriptions);
 
       // Charts
       drawChart('chartTimeline', 'line',

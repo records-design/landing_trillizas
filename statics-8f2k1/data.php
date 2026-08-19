@@ -61,6 +61,16 @@ $adSessionsCond = $adFilter !== null
 $adSessionsParam = $adFilter !== null ? [$adFilter, $fromDt, $toDt] : [];
 
 // ------------------------------------------------------------
+// Período anterior, de la misma duración, para comparar ("esta
+// semana vs. la semana pasada"). Ej.: si el rango es 7 días,
+// el período anterior son los 7 días inmediatamente antes.
+// ------------------------------------------------------------
+$days = (int) round((strtotime($to) - strtotime($from)) / 86400) + 1;
+$prevTo = gmdate('Y-m-d', strtotime($from) - 86400);
+$prevFrom = gmdate('Y-m-d', strtotime($prevTo) - ($days - 1) * 86400);
+$prevRange = [$prevFrom . ' 00:00:00', $prevTo . ' 23:59:59'];
+
+// ------------------------------------------------------------
 // Totales
 // ------------------------------------------------------------
 $pageViews = (int) q($pdo,
@@ -260,6 +270,32 @@ $musicEngagement = [
 ];
 
 // ------------------------------------------------------------
+// Totales del período anterior, para la comparación en el panel.
+// Se recalculan las mismas 3 métricas clave, respetando el mismo
+// filtro de anuncio si está activo.
+// ------------------------------------------------------------
+$prevPageViews = (int) q($pdo,
+    "SELECT COUNT(*) n FROM events WHERE event_name='page_view' AND created_at BETWEEN ? AND ?{$adEventsCond}",
+    array_merge($prevRange, $adEventsParam))[0]['n'];
+
+$prevUniqueVisitors = (int) q($pdo,
+    "SELECT COUNT(DISTINCT session_id) n FROM events WHERE created_at BETWEEN ? AND ?{$adEventsCond}",
+    array_merge($prevRange, $adEventsParam))[0]['n'];
+
+$prevClicks = (int) q($pdo,
+    "SELECT COUNT(*) n FROM events WHERE event_name='click' AND created_at BETWEEN ? AND ?{$adEventsCond}",
+    array_merge($prevRange, $adEventsParam))[0]['n'];
+
+$prevSubsCond = $adFilter !== null ? ' AND ad_id = ?' : '';
+$prevSubs = (int) q($pdo,
+    "SELECT COUNT(*) n FROM subscribers WHERE created_at BETWEEN ? AND ?{$prevSubsCond}",
+    array_merge($prevRange, $adEventsParam))[0]['n'];
+
+$subs = (int) q($pdo,
+    "SELECT COUNT(*) n FROM subscribers WHERE created_at BETWEEN ? AND ?{$prevSubsCond}",
+    array_merge($range, $adEventsParam))[0]['n'];
+
+// ------------------------------------------------------------
 // Lista de anuncios para el selector de filtro (siempre completa,
 // sin aplicar el filtro, para que se puedan ver/elegir todos).
 // ------------------------------------------------------------
@@ -279,6 +315,16 @@ echo json_encode([
         'unique_visitors' => $uniqueVisitors,
         'clicks'          => $totalClicks,
         'active_now'      => $activeNow,
+        'subscriptions'   => $subs,
+    ],
+    'comparison' => [
+        'prev_range' => ['from' => $prevFrom, 'to' => $prevTo],
+        'prev_totals' => [
+            'page_views'      => $prevPageViews,
+            'unique_visitors' => $prevUniqueVisitors,
+            'clicks'          => $prevClicks,
+            'subscriptions'   => $prevSubs,
+        ],
     ],
     'funnel' => [
         'visits'              => $uniqueVisitors,
