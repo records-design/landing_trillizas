@@ -5,6 +5,20 @@ escrito**; acá se explica qué subir, qué crear en la base de datos y qué com
 
 ---
 
+## IMPORTANTE — Acción pendiente ahora mismo
+
+El código ya está subido al servidor. **Falta un solo paso para que funcione la
+suscripción por email de la landing**: importar `backend/schema.sql` en phpMyAdmin
+(ver paso 2 más abajo). Sin ese paso, cualquiera que intente suscribirse en la
+landing real ve el error "No pudimos guardar tu email. Probá de nuevo." (error 500
+del lado del servidor porque la tabla `subscribers` todavía no tiene la estructura
+que necesita el código nuevo).
+
+Es seguro de correr aunque la base ya tenga datos: usa `CREATE TABLE IF NOT EXISTS`
+y `ADD COLUMN IF NOT EXISTS`, no borra ni pisa nada existente.
+
+---
+
 ## 0. Resumen de lo que se agregó a la landing
 
 | Archivo / carpeta | Qué es |
