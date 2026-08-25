@@ -41,24 +41,62 @@ function q($pdo, $sql, $params)
 $range = [$fromDt, $toDt];
 
 // ------------------------------------------------------------
-// Filtro opcional por anuncio específico (?ad_id=...). Cuando está
-// activo, todas las métricas de abajo se recalculan solo con el
-// tráfico de ese anuncio (la tabla "Resultados por anuncio" en
-// cambio siempre muestra el listado completo, para comparar).
+// Filtros opcionales por anuncio específico (?ad_id=...) y/o por
+// fuente de tráfico (?utm_source=..., ej. "qr_cartel" para un QR de
+// vía pública). Cuando están activos, todas las métricas de abajo
+// se recalculan solo con ese tráfico (las tablas "Resultados por
+// anuncio" y "Fuentes de tráfico" siempre muestran el listado
+// completo sin filtrar, para poder elegir y comparar).
 // ------------------------------------------------------------
 $adFilter = (isset($_GET['ad_id']) && $_GET['ad_id'] !== '') ? substr((string) $_GET['ad_id'], 0, 64) : null;
+$sourceFilter = (isset($_GET['utm_source']) && $_GET['utm_source'] !== '') ? substr((string) $_GET['utm_source'], 0, 120) : null;
 
-$adEventsCond = $adFilter !== null ? ' AND ad_id = ?' : '';
-$adEventsParam = $adFilter !== null ? [$adFilter] : [];
-// Igual que $adEventsCond pero con el prefijo de tabla, para queries
-// que hacen JOIN con otra tabla que también tiene columna ad_id
-// (ej. subscribers) y sin el prefijo MySQL tira "ad_id is ambiguous".
-$adEventsCondE = $adFilter !== null ? ' AND e.ad_id = ?' : '';
+// "directo" en el selector representa utm_source vacío/NULL (así lo
+// muestra el gráfico de "Fuentes de tráfico"), no el texto literal
+// "directo" — hay que traducirlo a "IS NULL OR = ''" sin parámetro.
+$sourceIsDirecto = $sourceFilter === 'directo';
 
-$adSessionsCond = $adFilter !== null
-    ? ' AND session_id IN (SELECT DISTINCT session_id FROM events WHERE ad_id = ? AND created_at BETWEEN ? AND ?)'
-    : '';
-$adSessionsParam = $adFilter !== null ? [$adFilter, $fromDt, $toDt] : [];
+/** Devuelve [sql, params] para el filtro de utm_source, con el prefijo de tabla dado (o ''). */
+function sourceCond($sourceFilter, $sourceIsDirecto, $prefix = '')
+{
+    if ($sourceFilter === null) return ['', []];
+    if ($sourceIsDirecto) return [" AND ({$prefix}utm_source IS NULL OR {$prefix}utm_source = '')", []];
+    return [" AND {$prefix}utm_source = ?", [$sourceFilter]];
+}
+
+$adEventsCond = '';
+$adEventsCondE = ''; // igual, pero con prefijo "e." para queries con JOIN (evita "column is ambiguous")
+$adEventsParam = [];
+if ($adFilter !== null) {
+    $adEventsCond .= ' AND ad_id = ?';
+    $adEventsCondE .= ' AND e.ad_id = ?';
+    $adEventsParam[] = $adFilter;
+}
+[$srcSql, $srcParam] = sourceCond($sourceFilter, $sourceIsDirecto);
+[$srcSqlE, $srcParamE] = sourceCond($sourceFilter, $sourceIsDirecto, 'e.');
+$adEventsCond .= $srcSql;
+$adEventsCondE .= $srcSqlE;
+$adEventsParam = array_merge($adEventsParam, $srcParam);
+
+$adSessionsCond = '';
+$adSessionsParam = [];
+if ($adFilter !== null || $sourceFilter !== null) {
+    $sub = 'SELECT DISTINCT session_id FROM events WHERE created_at BETWEEN ? AND ?';
+    $subParam = [$fromDt, $toDt];
+    if ($adFilter !== null) { $sub .= ' AND ad_id = ?'; $subParam[] = $adFilter; }
+    $sub .= $srcSql;
+    $subParam = array_merge($subParam, $srcParam);
+    $adSessionsCond = " AND session_id IN ($sub)";
+    $adSessionsParam = $subParam;
+}
+
+// Filtro directo sobre la tabla `subscribers` (tiene sus propias
+// columnas ad_id / utm_source, no hace falta ir a events).
+$subsCond = '';
+$subsParam = [];
+if ($adFilter !== null) { $subsCond .= ' AND ad_id = ?'; $subsParam[] = $adFilter; }
+$subsCond .= $srcSql;
+$subsParam = array_merge($subsParam, $srcParam);
 
 // ------------------------------------------------------------
 // Período anterior, de la misma duración, para comparar ("esta
@@ -123,6 +161,14 @@ $sources = q($pdo,
      FROM sessions WHERE first_seen BETWEEN ? AND ?{$adSessionsCond}
      GROUP BY src ORDER BY n DESC",
     array_merge($range, $adSessionsParam));
+
+// Igual, pero siempre sin filtrar (para poblar el selector de fuentes
+// con todas las opciones posibles, aunque haya un filtro activo).
+$sourcesAll = q($pdo,
+    "SELECT COALESCE(NULLIF(utm_source,''),'directo') src, COUNT(*) n
+     FROM sessions WHERE first_seen BETWEEN ? AND ?
+     GROUP BY src ORDER BY n DESC",
+    $range);
 
 // ------------------------------------------------------------
 // Dispositivos
@@ -286,22 +332,25 @@ $prevClicks = (int) q($pdo,
     "SELECT COUNT(*) n FROM events WHERE event_name='click' AND created_at BETWEEN ? AND ?{$adEventsCond}",
     array_merge($prevRange, $adEventsParam))[0]['n'];
 
-$prevSubsCond = $adFilter !== null ? ' AND ad_id = ?' : '';
 $prevSubs = (int) q($pdo,
-    "SELECT COUNT(*) n FROM subscribers WHERE created_at BETWEEN ? AND ?{$prevSubsCond}",
-    array_merge($prevRange, $adEventsParam))[0]['n'];
+    "SELECT COUNT(*) n FROM subscribers WHERE created_at BETWEEN ? AND ?{$subsCond}",
+    array_merge($prevRange, $subsParam))[0]['n'];
 
 $subs = (int) q($pdo,
-    "SELECT COUNT(*) n FROM subscribers WHERE created_at BETWEEN ? AND ?{$prevSubsCond}",
-    array_merge($range, $adEventsParam))[0]['n'];
+    "SELECT COUNT(*) n FROM subscribers WHERE created_at BETWEEN ? AND ?{$subsCond}",
+    array_merge($range, $subsParam))[0]['n'];
 
 // ------------------------------------------------------------
-// Lista de anuncios para el selector de filtro (siempre completa,
-// sin aplicar el filtro, para que se puedan ver/elegir todos).
+// Listas para los selectores de filtro (siempre completas, sin
+// aplicar ningún filtro, para que se puedan ver/elegir todas las
+// opciones aunque ya haya un filtro activo).
 // ------------------------------------------------------------
 $adsList = array_map(function ($r) {
     return ['ad_id' => $r['ad_id'], 'ad_name' => $r['ad_name'] ?? $r['ad_id']];
 }, $ads);
+$sourcesList = array_map(function ($r) {
+    return ['src' => $r['src']];
+}, $sourcesAll);
 
 // ------------------------------------------------------------
 // Respuesta
@@ -309,7 +358,9 @@ $adsList = array_map(function ($r) {
 echo json_encode([
     'range' => ['from' => $from, 'to' => $to],
     'ad_filter' => $adFilter,
+    'source_filter' => $sourceFilter,
     'ads_list' => $adsList,
+    'sources_list' => $sourcesList,
     'totals' => [
         'page_views'      => $pageViews,
         'unique_visitors' => $uniqueVisitors,

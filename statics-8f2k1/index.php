@@ -74,6 +74,7 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
       <button class="preset" data-days="6">7 días</button>
       <button class="preset" data-days="29">30 días</button>
       <select id="adFilter"><option value="">Todos los anuncios</option></select>
+      <select id="sourceFilter"><option value="">Todas las fuentes</option></select>
       <button class="exp" id="exportBtn">Visitas y clics CSV</button>
       <button class="exp" id="exportSubsBtn">Suscriptores CSV</button>
     </div>
@@ -211,8 +212,10 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
     async function load() {
       const from = $('from').value, to = $('to').value;
       const adId = $('adFilter').value;
+      const source = $('sourceFilter').value;
       const qs = new URLSearchParams({ from, to });
       if (adId) qs.set('ad_id', adId);
+      if (source) qs.set('utm_source', source);
       const res = await fetch(`data.php?${qs}`, { credentials: 'same-origin' });
       if (res.status === 401) { location.href = 'login.php'; return; }
       const d = await res.json();
@@ -228,6 +231,16 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
           adSel.appendChild(opt);
         });
         adSel.dataset.loaded = '1';
+      }
+      const srcSel = $('sourceFilter');
+      if (srcSel.dataset.loaded !== '1') {
+        d.sources_list.forEach((s) => {
+          const opt = document.createElement('option');
+          opt.value = s.src;
+          opt.textContent = s.src;
+          srcSel.appendChild(opt);
+        });
+        srcSel.dataset.loaded = '1';
       }
 
       // KPIs
@@ -311,9 +324,11 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
     $('from').addEventListener('change', load);
     $('to').addEventListener('change', load);
     $('adFilter').addEventListener('change', load);
+    $('sourceFilter').addEventListener('change', load);
     function exportQs() {
       const qs = new URLSearchParams({ from: $('from').value, to: $('to').value });
       if ($('adFilter').value) qs.set('ad_id', $('adFilter').value);
+      if ($('sourceFilter').value) qs.set('utm_source', $('sourceFilter').value);
       return qs.toString();
     }
     $('exportBtn').addEventListener('click', () => {

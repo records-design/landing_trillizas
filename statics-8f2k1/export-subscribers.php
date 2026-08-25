@@ -19,8 +19,19 @@ $fromDt = $from . ' 00:00:00';
 $toDt   = $to   . ' 23:59:59';
 
 $adFilter = (isset($_GET['ad_id']) && $_GET['ad_id'] !== '') ? substr((string) $_GET['ad_id'], 0, 64) : null;
-$adCond = $adFilter !== null ? ' AND ad_id = ?' : '';
-$adParam = $adFilter !== null ? [$adFilter] : [];
+$sourceFilter = (isset($_GET['utm_source']) && $_GET['utm_source'] !== '') ? substr((string) $_GET['utm_source'], 0, 120) : null;
+
+$adCond = '';
+$adParam = [];
+if ($adFilter !== null) { $adCond .= ' AND ad_id = ?'; $adParam[] = $adFilter; }
+if ($sourceFilter !== null) {
+    if ($sourceFilter === 'directo') {
+        $adCond .= " AND (utm_source IS NULL OR utm_source = '')";
+    } else {
+        $adCond .= ' AND utm_source = ?';
+        $adParam[] = $sourceFilter;
+    }
+}
 
 $filename = "suscriptores_{$from}_a_{$to}.csv";
 header('Content-Type: text/csv; charset=utf-8');
