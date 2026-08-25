@@ -2,3 +2,5 @@ User-agent: *
 Allow: /
 Disallow: /statics-8f2k1/
 Disallow: /backend/
+
+Sitemap: https://lastrillizasdeoroyellibromagico.com/sitemap.xml
