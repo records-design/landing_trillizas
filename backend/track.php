@@ -14,6 +14,31 @@ require_once __DIR__ . '/capi.php';
 
 header('Content-Type: application/json; charset=utf-8');
 
+// ------------------------------------------------------------
+// CORS: por defecto este endpoint solo recibe pedidos del propio
+// dominio (mismo origen, sin necesidad de esto). Se habilita acá,
+// dominio por dominio, para permitir que OTRAS webs (ej. la de
+// Babidibu) también puedan mandar eventos a esta misma base de
+// datos, quedando identificados con su propio "fuente" en el panel.
+// ------------------------------------------------------------
+$allowedOrigins = [
+    'https://babidiburecords.com',
+    'https://www.babidiburecords.com',
+];
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+if (in_array($origin, $allowedOrigins, true)) {
+    header('Access-Control-Allow-Origin: ' . $origin);
+    header('Access-Control-Allow-Methods: POST, OPTIONS');
+    header('Access-Control-Allow-Headers: Content-Type');
+}
+
+// El navegador manda un OPTIONS antes del POST real (preflight) para
+// confirmar que el CORS está permitido. Se responde OK sin hacer nada más.
+if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'OPTIONS') {
+    http_response_code(204);
+    exit;
+}
+
 // Solo POST.
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'POST') {
     http_response_code(405);
