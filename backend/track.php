@@ -34,7 +34,7 @@ if (!is_array($in) || empty($in['event_name']) || empty($in['session_id']) || em
 }
 
 $eventName = $in['event_name'];
-if (!in_array($eventName, ['page_view', 'click'], true)) {
+if (!in_array($eventName, ['page_view', 'click', 'engagement'], true)) {
     http_response_code(400);
     exit('{"ok":false}');
 }
@@ -121,16 +121,17 @@ if (!$session) {
 // ------------------------------------------------------------
 $evt = $pdo->prepare(
     'INSERT IGNORE INTO events
-       (event_id, session_id, event_name, button, destination, dwell_ms, created_at,
+       (event_id, session_id, event_name, button, destination, dwell_ms, scroll_pct, created_at,
         url, referrer, utm_source, utm_campaign, ad_id, placement,
         device_type, country_code, city, sent_to_meta)
      VALUES
-       (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0)'
+       (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0)'
 );
 $dwellMs = isset($in['dwell_ms']) && is_numeric($in['dwell_ms']) ? (int) $in['dwell_ms'] : null;
+$scrollPct = isset($in['scroll_pct']) && is_numeric($in['scroll_pct']) ? max(0, min(100, (int) $in['scroll_pct'])) : null;
 $evt->execute([
     $in['event_id'], $in['session_id'], $eventName,
-    clip($in['button'] ?? null, 60), clip($in['destination'] ?? null, 60), $dwellMs, $now,
+    clip($in['button'] ?? null, 60), clip($in['destination'] ?? null, 60), $dwellMs, $scrollPct, $now,
     clip($in['url'] ?? null, 1000), clip($in['referrer'] ?? null, 512),
     clip($get('utm_source'), 120), clip($get('utm_campaign'), 255),
     clip($get('ad_id'), 64), clip($get('placement'), 80),
@@ -168,25 +169,30 @@ if (function_exists('fastcgi_finish_request')) {
 }
 
 // ------------------------------------------------------------
-// Meta CAPI (después de responder, para no frenar la landing)
+// Meta CAPI (después de responder, para no frenar la landing).
+// "engagement" (tiempo en página / scroll) es una señal interna
+// nuestra, no un evento de conversión — no se manda a Meta (si se
+// mandara, capi.php lo contaría como un ClicBoton falso).
 // ------------------------------------------------------------
-$ok = send_to_meta([
-    'event_name'   => $eventName,
-    'event_id'     => $in['event_id'],
-    'url'          => $in['url'] ?? null,
-    'ip_raw'       => $ipRaw,
-    'user_agent'   => $ua,
-    'fbclid'       => $get('fbclid'),
-    'button'       => $in['button'] ?? null,
-    'destination'  => $in['destination'] ?? null,
-    'placement'    => $get('placement'),
-    'utm_campaign' => $get('utm_campaign'),
-], $cfg['meta']);
+if ($eventName !== 'engagement') {
+    $ok = send_to_meta([
+        'event_name'   => $eventName,
+        'event_id'     => $in['event_id'],
+        'url'          => $in['url'] ?? null,
+        'ip_raw'       => $ipRaw,
+        'user_agent'   => $ua,
+        'fbclid'       => $get('fbclid'),
+        'button'       => $in['button'] ?? null,
+        'destination'  => $in['destination'] ?? null,
+        'placement'    => $get('placement'),
+        'utm_campaign' => $get('utm_campaign'),
+    ], $cfg['meta']);
 
-if ($ok && $eventRowId) {
-    try {
-        $pdo->prepare('UPDATE events SET sent_to_meta = 1 WHERE id = ?')->execute([$eventRowId]);
-    } catch (Exception $e) {
-        error_log('No se pudo marcar sent_to_meta: ' . $e->getMessage());
+    if ($ok && $eventRowId) {
+        try {
+            $pdo->prepare('UPDATE events SET sent_to_meta = 1 WHERE id = ?')->execute([$eventRowId]);
+        } catch (Exception $e) {
+            error_log('No se pudo marcar sent_to_meta: ' . $e->getMessage());
+        }
     }
 }

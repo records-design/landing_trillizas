@@ -230,4 +230,46 @@
     },
     true // captura: se dispara aunque el <a> navegue enseguida
   );
+
+  // ----------------------------------------------------------
+  // Interés general en el contenido: cuánto tiempo pasan en la
+  // página y hasta dónde llegan haciendo scroll. Se manda una sola
+  // vez por visita, cuando la persona se va (cambia de pestaña,
+  // cierra o navega a otro lado) — no al cargar, porque todavía no
+  // hay nada que medir.
+  // ----------------------------------------------------------
+  var maxScrollPct = 0;
+  var scrollTicking = false;
+
+  function computeScrollPct() {
+    var doc = document.documentElement;
+    var scrollable = (doc.scrollHeight || 0) - window.innerHeight;
+    if (scrollable <= 0) return 100; // página sin scroll: ya se ve entera
+    var pct = ((window.scrollY || doc.scrollTop || 0) / scrollable) * 100;
+    return Math.max(0, Math.min(100, Math.round(pct)));
+  }
+
+  window.addEventListener('scroll', function () {
+    if (scrollTicking) return;
+    scrollTicking = true;
+    requestAnimationFrame(function () {
+      maxScrollPct = Math.max(maxScrollPct, computeScrollPct());
+      scrollTicking = false;
+    });
+  }, { passive: true });
+
+  var engagementSent = false;
+  function sendEngagement() {
+    if (engagementSent) return;
+    engagementSent = true;
+    send('engagement', {
+      dwell_ms: Math.max(0, Math.round(Date.now() - PAGE_LOAD_TS)),
+      scroll_pct: maxScrollPct,
+    });
+  }
+
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'hidden') sendEngagement();
+  });
+  window.addEventListener('pagehide', sendEngagement);
 })();

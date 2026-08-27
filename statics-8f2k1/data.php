@@ -191,18 +191,34 @@ $placements = q($pdo,
 // ------------------------------------------------------------
 // Países y ciudades
 // ------------------------------------------------------------
+// Se agrupa por country_code (código ISO, siempre estable) y no por el
+// nombre de texto: el servicio de geolocalización a veces devuelve
+// nombres distintos para el mismo país (ej. "Argentina" y "República
+// Argentina"), lo que partía un mismo país en dos filas.
 $countries = q($pdo,
-    "SELECT COALESCE(NULLIF(country,''),'(sin dato)') country, COUNT(*) n
+    "SELECT COALESCE(NULLIF(country_code,''),'') cc,
+            COALESCE(NULLIF(MIN(country),''),'(sin dato)') country,
+            COUNT(*) n
      FROM sessions WHERE first_seen BETWEEN ? AND ?{$adSessionsCond}
-     GROUP BY country ORDER BY n DESC LIMIT 15",
+     GROUP BY cc ORDER BY n DESC LIMIT 15",
     array_merge($range, $adSessionsParam));
 
+// "Santa María del Buen Ayre" es el nombre fundacional/histórico de la
+// Ciudad de Buenos Aires. Algunos proveedores de geolocalización lo usan
+// como alias para cierto rango de IPs de esa ciudad — se unifica acá
+// para no partir Buenos Aires en dos filas.
 $cities = q($pdo,
-    "SELECT COALESCE(NULLIF(city,''),'(sin dato)') city,
-            COALESCE(NULLIF(country_code,''),'') cc, COUNT(*) n
+    "SELECT
+        CASE
+          WHEN city = 'Santa María del Buen Ayre' AND country_code = 'AR' THEN 'Buenos Aires'
+          ELSE COALESCE(NULLIF(city,''),'(sin dato)')
+        END AS city_norm,
+        COALESCE(NULLIF(country_code,''),'') cc, COUNT(*) n
      FROM sessions WHERE first_seen BETWEEN ? AND ?{$adSessionsCond}
-     GROUP BY city, cc ORDER BY n DESC LIMIT 15",
+     GROUP BY city_norm, cc ORDER BY n DESC LIMIT 15",
     array_merge($range, $adSessionsParam));
+foreach ($cities as &$__c) { $__c['city'] = $__c['city_norm']; unset($__c['city_norm']); }
+unset($__c);
 
 // ------------------------------------------------------------
 // Por anuncio (ad_id) con nombre legible + clics.
@@ -316,6 +332,22 @@ $musicEngagement = [
 ];
 
 // ------------------------------------------------------------
+// Tiempo en la página y cuánto scrollean, en general (no solo antes
+// de un clic): se manda un evento "engagement" cuando la persona se
+// va, con el tiempo total que pasó y el % máximo de scroll alcanzado.
+// ------------------------------------------------------------
+$pageEngagement = q($pdo,
+    "SELECT AVG(dwell_ms) avg_time_ms, AVG(scroll_pct) avg_scroll_pct, COUNT(*) sesiones
+     FROM events
+     WHERE event_name = 'engagement' AND created_at BETWEEN ? AND ?{$adEventsCond}",
+    array_merge($range, $adEventsParam))[0];
+$pageEngagement = [
+    'avg_time_ms'    => $pageEngagement['avg_time_ms'] !== null ? round($pageEngagement['avg_time_ms']) : null,
+    'avg_scroll_pct' => $pageEngagement['avg_scroll_pct'] !== null ? round($pageEngagement['avg_scroll_pct']) : null,
+    'sesiones'       => (int) $pageEngagement['sesiones'],
+];
+
+// ------------------------------------------------------------
 // Totales del período anterior, para la comparación en el panel.
 // Se recalculan las mismas 3 métricas clave, respetando el mismo
 // filtro de anuncio si está activo.
@@ -392,4 +424,5 @@ echo json_encode([
     'new_vs_returning' => $newVsReturning,
     'button_interest'  => $buttonInterest,
     'music_engagement' => $musicEngagement,
+    'page_engagement'  => $pageEngagement,
 ], JSON_UNESCAPED_UNICODE);

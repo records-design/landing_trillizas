@@ -112,12 +112,25 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
 
     <div class="grid2">
       <div class="panel">
+        <h2>¿Cuánto tiempo se quedan y cuánto ven?</h2>
+        <div class="cards" style="grid-template-columns: repeat(2, 1fr); margin-bottom: 0;">
+          <div class="card"><div class="label">Tiempo promedio en la página</div><div class="value" id="kpiTimeOnPage">–</div></div>
+          <div class="card"><div class="label">Cuánto bajan (scroll)</div><div class="value" id="kpiScrollPct">–</div></div>
+        </div>
+        <p class="muted">Se mide desde que entran hasta que se van de la página (cierran, cambian de pestaña o navegan a otro lado). "Cuánto bajan" es hasta dónde llegaron scrolleando, en promedio — 100% significa que vieron toda la página.</p>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="panel">
         <h2>Placement</h2>
         <table id="tblPlacement"><thead><tr><th>Placement</th><th class="n">Sesiones</th></tr></thead><tbody></tbody></table>
+        <p class="muted">"Placement" es en qué parte de Instagram o Facebook apareció el anuncio que trajo a esa persona (el feed, las Historias, los Reels, etc.). Solo se completa si viene de un anuncio de Meta con ese dato configurado — el resto del tráfico (QR, redes, directo) aparece como "(sin dato)".</p>
       </div>
       <div class="panel">
         <h2>Países</h2>
         <table id="tblCountries"><thead><tr><th>País</th><th class="n">Sesiones</th></tr></thead><tbody></tbody></table>
+        <p class="muted">"Sesiones" = cantidad de visitas. Si la misma persona entra dos veces en momentos distintos, cuenta como dos sesiones (no es necesariamente gente distinta).</p>
       </div>
     </div>
 
@@ -259,7 +272,15 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
         `Comparado con el período anterior (${pr.from} a ${pr.to}):`;
       function setDiff(elId, actual, previo) {
         const el = $(elId);
-        if (!previo) { el.textContent = actual ? 'sin datos del período anterior' : ''; el.className = 'diff'; return; }
+        // previo=0 es un valor real (el período anterior tuvo cero), no
+        // "sin datos" — hay que calcularlo aparte porque no se puede
+        // sacar un % contra cero.
+        if (previo === 0) {
+          if (actual === 0) { el.textContent = 'sin cambios (0 en ambos períodos)'; el.className = 'diff'; return; }
+          el.textContent = `antes 0, ahora ${fmt(actual)}`;
+          el.className = 'diff up';
+          return;
+        }
         const pct = ((actual - previo) / previo) * 100;
         const sign = pct > 0 ? '+' : '';
         el.textContent = `${sign}${pct.toFixed(0)}% vs. anterior`;
@@ -316,6 +337,11 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
       ], r => `<td>${r.label}</td><td class="n">${fmt(r.clics)}</td><td class="n">${fmt(r.subs)} (${pctSubs(r.subs, r.clics)}%)</td>`);
       $('bothClicksNote').textContent =
         `${fmt(me.ambos_clics)} persona(s) clickearon el video Y la canción — el segmento más interesado.`;
+
+      // Tiempo en la página y scroll
+      const pe = d.page_engagement;
+      $('kpiTimeOnPage').textContent = fmtDwell(pe.avg_time_ms);
+      $('kpiScrollPct').textContent = pe.avg_scroll_pct !== null ? `${pe.avg_scroll_pct}%` : '–';
     }
 
     // Eventos UI
