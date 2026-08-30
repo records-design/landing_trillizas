@@ -142,21 +142,21 @@ if (!$session) {
 }
 
 // ------------------------------------------------------------
-// Guardar el evento (INSERT IGNORE evita duplicar por event_id)
+// Guardar el evento (INSERT IGNORE evita duplicar por event_id).
 // ------------------------------------------------------------
+$dwellMs = isset($in['dwell_ms']) && is_numeric($in['dwell_ms']) ? (int) $in['dwell_ms'] : null;
+
 $evt = $pdo->prepare(
     'INSERT IGNORE INTO events
-       (event_id, session_id, event_name, button, destination, dwell_ms, scroll_pct, created_at,
+       (event_id, session_id, event_name, button, destination, dwell_ms, created_at,
         url, referrer, utm_source, utm_campaign, ad_id, placement,
         device_type, country_code, city, sent_to_meta)
      VALUES
-       (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0)'
+       (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0)'
 );
-$dwellMs = isset($in['dwell_ms']) && is_numeric($in['dwell_ms']) ? (int) $in['dwell_ms'] : null;
-$scrollPct = isset($in['scroll_pct']) && is_numeric($in['scroll_pct']) ? max(0, min(100, (int) $in['scroll_pct'])) : null;
 $evt->execute([
     $in['event_id'], $in['session_id'], $eventName,
-    clip($in['button'] ?? null, 60), clip($in['destination'] ?? null, 60), $dwellMs, $scrollPct, $now,
+    clip($in['button'] ?? null, 60), clip($in['destination'] ?? null, 60), $dwellMs, $now,
     clip($in['url'] ?? null, 1000), clip($in['referrer'] ?? null, 512),
     clip($get('utm_source'), 120), clip($get('utm_campaign'), 255),
     clip($get('ad_id'), 64), clip($get('placement'), 80),

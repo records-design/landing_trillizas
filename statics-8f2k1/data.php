@@ -332,19 +332,18 @@ $musicEngagement = [
 ];
 
 // ------------------------------------------------------------
-// Tiempo en la página y cuánto scrollean, en general (no solo antes
-// de un clic): se manda un evento "engagement" cuando la persona se
-// va, con el tiempo total que pasó y el % máximo de scroll alcanzado.
+// Tiempo en la página, en general (no solo antes de un clic): se
+// manda un evento "engagement" cuando la persona se va, con el
+// tiempo total que pasó en la página.
 // ------------------------------------------------------------
 $pageEngagement = q($pdo,
-    "SELECT AVG(dwell_ms) avg_time_ms, AVG(scroll_pct) avg_scroll_pct, COUNT(*) sesiones
+    "SELECT AVG(dwell_ms) avg_time_ms, COUNT(*) sesiones
      FROM events
      WHERE event_name = 'engagement' AND created_at BETWEEN ? AND ?{$adEventsCond}",
     array_merge($range, $adEventsParam))[0];
 $pageEngagement = [
-    'avg_time_ms'    => $pageEngagement['avg_time_ms'] !== null ? round($pageEngagement['avg_time_ms']) : null,
-    'avg_scroll_pct' => $pageEngagement['avg_scroll_pct'] !== null ? round($pageEngagement['avg_scroll_pct']) : null,
-    'sesiones'       => (int) $pageEngagement['sesiones'],
+    'avg_time_ms' => $pageEngagement['avg_time_ms'] !== null ? round($pageEngagement['avg_time_ms']) : null,
+    'sesiones'    => (int) $pageEngagement['sesiones'],
 ];
 
 // ------------------------------------------------------------

@@ -60,7 +60,6 @@ CREATE TABLE IF NOT EXISTS events (
     button         VARCHAR(60)  DEFAULT NULL,  -- videoclip, cancion_spotify, social_*, ...
     destination    VARCHAR(60)  DEFAULT NULL,
     dwell_ms       INT UNSIGNED DEFAULT NULL,  -- ms desde que cargó la página hasta el clic (o hasta que se fue, en "engagement")
-    scroll_pct     TINYINT UNSIGNED DEFAULT NULL, -- % máximo de scroll alcanzado (evento "engagement")
     created_at     DATETIME     NOT NULL,
 
     url            VARCHAR(1000) DEFAULT NULL,
@@ -151,5 +150,4 @@ ALTER TABLE subscribers
     ADD KEY IF NOT EXISTS idx_session_id (session_id);
 
 ALTER TABLE events
-    ADD COLUMN IF NOT EXISTS dwell_ms INT UNSIGNED DEFAULT NULL AFTER destination,
-    ADD COLUMN IF NOT EXISTS scroll_pct TINYINT UNSIGNED DEFAULT NULL AFTER dwell_ms;
+    ADD COLUMN IF NOT EXISTS dwell_ms INT UNSIGNED DEFAULT NULL AFTER destination;

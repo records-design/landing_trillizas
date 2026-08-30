@@ -112,12 +112,11 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
 
     <div class="grid2">
       <div class="panel">
-        <h2>¿Cuánto tiempo se quedan y cuánto ven?</h2>
-        <div class="cards" style="grid-template-columns: repeat(2, 1fr); margin-bottom: 0;">
+        <h2>¿Cuánto tiempo se quedan?</h2>
+        <div class="cards" style="grid-template-columns: repeat(1, 1fr); margin-bottom: 0;">
           <div class="card"><div class="label">Tiempo promedio en la página</div><div class="value" id="kpiTimeOnPage">–</div></div>
-          <div class="card"><div class="label">Cuánto bajan (scroll)</div><div class="value" id="kpiScrollPct">–</div></div>
         </div>
-        <p class="muted">Se mide desde que entran hasta que se van de la página (cierran, cambian de pestaña o navegan a otro lado). "Cuánto bajan" es hasta dónde llegaron scrolleando, en promedio — 100% significa que vieron toda la página.</p>
+        <p class="muted">Se mide desde que entran hasta que se van de la página (cierran, cambian de pestaña o navegan a otro lado).</p>
       </div>
     </div>
 
@@ -338,10 +337,9 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
       $('bothClicksNote').textContent =
         `${fmt(me.ambos_clics)} persona(s) clickearon el video Y la canción — el segmento más interesado.`;
 
-      // Tiempo en la página y scroll
+      // Tiempo en la página
       const pe = d.page_engagement;
       $('kpiTimeOnPage').textContent = fmtDwell(pe.avg_time_ms);
-      $('kpiScrollPct').textContent = pe.avg_scroll_pct !== null ? `${pe.avg_scroll_pct}%` : '–';
     }
 
     // Eventos UI
