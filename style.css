@@ -2903,3 +2903,53 @@ body.has-sections .hero-shadow,
 body.has-sections .hero-particles {
   position: absolute;
 }
+
+/* Solo borrador viernes: como "Cruzá el portal mágico", la suscripción
+   y el footer se movieron FUERA del hero (ahora van debajo de Episodios
+   y Álbum), el hero-content ya solo tiene 3 hijos (logo, slogan,
+   botones) — se centra con flex simple en vez del Grid de 9-10 filas
+   pensado para 6 bloques. El Grid original queda intacto para
+   index.html (no tiene la clase "has-sections"). */
+body.has-sections .hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(20px, 3vh, 40px);
+  height: 100%;
+  width: 100%;
+  max-width: 1180px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Contenedor para el bloque movido (portal social + suscripción +
+   footer): mismo fondo violeta que las otras secciones nuevas, y
+   centra todo su contenido igual que antes dentro del hero. */
+.post-sections-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(28px, 4vh, 44px);
+
+  width: 100%;
+  padding: clamp(48px, 8vh, 96px) 20px clamp(24px, 4vh, 48px);
+  background: var(--violet-deep);
+}
+
+.post-sections-footer .hero-content-mirror {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(28px, 4vh, 44px);
+  width: 100%;
+  max-width: 720px;
+}
+
+.post-sections-footer .hero-follow,
+.post-sections-footer .hero-newsletter,
+.post-sections-footer .site-footer {
+  position: static;
+  width: 100%;
+  margin: 0;
+}
