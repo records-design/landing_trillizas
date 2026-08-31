@@ -2640,3 +2640,266 @@ button:focus-visible {
   }
 
 }
+/* ============================================================
+   BORRADOR VIERNES: secciones de Episodios y Álbum
+   Todo lo de acá abajo es nuevo, para las secciones que van
+   DESPUÉS del hero (fuera de <section class="hero">, por eso no
+   usa el Grid de una sola pantalla — la página pasa a poder
+   scrollear más allá del hero, como cualquier landing normal).
+   Nombres de clase todos nuevos: no afecta nada de lo existente.
+   ============================================================ */
+
+.episodes-section,
+.album-section {
+  position: relative;
+  width: 100%;
+  padding: clamp(48px, 8vh, 96px) 20px;
+  background: var(--violet-deep);
+}
+
+.section-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: clamp(32px, 5vh, 52px);
+  text-align: center;
+}
+
+.section-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+
+.section-title {
+  color: var(--gold-light);
+  font-family: var(--font-display);
+  font-size: clamp(28px, 3.4vw, 40px);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.section-subtitle {
+  color: var(--ivory);
+  font-family: var(--font-ui);
+  font-size: clamp(14px, 1.4vw, 16px);
+  opacity: 0.8;
+  margin: 0;
+}
+
+/* ---------- Episodios ---------- */
+
+.episodes-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(16px, 2.6vw, 32px);
+
+  width: min(760px, 100%);
+  margin: 0 auto;
+}
+
+.episode-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  text-decoration: none;
+  border-radius: 14px;
+
+  transition: transform .35s cubic-bezier(.22, 1, .36, 1);
+}
+
+.episode-tile:hover {
+  transform: translateY(-4px);
+}
+
+.episode-tile__thumb {
+  position: relative;
+  aspect-ratio: 16 / 10;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 14px;
+  overflow: hidden;
+
+  border: 1px solid rgba(216, 178, 92, 0.35);
+  background:
+    radial-gradient(circle at 50% 40%, rgba(216, 178, 92, 0.16), transparent 60%),
+    var(--violet-deep);
+
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+}
+
+.episode-tile__thumb img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.episode-tile__play {
+  position: relative;
+  z-index: 1;
+
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1.5px solid var(--ivory);
+  border-radius: 50%;
+  background: rgba(27, 15, 46, 0.55);
+}
+
+.episode-tile__play svg {
+  width: 20px;
+  height: 20px;
+  color: var(--ivory);
+}
+
+.episode-tile__number {
+  color: var(--gold);
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.episode-tile__title {
+  color: var(--ivory);
+  font-family: var(--font-display);
+  font-size: clamp(17px, 2vw, 20px);
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.episode-tile__cta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  color: var(--gold-light);
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.episode-tile__cta svg {
+  width: 11px;
+  height: 11px;
+}
+
+/* ---------- Álbum ---------- */
+
+.album-section {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(32px, 5vw, 64px);
+}
+
+.album-section__cover {
+  width: min(320px, 80vw);
+  flex: 0 0 auto;
+
+  border-radius: 14px;
+  overflow: hidden;
+
+  border: 1px solid rgba(216, 178, 92, 0.35);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.45);
+}
+
+.album-section__cover img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.album-section__info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+
+  width: min(420px, 100%);
+  text-align: left;
+}
+
+.album-section__info .section-divider {
+  justify-content: flex-start;
+}
+
+.album-section__name {
+  color: var(--gold-light);
+  font-family: var(--font-display);
+  font-size: clamp(24px, 2.8vw, 32px);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+  margin: 0;
+}
+
+.album-section__status {
+  color: var(--ivory);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  opacity: 0.85;
+  margin: 0;
+}
+
+@media (max-width: 700px) {
+  .episodes-grid {
+    gap: 12px;
+  }
+
+  .album-section {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .album-section__info {
+    align-items: center;
+    text-align: center;
+  }
+
+  .album-section__info .section-divider {
+    justify-content: center;
+  }
+}
+
+/* Solo cuando el body tiene la clase "has-sections" (borrador viernes,
+   con secciones nuevas debajo del hero): el hero deja de "atrapar" el
+   scroll con su propio overflow interno, para que la página entera
+   pueda scrollear hasta las secciones de Episodios/Álbum. No afecta a
+   index.html (esa clase no está ahí). */
+body.has-sections .hero {
+  overflow-y: visible;
+}
+
+/* Mismo alcance que el fix anterior (solo borrador viernes): las capas
+   de fondo del hero (video, viñeta, sombra, partículas) son "fixed" a
+   toda la pantalla — pensado para cuando el hero ES toda la página.
+   Al agregar secciones debajo y permitir scroll, esas capas se quedan
+   tapando todo lo de más abajo. Se vuelven "absolute" (ancladas solo
+   dentro del hero) nada más en esta página de borrador. */
+body.has-sections .hero-video,
+body.has-sections .hero-overlay,
+body.has-sections .hero-vignette,
+body.has-sections .hero-shadow,
+body.has-sections .hero-particles {
+  position: absolute;
+}
