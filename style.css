@@ -2778,7 +2778,7 @@ button:focus-visible {
 
 .episode-tile__title {
   color: var(--ivory);
-  font-family: var(--font-display);
+  font-family: var(--font-ui);
   font-size: clamp(17px, 2vw, 20px);
   font-weight: 600;
   line-height: 1.25;
@@ -2845,7 +2845,7 @@ button:focus-visible {
 
 .album-section__name {
   color: var(--gold-light);
-  font-family: var(--font-display);
+  font-family: var(--font-ui);
   font-size: clamp(24px, 2.8vw, 32px);
   font-weight: 600;
   line-height: 1.15;
@@ -2887,7 +2887,7 @@ button:focus-visible {
    pueda scrollear hasta las secciones de Episodios/Álbum. No afecta a
    index.html (esa clase no está ahí). */
 body.has-sections .hero {
-  overflow-y: visible;
+  overflow: visible !important;
 }
 
 /* Mismo alcance que el fix anterior (solo borrador viernes): las capas
