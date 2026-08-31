@@ -3020,3 +3020,23 @@ body.has-sections .hero-content {
     order: 2;
   }
 }
+
+/* ---------- Videoclips (debajo de la tapa del álbum) ---------- */
+.album-section__videoclips {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+/* .album-section__videoclips-title usa la clase compartida
+   "section-title" (misma tipografía que "El Álbum") — no hace falta
+   pisarle nada acá. */
+
+@media (max-width: 700px) {
+  .album-section__videoclips {
+    order: 3;
+  }
+}
