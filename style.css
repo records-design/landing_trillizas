@@ -2997,3 +2997,26 @@ body.has-sections .hero-content {
     gap: 28px;
   }
 }
+
+.album-section__volume {
+  color: var(--gold);
+  font-family: var(--font-ui);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+/* En mobile: primero el nombre de la sección + el nombre del disco +
+   volumen + botón, y AL FINAL la tapa del álbum (orden pedido:
+   texto/CTA primero, la imagen de tapa como cierre). */
+@media (max-width: 700px) {
+  .album-section__info {
+    order: 1;
+  }
+
+  .album-section__cover {
+    order: 2;
+  }
+}
