@@ -2953,3 +2953,47 @@ body.has-sections .hero-content {
   width: 100%;
   margin: 0;
 }
+
+/* Fix: el botón del álbum reutiliza .magic-button, que trae
+   "flex: 0 0 var(--button-width)" pensado para una fila (como en el
+   hero). Acá el botón vive en una columna (.album-section__info es
+   flex-direction: column), así que ese flex-basis termina fijando la
+   ALTURA en vez del ancho, deformando el botón por completo. Se
+   neutraliza solo para este caso. */
+.album-section__info .magic-button {
+  flex: 0 0 auto;
+}
+
+/* ---------- Ajustes de escritorio (pantallas grandes) ---------- */
+@media (min-width: 901px) {
+  .episodes-grid {
+    max-width: 900px;
+    gap: 40px;
+  }
+
+  .episode-tile__thumb {
+    aspect-ratio: 16 / 9;
+  }
+
+  .album-section {
+    max-width: 1100px;
+    margin: 0 auto;
+    gap: 72px;
+  }
+
+  .album-section__cover {
+    width: min(380px, 32vw);
+  }
+
+  .album-section__info {
+    width: min(480px, 100%);
+  }
+
+  .post-sections-footer .hero-content-mirror {
+    max-width: 860px;
+  }
+
+  .post-sections-footer .hero-follow .follow-links {
+    gap: 28px;
+  }
+}
