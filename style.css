@@ -2687,9 +2687,12 @@ button:focus-visible {
 .section-subtitle {
   color: var(--ivory);
   font-family: var(--font-ui);
-  font-size: clamp(14px, 1.4vw, 16px);
-  opacity: 0.8;
-  margin: 0;
+  font-size: clamp(19px, 2.4vw, 27px);
+  font-weight: 500;
+  font-style: italic;
+  letter-spacing: 0.01em;
+  opacity: 0.92;
+  margin: 6px 0 0;
 }
 
 /* ---------- Episodios ---------- */
@@ -2706,7 +2709,7 @@ button:focus-visible {
 .episode-tile {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 
   text-decoration: none;
   border-radius: 14px;
@@ -2780,8 +2783,8 @@ button:focus-visible {
 .episode-tile__title {
   color: var(--ivory);
   font-family: var(--font-ui);
-  font-size: clamp(17px, 2vw, 20px);
-  font-weight: 600;
+  font-size: clamp(19px, 2.4vw, 24px);
+  font-weight: 700;
   line-height: 1.25;
 }
 
@@ -2970,9 +2973,18 @@ body.has-sections .hero-content {
 
 /* ---------- Ajustes de escritorio (pantallas grandes) ---------- */
 @media (min-width: 901px) {
-  .episodes-grid {
-    max-width: 900px;
-    gap: 40px;
+  #serie-section .episodes-grid {
+    grid-template-columns: 2fr 2fr 1fr;
+    align-items: stretch;
+    max-width: 1040px;
+    gap: 28px;
+  }
+
+  #serie-section .episode-tile--soon {
+    grid-column: auto;
+    width: 100%;
+    height: 100%;
+    margin-top: 0;
   }
 
   .episode-tile__thumb {
@@ -3238,11 +3250,11 @@ body.has-sections .hero {
 .section-eyebrow {
   color: var(--gold);
   font-family: var(--font-ui);
-  font-size: 13px;
+  font-size: clamp(14px, 1.6vw, 18px);
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  margin: 0 0 6px;
+  margin: 0 0 8px;
 }
 
 .section-season {
@@ -3273,6 +3285,11 @@ body.has-sections .hero {
 
 /* ---------- Card secundaria "Nuevos episodios cada semana" ---------- */
 .episode-tile--soon {
+  /* Es un item más del grid de episodios: en mobile/tablet ocupa toda
+     la fila propia debajo (grid-column: 1/-1); en desktop (901px+, ver
+     media query de arriba) se acomoda al lado como 3ra columna angosta. */
+  grid-column: 1 / -1;
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -3280,7 +3297,7 @@ body.has-sections .hero {
   gap: 10px;
 
   width: min(240px, 100%);
-  margin-top: 24px;
+  margin: 8px auto 0;
   padding: 22px 18px;
 
   text-align: center;
@@ -3505,4 +3522,19 @@ body.has-sections .hero-logo {
 /* Más aire entre Redes y Suscripción (estaban muy pegadas) */
 .post-sections-footer .hero-newsletter {
   margin-top: clamp(24px, 5vh, 48px);
+}
+
+/* ============================================================
+   PULIDO: sección "Serie" — jerarquía tipográfica más fuerte
+   (solo esta sección; no toca el título de Historia ni de Álbum,
+   que comparten la clase .section-title).
+   ============================================================ */
+#serie-section .section-title {
+  font-size: clamp(38px, 5.2vw, 66px);
+  line-height: 1.08;
+  max-width: 900px;
+}
+
+#serie-section .section-season {
+  margin-top: 10px;
 }

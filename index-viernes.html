@@ -165,7 +165,7 @@
   />
 
   <!-- CSS -->
-  <link rel="stylesheet" href="style.css?v=20260901ajustes4" />
+  <link rel="stylesheet" href="style.css?v=20260901serie3" />
 </head>
 
 <body class="has-sections">
@@ -422,12 +422,13 @@
     </div>
 
     <div class="episodes-grid" id="episodesGrid">
-      <!-- Generado por JS a partir del array `episodes`. Ver <script> al final del archivo. -->
-    </div>
-
-    <div class="episode-tile episode-tile--soon">
-      <span class="episode-tile__soon-diamond">&#10022;</span>
-      <span class="episode-tile__soon-text">Nuevos<br />episodios<br />cada semana</span>
+      <!-- Los primeros 2 bloques (episodios) los genera JS a partir del
+           array `episodes` — ver <script> al final del archivo. La card
+           "Nuevos episodios" de acá abajo queda fija, siempre al final. -->
+      <div class="episode-tile episode-tile--soon">
+        <span class="episode-tile__soon-diamond">&#10022;</span>
+        <span class="episode-tile__soon-text">Nuevos<br />episodios<br />cada semana</span>
+      </div>
     </div>
   </section>
 
@@ -833,6 +834,7 @@
     (function () {
       var grid = document.getElementById('episodesGrid');
       if (!grid) return;
+      var soonCard = grid.querySelector('.episode-tile--soon');
 
       episodes.forEach(function (ep) {
         var a = document.createElement('a');
@@ -862,7 +864,11 @@
           '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor" /></svg>' +
           'Ver episodio</span>';
 
-        grid.appendChild(a);
+        if (soonCard) {
+          grid.insertBefore(a, soonCard);
+        } else {
+          grid.appendChild(a);
+        }
       });
     })();
   </script>
