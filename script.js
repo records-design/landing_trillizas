@@ -32,6 +32,13 @@ function splitSloganIntoWords() {
   const wrapEl = document.querySelector('.hero-slogan-wrap');
   if (!el || !wrapEl) return;
 
+  // El salto de línea fijo de acá abajo está pensado (word index 2)
+  // para el slogan corto original de una sola frase. Si el título
+  // trae sus propias líneas armadas a mano (clase "hero-slogan--static",
+  // usada en el borrador con el título nuevo de 2 oraciones), no se
+  // reparte en palabras — se deja el HTML tal cual está escrito.
+  if (el.classList.contains('hero-slogan--static')) return;
+
   const text = el.textContent.trim().replace(/\s+/g, ' ');
   el.textContent = '';
 
