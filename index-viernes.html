@@ -174,8 +174,45 @@
   height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- End Google Tag Manager (noscript) -->
 
+  <!-- ================================================
+       BORRADOR VIERNES: barra de navegación. "Tienda" y "Contacto"
+       son placeholders (todavía no existen esas páginas) — quedan
+       visibles pero sin link, marcados "Próximamente".
+       ================================================ -->
+  <nav class="site-nav">
+    <div class="site-nav__inner">
+      <ul class="site-nav__links">
+        <li><a href="#top">Inicio</a></li>
+        <li><a href="la-historia.html">La historia</a></li>
+        <li><a href="#album-section">Música</a></li>
+        <li><a href="#episodes-section">Novedades</a></li>
+        <li><span class="site-nav__soon" title="Próximamente">Tienda</span></li>
+        <li><span class="site-nav__soon" title="Próximamente">Contacto</span></li>
+      </ul>
+      <button
+        class="site-nav__burger"
+        id="siteNavBurger"
+        aria-label="Abrir menú"
+        aria-expanded="false"
+        aria-controls="siteNavMobile"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <ul class="site-nav__mobile" id="siteNavMobile">
+      <li><a href="#top">Inicio</a></li>
+      <li><a href="la-historia.html">La historia</a></li>
+      <li><a href="#album-section">Música</a></li>
+      <li><a href="#episodes-section">Novedades</a></li>
+      <li><span class="site-nav__soon" title="Próximamente">Tienda</span></li>
+      <li><span class="site-nav__soon" title="Próximamente">Contacto</span></li>
+    </ul>
+  </nav>
+
   <!-- HERO -->
-  <section class="hero">
+  <section class="hero" id="top">
 
     <video
       class="hero-video"
@@ -377,7 +414,7 @@
        ================================================ -->
 
   <!-- NUEVOS EPISODIOS -->
-  <section class="episodes-section">
+  <section class="episodes-section" id="episodes-section">
     <div class="section-heading">
       <span class="section-divider" aria-hidden="true">
         <span class="follow-line"></span>
@@ -464,7 +501,7 @@
   </section>
 
   <!-- EL ÁLBUM -->
-  <section class="album-section">
+  <section class="album-section" id="album-section">
     <div class="album-section__cover">
       <img
         src="imagenes/arte_de_tapa_trillizas.png"
@@ -855,6 +892,29 @@
   <script src="config.js?v=20260827152227"></script>
   <script src="tracking.js?v=20260714151543"></script>
   <script src="script.js?v=20260827152227"></script>
+
+  <!-- BORRADOR VIERNES: menú hamburguesa de la barra de navegación. -->
+  <script>
+    (function () {
+      var burger = document.getElementById('siteNavBurger');
+      var mobileMenu = document.getElementById('siteNavMobile');
+      if (!burger || !mobileMenu) return;
+
+      burger.addEventListener('click', function () {
+        var isOpen = mobileMenu.classList.toggle('is-open');
+        burger.classList.toggle('is-open', isOpen);
+        burger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      });
+
+      mobileMenu.addEventListener('click', function (e) {
+        if (e.target.closest('a')) {
+          mobileMenu.classList.remove('is-open');
+          burger.classList.remove('is-open');
+          burger.setAttribute('aria-expanded', 'false');
+        }
+      });
+    })();
+  </script>
 
 </body>
 </html>

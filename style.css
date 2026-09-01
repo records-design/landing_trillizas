@@ -3040,3 +3040,160 @@ body.has-sections .hero-content {
     order: 3;
   }
 }
+
+/* ============================================================
+   BORRADOR VIERNES: barra de navegación
+   ============================================================ */
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+
+  background: rgba(15, 8, 26, 0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(216, 178, 92, 0.25);
+}
+
+.site-nav__inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 18px 20px;
+}
+
+.site-nav__links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.site-nav__links a,
+.site-nav__soon {
+  color: var(--ivory);
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.site-nav__links a:hover {
+  color: var(--gold-light);
+}
+
+.site-nav__soon {
+  color: rgba(246, 241, 231, 0.4);
+  cursor: default;
+}
+
+.site-nav__burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.site-nav__burger span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: var(--ivory);
+  border-radius: 2px;
+  transition: transform .25s ease, opacity .25s ease;
+}
+
+.site-nav__burger.is-open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.site-nav__burger.is-open span:nth-child(2) {
+  opacity: 0;
+}
+
+.site-nav__burger.is-open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+.site-nav__mobile {
+  display: none;
+  flex-direction: column;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .3s ease;
+}
+
+.site-nav__mobile.is-open {
+  max-height: 400px;
+}
+
+.site-nav__mobile li {
+  border-top: 1px solid rgba(216, 178, 92, 0.15);
+}
+
+.site-nav__mobile a,
+.site-nav__mobile .site-nav__soon {
+  display: block;
+  padding: 16px 20px;
+  color: var(--ivory);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+/* Que un link ancla (#album-section, etc.) no deje la sección tapada
+   detrás de la barra fija. */
+#album-section,
+#episodes-section {
+  scroll-margin-top: 76px;
+}
+
+@media (max-width: 700px) {
+  .site-nav__links {
+    display: none;
+  }
+
+  .site-nav__burger {
+    display: flex;
+  }
+
+  .site-nav__mobile {
+    display: flex;
+  }
+
+  .site-nav__inner {
+    justify-content: space-between;
+    padding: 14px 20px;
+  }
+}
+
+/* Como la barra de navegación ahora ocupa espacio arriba del hero
+   (no está superpuesta), se le resta esa altura al hero para que
+   siga entrando en una pantalla completa al cargar la página. Solo
+   en el borrador (body.has-sections) — index.html no tiene navbar. */
+body.has-sections .hero {
+  height: calc(100vh - 70px);
+  height: calc(100dvh - 70px);
+  min-height: calc(100svh - 70px);
+}
