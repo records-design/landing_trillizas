@@ -2821,10 +2821,21 @@ button:focus-visible {
 
 .album-section {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   align-items: center;
+}
+
+.album-section__heading {
+  margin-bottom: clamp(28px, 4vh, 44px);
+}
+
+.album-section__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
   justify-content: center;
   gap: clamp(32px, 5vw, 64px);
+  width: 100%;
 }
 
 .album-section__cover {
@@ -2861,14 +2872,22 @@ button:focus-visible {
   justify-content: flex-start;
 }
 
+/* Mismo tratamiento tipográfico exacto que el título del hero
+   (.hero-slogan) — misma serif, peso, tracking, dorado y brillo. */
 .album-section__name {
-  color: var(--gold-light);
-  font-family: var(--font-ui);
-  font-size: clamp(24px, 2.8vw, 32px);
-  font-weight: 600;
-  line-height: 1.15;
-  letter-spacing: 0.01em;
+  font-family: var(--font-display);
+  font-size: clamp(24px, 2.8vw, 34px);
+  font-weight: 500;
+  line-height: 1.18;
+  letter-spacing: -0.012em;
   margin: 0;
+
+  color: #e4b64f;
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.34),
+    0 2px 0 rgba(113, 65, 16, 0.28),
+    0 5px 14px rgba(0, 0, 0, 0.34),
+    0 0 12px rgba(231, 181, 74, 0.10);
 }
 
 .album-section__status {
@@ -2884,7 +2903,7 @@ button:focus-visible {
     gap: 12px;
   }
 
-  .album-section {
+  .album-section__row {
     flex-direction: column;
     text-align: center;
   }
@@ -2892,10 +2911,6 @@ button:focus-visible {
   .album-section__info {
     align-items: center;
     text-align: center;
-  }
-
-  .album-section__info .section-divider {
-    justify-content: center;
   }
 }
 
