@@ -2826,24 +2826,46 @@ button:focus-visible {
 }
 
 .album-section__heading {
-  margin-bottom: clamp(28px, 4vh, 44px);
+  margin-bottom: clamp(40px, 6vh, 64px);
+}
+
+/* "Nuestra música" pasa de eyebrow chico a título de sección real —
+   misma serif/dorado/brillo que el título del hero, a ~60% del
+   tamaño. Solo dentro del encabezado del álbum (no toca el eyebrow
+   "Serie original" de la otra sección, que sigue chico). */
+.album-section__heading .section-eyebrow {
+  font-family: var(--font-display);
+  font-size: clamp(30px, 3.6vw, 42px);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  margin: 0;
+
+  color: #e4b64f;
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.34),
+    0 2px 0 rgba(113, 65, 16, 0.28),
+    0 5px 14px rgba(0, 0, 0, 0.34),
+    0 0 12px rgba(231, 181, 74, 0.10);
 }
 
 .album-section__row {
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
   justify-content: center;
   gap: clamp(32px, 5vw, 64px);
   width: 100%;
+  max-width: 1160px;
 }
 
 .album-section__cover {
+  position: relative;
   width: min(320px, 80vw);
   flex: 0 0 auto;
 
   border-radius: 14px;
-  overflow: hidden;
 
   border: 1px solid rgba(216, 178, 92, 0.18);
   box-shadow:
@@ -2852,13 +2874,28 @@ button:focus-visible {
     0 0 60px rgba(103, 232, 249, 0.06);
 }
 
+/* Halo violeta muy sutil detrás de la tapa */
+.album-section__cover::before {
+  content: "";
+  position: absolute;
+  inset: -30px;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.14), transparent 70%);
+  pointer-events: none;
+}
+
 .album-section__cover img {
+  position: relative;
+  z-index: 1;
   display: block;
   width: 100%;
   height: auto;
+  border-radius: 14px;
 }
 
 .album-section__info {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -2866,6 +2903,20 @@ button:focus-visible {
 
   width: min(420px, 100%);
   text-align: left;
+}
+
+/* Halo dorado muy tenue detrás del bloque de texto */
+.album-section__info::before {
+  content: "";
+  position: absolute;
+  top: -20px;
+  left: -30px;
+  width: 220px;
+  height: 220px;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(216, 178, 92, 0.10), transparent 70%);
+  pointer-events: none;
 }
 
 .album-section__info .section-divider {
@@ -3017,18 +3068,21 @@ body.has-sections .hero-content {
     aspect-ratio: 16 / 9;
   }
 
-  .album-section {
-    max-width: 1100px;
-    margin: 0 auto;
-    gap: 72px;
+  .album-section__row {
+    align-items: flex-start;
   }
 
   .album-section__cover {
-    width: min(380px, 32vw);
+    flex: 0 1 42%;
+    width: auto;
+    max-width: 360px;
   }
 
   .album-section__info {
-    width: min(480px, 100%);
+    flex: 1 1 55%;
+    width: auto;
+    max-width: 560px;
+    padding-top: clamp(20px, 4vh, 40px);
   }
 
   .post-sections-footer .hero-content-mirror {
