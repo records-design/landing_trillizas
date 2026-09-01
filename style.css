@@ -356,6 +356,7 @@ button:focus-visible {
   max-width: var(--cta-group-width);
 
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 
@@ -3045,13 +3046,28 @@ body.has-sections .hero-content {
    BORRADOR VIERNES: barra de navegación
    ============================================================ */
 .site-nav {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 50;
 
   background: rgba(15, 8, 26, 0.92);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid rgba(216, 178, 92, 0.25);
+}
+
+/* Como la barra ahora es "fixed" (fuera del flujo normal), se le
+   deja ese mismo espacio arriba de todo lo demás para que no quede
+   tapado debajo. */
+body.has-sections {
+  padding-top: 70px;
+}
+
+@media (max-width: 700px) {
+  body.has-sections {
+    padding-top: 62px;
+  }
 }
 
 .site-nav__inner {
@@ -3196,4 +3212,259 @@ body.has-sections .hero {
   height: calc(100vh - 70px);
   height: calc(100dvh - 70px);
   min-height: calc(100svh - 70px);
+}
+
+
+/* Hero: claim secundario (arriba del título principal nuevo) */
+.hero-claim {
+  color: var(--ivory);
+  font-family: var(--font-ui);
+  font-size: clamp(14px, 1.6vw, 17px);
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  text-align: center;
+  opacity: 0.85;
+  margin: 0 0 clamp(10px, 1.4vh, 16px);
+}
+
+/* ============================================================
+   BORRADOR VIERNES: eyebrow / season (La serie, Álbum)
+   ============================================================ */
+.section-eyebrow {
+  color: var(--gold);
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin: 0 0 6px;
+}
+
+.section-season {
+  color: var(--ivory);
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  opacity: 0.7;
+  margin: 6px 0 0;
+}
+
+/* La sección "episodes-section" se llamaba así en un borrador
+   anterior; ahora es "serie-section" pero reutiliza exactamente el
+   mismo CSS de layout que ya existía (misma clase .episodes-section
+   de padding/fondo), así que no hace falta duplicar esas reglas. */
+.serie-section {
+  position: relative;
+  width: 100%;
+  padding: clamp(48px, 8vh, 96px) 20px;
+  background: var(--violet-deep);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ---------- Card secundaria "Nuevos episodios cada semana" ---------- */
+.episode-tile--soon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  width: min(240px, 100%);
+  margin-top: 24px;
+  padding: 22px 18px;
+
+  text-align: center;
+  border: 1px solid rgba(216, 178, 92, 0.3);
+  border-radius: 14px;
+  background: rgba(27, 15, 46, 0.5);
+}
+
+.episode-tile__soon-diamond {
+  color: var(--gold);
+  font-size: 18px;
+}
+
+.episode-tile__soon-text {
+  color: var(--gold-light);
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1.6;
+}
+
+/* ============================================================
+   Álbum: portada placeholder (Volumen 2 todavía no subida)
+   ============================================================ */
+.album-section__cover-placeholder {
+  aspect-ratio: 1 / 1;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px dashed rgba(246, 241, 231, 0.25);
+  border-radius: 14px;
+
+  background:
+    radial-gradient(circle at 30% 30%, rgba(217, 70, 239, 0.10), transparent 55%),
+    radial-gradient(circle at 70% 70%, rgba(103, 232, 249, 0.10), transparent 55%),
+    var(--violet-deep);
+
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+
+  color: var(--ivory);
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-align: center;
+  line-height: 1.5;
+  opacity: 0.7;
+}
+
+.album-section__cover-placeholder small {
+  display: block;
+  margin-top: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  opacity: 0.7;
+  text-transform: none;
+  letter-spacing: 0.02em;
+}
+
+/* ============================================================
+   HISTORIA
+   ============================================================ */
+.historia-section {
+  width: 100%;
+  padding: clamp(48px, 8vh, 96px) 20px;
+  background: var(--violet-deep);
+
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(36px, 6vw, 72px);
+}
+
+.historia-section__text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  width: min(440px, 100%);
+}
+
+.historia-section__text .section-divider {
+  justify-content: flex-start;
+}
+
+.historia-section__body {
+  color: var(--ivory);
+  font-family: var(--font-ui);
+  font-size: 15px;
+  line-height: 1.7;
+  opacity: 0.9;
+  margin: 0;
+}
+
+.historia-section__visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.historia-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.historia-slot__placeholder {
+  width: 108px;
+  aspect-ratio: 1 / 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px dashed rgba(216, 178, 92, 0.35);
+  border-radius: 12px;
+
+  background:
+    radial-gradient(circle at 50% 30%, rgba(216, 178, 92, 0.10), transparent 60%),
+    rgba(27, 15, 46, 0.55);
+
+  color: var(--ivory);
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.35;
+  opacity: 0.75;
+  padding: 6px;
+}
+
+.historia-slot__label {
+  color: var(--gold-light);
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.historia-arrow {
+  color: var(--gold);
+  font-size: 20px;
+  opacity: 0.7;
+}
+
+@media (max-width: 700px) {
+  .historia-section {
+    flex-direction: column;
+  }
+
+  .historia-section__text {
+    align-items: center;
+    text-align: center;
+  }
+
+  .historia-section__text .section-divider {
+    justify-content: center;
+  }
+
+  .historia-section__visual {
+    flex-direction: column;
+  }
+
+  .historia-arrow {
+    transform: rotate(90deg);
+  }
+}
+
+/* El título nuevo del hero ("Cada página abre un portal...") tiene 2
+   líneas de texto más largas que el slogan original de una sola
+   línea — se le permite que cada línea pueda achicarse/ajustar en
+   vez de forzar nowrap (que lo cortaba en pantallas angostas). Solo
+   en el borrador (index.html sigue con su slogan corto sin tocar). */
+body.has-sections .hero-slogan {
+  white-space: normal;
+}
+
+@media (max-width: 700px) {
+  body.has-sections .hero-slogan {
+    font-size: clamp(28px, 7.2vw, 40px);
+  }
 }

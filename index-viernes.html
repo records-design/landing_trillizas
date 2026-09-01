@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="has-sections">
 <head>
   <!-- Google Tag Manager -->
   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -185,7 +185,7 @@
         <li><a href="#top">Inicio</a></li>
         <li><a href="la-historia.html">La historia</a></li>
         <li><a href="#album-section">Música</a></li>
-        <li><a href="#episodes-section">Novedades</a></li>
+        <li><a href="#serie-section">Novedades</a></li>
         <li><span class="site-nav__soon" title="Próximamente">Tienda</span></li>
         <li><span class="site-nav__soon" title="Próximamente">Contacto</span></li>
       </ul>
@@ -205,7 +205,7 @@
       <li><a href="#top">Inicio</a></li>
       <li><a href="la-historia.html">La historia</a></li>
       <li><a href="#album-section">Música</a></li>
-      <li><a href="#episodes-section">Novedades</a></li>
+      <li><a href="#serie-section">Novedades</a></li>
       <li><span class="site-nav__soon" title="Próximamente">Tienda</span></li>
       <li><span class="site-nav__soon" title="Próximamente">Contacto</span></li>
     </ul>
@@ -262,11 +262,16 @@
         </span>
       </div>
 
-      <!-- SLOGAN -->
+      <!-- SLOGAN + TÍTULO -->
       <div class="hero-slogan-wrap">
 
-        <h1 class="hero-slogan">
+        <p class="hero-claim">
           Tres hermanas, un libro, música y magia.
+        </p>
+
+        <h1 class="hero-slogan">
+          Cada página abre un portal.<br />
+          Cada canción, una aventura.
         </h1>
 
         <span
@@ -296,20 +301,18 @@
 
       </div>
 
-      <!-- BOTONES PRINCIPALES -->
+      <!-- BOTONES PRINCIPALES: bajan a las secciones (no abren YouTube/
+           Spotify directo) -->
       <div class="hero-ctas">
 
-        <!-- YouTube: episodios de la serie -->
+        <!-- Baja a la sección "La serie" -->
         <a
           id="ctaVideoclip"
           class="magic-button magic-button--purple"
-          href="PENDIENTE-LINK-EPISODIOS"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Mirá los episodios en YouTube"
-          data-event="WatchEpisodes"
-          data-destination="YouTube"
-          data-track-button="episodios"
+          href="#serie-section"
+          aria-label="Ver la serie"
+          data-event="ScrollToSerie"
+          data-track-button="ver_serie"
         >
 
           <img
@@ -340,24 +343,21 @@
             </span>
 
             <span class="magic-button__label">
-              Mirá los episodios
+              Ver la serie
             </span>
 
           </span>
 
         </a>
 
-        <!-- Spotify: disco completo -->
+        <!-- Baja a la sección "Álbum" -->
         <a
           id="ctaSpotify"
           class="magic-button magic-button--gold"
-          href="PENDIENTE-LINK-DISCO"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Escuchá el disco en Spotify"
-          data-event="ListenAlbum"
-          data-destination="Spotify"
-          data-track-button="disco"
+          href="#album-section"
+          aria-label="Escuchar el álbum"
+          data-event="ScrollToAlbum"
+          data-track-button="escuchar_album"
         >
 
           <img
@@ -388,7 +388,7 @@
             </span>
 
             <span class="magic-button__label">
-              Escuchá el disco
+              Escuchar el álbum
             </span>
 
           </span>
@@ -404,111 +404,46 @@
   </section>
 
   <!-- ================================================
-       BORRADOR VIERNES: secciones de Episodios y Álbum,
-       debajo del hero. Los href con "PENDIENTE-" y los
-       títulos entre corchetes son placeholders — reemplazar
-       antes de subir. Las imágenes de los episodios todavía
-       no existen: hoy se ve un ícono de play en vez de una
-       miniatura real — reemplazar el <span class="episode-tile__thumb">
-       por un <img> cuando estén las imágenes.
+       BORRADOR VIERNES: "La serie" + "Álbum".
+       Los episodios se cargan desde el array `episodes` (ver el
+       <script> cerca del final del archivo) — para agregar un
+       episodio nuevo, agregar un objeto al array, no tocar este HTML.
+       Los href/rutas "PENDIENTE-" son placeholders reales: reemplazar
+       antes de subir a producción.
        ================================================ -->
 
-  <!-- NUEVOS EPISODIOS -->
-  <section class="episodes-section" id="episodes-section">
+  <!-- LA SERIE -->
+  <section class="serie-section" id="serie-section">
     <div class="section-heading">
-      <span class="section-divider" aria-hidden="true">
-        <span class="follow-line"></span>
-        <span class="follow-diamond"></span>
-        <span class="follow-line"></span>
-      </span>
-      <h2 class="section-title">Nuevos episodios</h2>
-      <p class="section-subtitle">Descubrí las nuevas aventuras de las Trillizas y el Libro Mágico</p>
+      <p class="section-eyebrow">La serie</p>
+      <h2 class="section-title">Cruzá el portal</h2>
+      <p class="section-subtitle">Las Trillizas de Oro y el Libro Mágico</p>
+      <p class="section-season">Temporada 1</p>
     </div>
 
-    <div class="episodes-grid">
+    <div class="episodes-grid" id="episodesGrid">
+      <!-- Generado por JS a partir del array `episodes`. Ver <script> al final del archivo. -->
+    </div>
 
-      <a
-        class="episode-tile"
-        href="PENDIENTE-LINK-EPISODIO-1"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Ver episodio 1: [nombre del episodio 1]"
-        data-event="WatchVideo"
-        data-destination="YouTube"
-        data-track-button="episodio_1"
-      >
-        <span class="episode-tile__thumb">
-          <!-- Reemplazar por: <img src="imagenes/episodio-1.jpg" alt="" /> -->
-          <span class="episode-tile__play" aria-hidden="true">
-            <svg viewBox="0 0 24 24">
-              <path
-                d="M8 5v14l11-7z"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.6"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </span>
-        </span>
-        <span class="episode-tile__number">Episodio 01</span>
-        <span class="episode-tile__title">[Nombre del episodio 1]</span>
-        <span class="episode-tile__cta">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M8 5v14l11-7z" fill="currentColor" />
-          </svg>
-          Ver episodio
-        </span>
-      </a>
-
-      <a
-        class="episode-tile"
-        href="PENDIENTE-LINK-EPISODIO-2"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Ver episodio 2: [nombre del episodio 2]"
-        data-event="WatchVideo"
-        data-destination="YouTube"
-        data-track-button="episodio_2"
-      >
-        <span class="episode-tile__thumb">
-          <!-- Reemplazar por: <img src="imagenes/episodio-2.jpg" alt="" /> -->
-          <span class="episode-tile__play" aria-hidden="true">
-            <svg viewBox="0 0 24 24">
-              <path
-                d="M8 5v14l11-7z"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.6"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </span>
-        </span>
-        <span class="episode-tile__number">Episodio 02</span>
-        <span class="episode-tile__title">[Nombre del episodio 2]</span>
-        <span class="episode-tile__cta">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M8 5v14l11-7z" fill="currentColor" />
-          </svg>
-          Ver episodio
-        </span>
-      </a>
-
+    <div class="episode-tile episode-tile--soon">
+      <span class="episode-tile__soon-diamond">&#10022;</span>
+      <span class="episode-tile__soon-text">Nuevos<br />episodios<br />cada semana</span>
     </div>
   </section>
 
-  <!-- EL ÁLBUM -->
+  <!-- ÁLBUM -->
   <section class="album-section" id="album-section">
     <div class="album-section__cover">
-      <img
-        src="imagenes/arte_de_tapa_trillizas.png"
-        alt="Tapa del álbum Las Trillizas de Oro y El Libro Mágico, Volumen I"
-      />
+      <!-- PENDIENTE: la tapa real del Volumen 2 todavía no está subida.
+           "arte_de_tapa_trillizas.png" es la tapa del Volumen 1 (dice
+           "VOLUMEN 1" dibujado en la propia imagen) y ya NO corresponde
+           — no se reutiliza para no mostrar información incorrecta.
+           Cuando tengas la tapa nueva, reemplazar este bloque completo
+           por: <img src="imagenes/RUTA-DE-LA-TAPA-VOLUMEN-2.jpg" alt="Tapa del álbum Las Trillizas de Oro y El Libro Mágico, Volumen 2" loading="lazy" /> -->
+      <div class="album-section__cover-placeholder">
+        <span>Portada del<br />Volumen 2<br /><small>(pendiente de subir)</small></span>
+      </div>
     </div>
-
 
     <div class="album-section__info">
       <span class="section-divider" aria-hidden="true">
@@ -516,23 +451,30 @@
         <span class="follow-diamond"></span>
         <span class="follow-line"></span>
       </span>
-      <h2 class="section-title">El álbum</h2>
+      <p class="section-eyebrow">La música de Las Trillizas de Oro</p>
       <h3 class="album-section__name">
         Las Trillizas de Oro<br />
         y El Libro Mágico
       </h3>
-      <p class="album-section__volume">Volumen 1</p>
-      <p class="album-section__status">Ya disponible &middot; Spotify &middot; YouTube Music</p>
+      <p class="album-section__volume">Volumen 2</p>
+      <p class="album-section__status">7 canciones</p>
 
+      <!-- PENDIENTE: no existe todavía ningún link real del álbum
+           completo en el proyecto (se revisó todo el sitio antes de
+           armar esto) — el único link de Spotify que había era el de
+           UNA canción suelta ("La Locomotora llega a la estación"),
+           no el álbum, así que no se reutiliza para no llevar a la
+           persona a un lugar equivocado. Reemplazar PENDIENTE-LINK-ALBUM
+           por el link real del álbum completo en Spotify cuando lo tengas. -->
       <a
         class="magic-button magic-button--gold"
-        href="PENDIENTE-LINK-DISCO"
+        href="PENDIENTE-LINK-ALBUM"
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="Escuchá el álbum en Spotify"
+        aria-label="Escuchar el álbum"
         data-event="ListenAlbum"
         data-destination="Spotify"
-        data-track-button="disco"
+        data-track-button="escuchar_album"
       >
         <img
           class="magic-button__frame"
@@ -556,85 +498,55 @@
               <circle cx="18" cy="16" r="3" />
             </svg>
           </span>
-          <span class="magic-button__label">Escuchá el álbum</span>
+          <span class="magic-button__label">Escuchar el álbum</span>
         </span>
       </a>
     </div>
+  </section>
 
-    <!-- VIDEOCLIPS: van debajo de la tapa. Para sumar uno nuevo más
-         adelante, copiar un bloque <a class="episode-tile">...</a>
-         completo (mismo estilo que las tarjetas de episodios). -->
-    <div class="album-section__videoclips">
-      <h3 class="section-title album-section__videoclips-title">Videoclips</h3>
-      <p class="section-subtitle">Un videoclip por cada episodio de la serie</p>
-      <div class="episodes-grid">
-        <a
-          class="episode-tile"
-          href="https://linktw.in/rVjywT"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Ver el videoclip de La Locomotora llega a la estación"
-          data-event="WatchVideo"
-          data-destination="YouTube"
-          data-track-button="videoclip_locomotora"
-        >
-          <span class="episode-tile__thumb">
-            <!-- Reemplazar por: <img src="imagenes/videoclip-locomotora.jpg" alt="" /> -->
-            <span class="episode-tile__play" aria-hidden="true">
-              <svg viewBox="0 0 24 24">
-                <path
-                  d="M8 5v14l11-7z"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.6"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </span>
-          </span>
-          <span class="episode-tile__title">La Locomotora llega a la estación</span>
-          <span class="episode-tile__cta">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M8 5v14l11-7z" fill="currentColor" />
-            </svg>
-            Ver videoclip
-          </span>
-        </a>
+  <!-- HISTORIA -->
+  <section class="historia-section" id="historia-section">
+    <div class="historia-section__text">
+      <span class="section-divider" aria-hidden="true">
+        <span class="follow-line"></span>
+        <span class="follow-diamond"></span>
+        <span class="follow-line"></span>
+      </span>
+      <h2 class="section-title">El libro mágico</h2>
+      <p class="historia-section__body">
+        María Eugenia, María Emilia y María Laura descubren un misterioso Libro Mágico capaz de abrir portales hacia mundos extraordinarios. Al cruzarlos se transforman en las Trixipop y viven aventuras donde la imaginación, la música y el trabajo en equipo son la clave.
+      </p>
+    </div>
 
-        <a
-          class="episode-tile"
-          href="PENDIENTE-LINK-VIDEOCLIP-EPISODIO-2"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Ver el videoclip de [nombre de la canción del episodio 2]"
-          data-event="WatchVideo"
-          data-destination="YouTube"
-          data-track-button="videoclip_episodio_2"
-        >
-          <span class="episode-tile__thumb">
-            <!-- Reemplazar por: <img src="imagenes/videoclip-episodio-2.jpg" alt="" /> -->
-            <span class="episode-tile__play" aria-hidden="true">
-              <svg viewBox="0 0 24 24">
-                <path
-                  d="M8 5v14l11-7z"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.6"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </span>
-          </span>
-          <span class="episode-tile__title">[Nombre de la canción del episodio 2]</span>
-          <span class="episode-tile__cta">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M8 5v14l11-7z" fill="currentColor" />
-            </svg>
-            Ver videoclip
-          </span>
-        </a>
+    <!-- PENDIENTE: las 3 imágenes de esta sección todavía no están
+         subidas. Cuando las tengas, reemplazar cada
+         <div class="historia-slot__placeholder">...</div> por
+         <img src="imagenes/RUTA.jpg" alt="" loading="lazy" />
+         dentro del mismo <div class="historia-slot">, sin tocar el resto. -->
+    <div class="historia-section__visual">
+      <div class="historia-slot">
+        <div class="historia-slot__placeholder">
+          <span>Las Trillizas<br />de Oro</span>
+        </div>
+        <span class="historia-slot__label">Tres hermanas</span>
+      </div>
+
+      <span class="historia-arrow" aria-hidden="true">&rarr;</span>
+
+      <div class="historia-slot">
+        <div class="historia-slot__placeholder">
+          <span>El Libro<br />Mágico</span>
+        </div>
+        <span class="historia-slot__label">El libro mágico</span>
+      </div>
+
+      <span class="historia-arrow" aria-hidden="true">&rarr;</span>
+
+      <div class="historia-slot">
+        <div class="historia-slot__placeholder">
+          <span>Las<br />Trixipop</span>
+        </div>
+        <span class="historia-slot__label">Trixipop</span>
       </div>
     </div>
   </section>
@@ -810,7 +722,7 @@
         </div>
 
         <h2 class="newsletter-title">Entrá al universo de<br class="newsletter-title-break" /> Las Trillizas de Oro y el Libro Mágico</h2>
-        <p class="newsletter-text">Recibí antes que nadie nuevos videoclips, canciones y novedades.</p>
+        <p class="newsletter-text">Recibí antes que nadie nuevos episodios, canciones y novedades.</p>
 
         <form class="newsletter-form" id="newsletterForm" novalidate>
           <input
@@ -892,6 +804,69 @@
   <script src="config.js?v=20260827152227"></script>
   <script src="tracking.js?v=20260714151543"></script>
   <script src="script.js?v=20260827152227"></script>
+
+  <!-- ================================================
+       BORRADOR VIERNES: datos de los episodios de la serie.
+       PARA AGREGAR UN EPISODIO NUEVO: agregar un objeto más acá
+       abajo (temporada, número, título, thumbnail, link de YouTube)
+       — la tarjeta aparece sola, no hay que tocar nada de HTML/CSS.
+       "thumbnail" puede quedar vacío ("") mientras no haya foto
+       todavía: se muestra un ícono de play en su lugar.
+       ================================================ -->
+  <script>
+    var episodes = [
+      {
+        season: 1,
+        episode: 1,
+        title: 'PENDIENTE: nombre del episodio 1',
+        thumbnail: '',
+        youtubeUrl: 'PENDIENTE-LINK-EPISODIO-1'
+      },
+      {
+        season: 1,
+        episode: 2,
+        title: 'PENDIENTE: nombre del episodio 2',
+        thumbnail: '',
+        youtubeUrl: 'PENDIENTE-LINK-EPISODIO-2'
+      }
+    ];
+
+    (function () {
+      var grid = document.getElementById('episodesGrid');
+      if (!grid) return;
+
+      episodes.forEach(function (ep) {
+        var a = document.createElement('a');
+        a.className = 'episode-tile';
+        a.href = ep.youtubeUrl || '#';
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        a.setAttribute('aria-label', 'Ver episodio ' + ep.episode + ': ' + ep.title);
+        a.setAttribute('data-event', 'WatchVideo');
+        a.setAttribute('data-destination', 'YouTube');
+        a.setAttribute('data-track-button', 'episodio_' + ep.episode);
+
+        var thumbHtml = ep.thumbnail
+          ? '<img src="' + ep.thumbnail + '" alt="" loading="lazy" />'
+          : '<span class="episode-tile__play" aria-hidden="true">'
+            + '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="none" '
+            + 'stroke="currentColor" stroke-width="1.6" stroke-linecap="round" '
+            + 'stroke-linejoin="round" /></svg></span>';
+
+        var episodeNum = ep.episode < 10 ? '0' + ep.episode : String(ep.episode);
+
+        a.innerHTML =
+          '<span class="episode-tile__thumb">' + thumbHtml + '</span>' +
+          '<span class="episode-tile__number">Episodio ' + episodeNum + '</span>' +
+          '<span class="episode-tile__title">' + ep.title + '</span>' +
+          '<span class="episode-tile__cta">' +
+          '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor" /></svg>' +
+          'Ver episodio</span>';
+
+        grid.appendChild(a);
+      });
+    })();
+  </script>
 
   <!-- BORRADOR VIERNES: menú hamburguesa de la barra de navegación. -->
   <script>
