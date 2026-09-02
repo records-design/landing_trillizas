@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "trillizas-static",
+      "runtimeExecutable": "php",
+      "runtimeArgs": ["-S", "localhost:8791", "-t", "."],
+      "port": 8791
+    }
+  ]
+}

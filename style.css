@@ -2829,26 +2829,6 @@ button:focus-visible {
   margin-bottom: clamp(40px, 6vh, 64px);
 }
 
-/* "Nuestra música" pasa de eyebrow chico a título de sección real —
-   misma serif/dorado/brillo que el título del hero, a ~60% del
-   tamaño. Solo dentro del encabezado del álbum (no toca el eyebrow
-   "Serie original" de la otra sección, que sigue chico). */
-.album-section__heading .section-eyebrow {
-  font-family: var(--font-display);
-  font-size: clamp(30px, 3.6vw, 42px);
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  text-transform: none;
-  margin: 0;
-
-  color: #e4b64f;
-  text-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.34),
-    0 2px 0 rgba(113, 65, 16, 0.28),
-    0 5px 14px rgba(0, 0, 0, 0.34),
-    0 0 12px rgba(231, 181, 74, 0.10);
-}
-
 .album-section__row {
   position: relative;
   display: flex;
@@ -3068,8 +3048,12 @@ body.has-sections .hero-content {
     aspect-ratio: 16 / 9;
   }
 
+  /* align-items: stretch — la portada define la altura de referencia
+     y el bloque de texto (columna derecha) se estira para igualarla,
+     así el título arranca al ras del borde superior de la portada y
+     el botón puede empujarse al ras del borde inferior. */
   .album-section__row {
-    align-items: flex-start;
+    align-items: stretch;
   }
 
   .album-section__cover {
@@ -3082,7 +3066,7 @@ body.has-sections .hero-content {
     flex: 1 1 55%;
     width: auto;
     max-width: 560px;
-    padding-top: clamp(20px, 4vh, 40px);
+    justify-content: space-between;
   }
 
   .post-sections-footer .hero-content-mirror {
@@ -3380,12 +3364,19 @@ body.has-sections .hero {
   margin: 8px auto 0;
   padding: 22px 18px;
 
+  position: relative;
+  overflow: hidden;
+
   text-align: center;
   border: 1px solid rgba(216, 178, 92, 0.32);
   border-radius: 14px;
 
+  /* Overlay oscuro + violeta arriba de la imagen, para que el texto
+     dorado siga leyéndose bien sea cual sea la foto de fondo. */
   background:
+    linear-gradient(180deg, rgba(20, 10, 33, 0.55), rgba(20, 10, 33, 0.82)),
     radial-gradient(circle at 50% 20%, rgba(216, 178, 92, 0.10), transparent 60%),
+    url('imagenes/proximos_episodios_web.jpg') center / cover no-repeat,
     rgba(38, 20, 61, 0.55);
 
   box-shadow:

@@ -165,7 +165,7 @@
   />
 
   <!-- CSS -->
-  <link rel="stylesheet" href="style.css?v=20260901musica2" />
+  <link rel="stylesheet" href="style.css?v=20260902soonimg1" />
 </head>
 
 <body class="has-sections">
@@ -462,11 +462,13 @@
       </div>
 
       <div class="album-section__info">
-        <h3 class="album-section__name">
-          Las Trillizas de Oro<br />
-          y El Libro Mágico
-        </h3>
-        <p class="album-section__volume">Volumen 1</p>
+        <div class="album-section__top">
+          <h3 class="album-section__name">
+            Las Trillizas de Oro<br />
+            y El Libro Mágico
+          </h3>
+          <p class="album-section__volume">Volumen 1</p>
+        </div>
 
       <!-- PENDIENTE: no existe todavía ningún link real del álbum
            completo en el proyecto (se revisó todo el sitio antes de
@@ -585,11 +587,13 @@
         <div class="follow-links">
 
           <!-- Instagram -->
+          <!-- Sin target="_blank" a propósito: abrir en pestaña nueva
+               interfiere con que el celular salte directo a la app
+               (deep link). Navegando en la misma pestaña, el sistema
+               operativo sí lo intercepta y abre Instagram directo. -->
           <a
             class="follow-link"
             href="https://www.instagram.com/lastrillizasdeoro_libromagico/?hl=es"
-            target="_blank"
-            rel="noopener noreferrer"
             aria-label="Abrir Instagram de Las Trillizas de Oro y El Libro Mágico"
             data-event="OpenSocial"
             data-destination="Instagram"
@@ -832,14 +836,14 @@
         season: 1,
         episode: 1,
         title: 'Trixipop',
-        thumbnail: '',
+        thumbnail: 'imagenes/miniatura_trixipop_web.jpg',
         youtubeUrl: 'PENDIENTE-LINK-EPISODIO-1'
       },
       {
         season: 1,
         episode: 2,
         title: 'Locomotora llega a estación',
-        thumbnail: '',
+        thumbnail: 'imagenes/miniatura_locomotora_web.jpg',
         youtubeUrl: 'PENDIENTE-LINK-EPISODIO-2'
       }
     ];
@@ -860,12 +864,19 @@
         a.setAttribute('data-destination', 'YouTube');
         a.setAttribute('data-track-button', 'episodio_' + ep.episode);
 
+        var playIconHtml =
+          '<span class="episode-tile__play" aria-hidden="true">'
+          + '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="none" '
+          + 'stroke="currentColor" stroke-width="1.6" stroke-linecap="round" '
+          + 'stroke-linejoin="round" /></svg></span>';
+
+        // Con imagen real: solo la foto (sin ícono de play encima —
+        // ya está el CTA "Ver episodio" abajo, no hace falta duplicar
+        // la señal). Sin imagen todavía: el ícono de play como antes,
+        // para que no quede una miniatura vacía.
         var thumbHtml = ep.thumbnail
           ? '<img src="' + ep.thumbnail + '" alt="" loading="lazy" />'
-          : '<span class="episode-tile__play" aria-hidden="true">'
-            + '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="none" '
-            + 'stroke="currentColor" stroke-width="1.6" stroke-linecap="round" '
-            + 'stroke-linejoin="round" /></svg></span>';
+          : playIconHtml;
 
         var episodeNum = ep.episode < 10 ? '0' + ep.episode : String(ep.episode);
 
