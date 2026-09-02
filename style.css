@@ -2830,10 +2830,8 @@ button:focus-visible {
 }
 
 /* Bloque editorial horizontal y compacto: la tapa y el texto ocupan
-   prácticamente la misma altura. El panel es apenas una insinuación
-   de superficie (violeta un poco más claro que el fondo, borde
-   dorado casi invisible) — el protagonista es el contenido, no la
-   caja que lo envuelve. */
+   prácticamente la misma altura, sueltos sobre el fondo violeta de
+   la sección (sin card/panel envolviendo todo). */
 .album-section__row {
   position: relative;
   display: grid;
@@ -2844,12 +2842,6 @@ button:focus-visible {
   width: 100%;
   max-width: 1100px;
   margin: 0 auto;
-
-  padding: clamp(32px, 5vw, 44px) clamp(24px, 6vw, 40px);
-  border-radius: 24px;
-  border: 1px solid rgba(216, 178, 92, 0.14);
-  background: rgba(124, 58, 237, 0.06);
-  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.22);
 }
 
 .album-section__cover {
@@ -2889,20 +2881,41 @@ button:focus-visible {
 }
 
 .album-section__info {
-  --button-width: 220px;
+  --button-width: 250px;
 
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 
   width: min(420px, 100%);
   text-align: center;
 }
 
 .album-section__info .magic-button {
-  margin-top: 18px;
+  margin-top: 20px;
+}
+
+.album-section__info .magic-button__content {
+  padding: 0 20px;
+  gap: 8px;
+}
+
+.album-section__info .magic-button__icon {
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
+}
+
+.album-section__info .magic-button__icon svg {
+  width: 13px;
+  height: 13px;
+}
+
+.album-section__info .magic-button__label {
+  font-size: 15px;
+  letter-spacing: 0.02em;
 }
 
 .album-section__info .section-divider {
@@ -3088,7 +3101,7 @@ body.has-sections .hero-content {
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  margin: 0;
+  margin: 6px 0 0;
 }
 
 /* ---------- Videoclips (debajo de la tapa del álbum) ---------- */
