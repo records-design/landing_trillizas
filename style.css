@@ -3051,7 +3051,8 @@ body.has-sections .hero-content {
   }
 
   .album-section__row {
-    grid-template-columns: 340px 1fr;
+    grid-template-columns: 340px minmax(0, 480px);
+    justify-content: center;
     gap: clamp(48px, 6vw, 80px);
     justify-items: stretch;
   }
