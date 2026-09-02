@@ -2829,6 +2829,10 @@ button:focus-visible {
   margin-bottom: clamp(40px, 6vh, 64px);
 }
 
+/* Panel suave que "contiene" la portada + el texto como un único
+   conjunto visual, en vez de dos elementos flotando sueltos en medio
+   del fondo violeta. Nada de glassmorphism: es un degradé sólido con
+   un halo mágico muy tenue detrás, borde dorado casi invisible. */
 .album-section__row {
   position: relative;
   display: flex;
@@ -2837,7 +2841,18 @@ button:focus-visible {
   justify-content: center;
   gap: clamp(32px, 5vw, 64px);
   width: 100%;
-  max-width: 1160px;
+  max-width: 1220px;
+
+  padding: clamp(32px, 6vw, 72px) clamp(24px, 6vw, 80px);
+  border-radius: 32px;
+  border: 1px solid rgba(216, 178, 92, 0.14);
+
+  background:
+    radial-gradient(ellipse at 22% 28%, rgba(124, 58, 237, 0.12), transparent 55%),
+    radial-gradient(ellipse at 78% 72%, rgba(216, 178, 92, 0.09), transparent 55%),
+    linear-gradient(160deg, rgba(46, 24, 74, 0.5), rgba(27, 15, 46, 0.3));
+
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
 }
 
 .album-section__cover {
