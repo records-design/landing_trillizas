@@ -3069,14 +3069,6 @@ body.has-sections .hero-content {
     aspect-ratio: 16 / 9;
   }
 
-  /* align-items: stretch — la portada define la altura de referencia
-     y el bloque de texto (columna derecha) se estira para igualarla,
-     así el título arranca al ras del borde superior de la portada y
-     el botón puede empujarse al ras del borde inferior. */
-  .album-section__row {
-    align-items: stretch;
-  }
-
   .album-section__cover {
     flex: 0 1 42%;
     width: auto;
