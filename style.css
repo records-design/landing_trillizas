@@ -2846,7 +2846,7 @@ button:focus-visible {
 
 .album-section__cover {
   position: relative;
-  width: min(340px, 80vw);
+  width: min(300px, 80vw);
   aspect-ratio: 1 / 1;
   flex: 0 0 auto;
 
@@ -2894,7 +2894,7 @@ button:focus-visible {
 }
 
 .album-section__info .magic-button {
-  margin-top: 20px;
+  margin-top: auto;
 }
 
 .album-section__info .magic-button__content {
@@ -3064,14 +3064,15 @@ body.has-sections .hero-content {
   }
 
   .album-section__row {
-    grid-template-columns: 340px minmax(0, 480px);
+    grid-template-columns: 300px minmax(0, 480px);
     justify-content: center;
+    align-items: start;
     gap: clamp(48px, 6vw, 80px);
     justify-items: stretch;
   }
 
   .album-section__cover {
-    width: 340px;
+    width: 300px;
   }
 
   .album-section__info {
@@ -3079,6 +3080,7 @@ body.has-sections .hero-content {
     text-align: left;
     width: 100%;
     max-width: 480px;
+    min-height: 300px;
   }
 
   .album-section__info .section-divider {
@@ -3101,7 +3103,7 @@ body.has-sections .hero-content {
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  margin: 6px 0 0;
+  margin: 16px 0 0;
 }
 
 /* ---------- Videoclips (debajo de la tapa del álbum) ---------- */
