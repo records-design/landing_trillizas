@@ -2930,8 +2930,10 @@ button:focus-visible {
 }
 
 @media (max-width: 700px) {
-  .episodes-grid {
-    gap: 12px;
+  /* Una card debajo de la otra en mobile (no 2 columnas apretadas). */
+  #serie-section .episodes-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
   }
 
   .album-section__row {
@@ -3033,8 +3035,8 @@ body.has-sections .hero-content {
   #serie-section .episodes-grid {
     grid-template-columns: 2fr 2fr 1fr;
     align-items: stretch;
-    max-width: 1040px;
-    gap: 28px;
+    width: min(1360px, calc(100% - 40px));
+    gap: 32px;
   }
 
   #serie-section .episode-tile--soon {
