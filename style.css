@@ -2837,13 +2837,13 @@ button:focus-visible {
   position: relative;
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
-  gap: clamp(32px, 5vw, 64px);
+  gap: clamp(32px, 5vw, 56px);
   width: 100%;
-  max-width: 1220px;
+  max-width: 1040px;
 
-  padding: clamp(32px, 6vw, 72px) clamp(24px, 6vw, 80px);
+  padding: clamp(32px, 6vw, 64px) clamp(24px, 6vw, 72px);
   border-radius: 32px;
   border: 1px solid rgba(216, 178, 92, 0.14);
 
@@ -2894,10 +2894,14 @@ button:focus-visible {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 14px;
+  gap: 16px;
 
   width: min(420px, 100%);
   text-align: left;
+}
+
+.album-section__info .magic-button {
+  margin-top: 8px;
 }
 
 /* Halo dorado muy tenue detrás del bloque de texto */
@@ -3082,8 +3086,7 @@ body.has-sections .hero-content {
   .album-section__info {
     flex: 1 1 55%;
     width: auto;
-    max-width: 560px;
-    justify-content: space-between;
+    max-width: 480px;
   }
 
   .post-sections-footer .hero-content-mirror {
