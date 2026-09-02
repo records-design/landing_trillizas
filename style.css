@@ -2846,7 +2846,7 @@ button:focus-visible {
 
 .album-section__cover {
   position: relative;
-  width: min(300px, 80vw);
+  width: min(280px, 78vw);
   aspect-ratio: 1 / 1;
   flex: 0 0 auto;
 
@@ -2863,10 +2863,10 @@ button:focus-visible {
 .album-section__cover::before {
   content: "";
   position: absolute;
-  inset: -16px;
+  inset: -22px;
   z-index: -1;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(124, 58, 237, 0.12), transparent 70%);
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.20), transparent 68%);
   pointer-events: none;
 }
 
@@ -2957,6 +2957,10 @@ button:focus-visible {
 
   .album-section__row {
     grid-template-columns: 1fr;
+  }
+
+  .album-section__info {
+    --button-width: min(360px, 86vw);
   }
 }
 
@@ -3064,7 +3068,7 @@ body.has-sections .hero-content {
   }
 
   .album-section__row {
-    grid-template-columns: 300px minmax(0, 480px);
+    grid-template-columns: 280px minmax(0, 480px);
     justify-content: center;
     align-items: start;
     gap: clamp(48px, 6vw, 80px);
@@ -3072,7 +3076,7 @@ body.has-sections .hero-content {
   }
 
   .album-section__cover {
-    width: 300px;
+    width: 280px;
   }
 
   .album-section__info {
@@ -3080,7 +3084,7 @@ body.has-sections .hero-content {
     text-align: left;
     width: 100%;
     max-width: 480px;
-    min-height: 300px;
+    min-height: 280px;
   }
 
   .album-section__info .section-divider {
