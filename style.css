@@ -2829,6 +2829,10 @@ button:focus-visible {
   margin-bottom: clamp(24px, 4vh, 40px);
 }
 
+.album-section__heading .section-eyebrow {
+  color: var(--ivory);
+}
+
 /* Bloque editorial horizontal y compacto: la tapa y el texto ocupan
    prácticamente la misma altura, sueltos sobre el fondo violeta de
    la sección (sin card/panel envolviendo todo). */
@@ -2854,9 +2858,27 @@ button:focus-visible {
 
   border: 1px solid rgba(216, 178, 92, 0.18);
   box-shadow:
-    0 18px 44px rgba(0, 0, 0, 0.45),
+    0 28px 60px rgba(0, 0, 0, 0.55),
+    0 12px 26px rgba(0, 0, 0, 0.4),
     0 0 60px rgba(217, 70, 239, 0.08),
     0 0 60px rgba(103, 232, 249, 0.06);
+}
+
+/* Sombra de contacto elíptica debajo de la tapa, para que se sienta
+   apoyada sobre el fondo en vez de flotando. */
+.album-section__cover::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -18px;
+  width: 82%;
+  height: 26px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(0, 0, 0, 0.5), transparent 72%);
+  filter: blur(6px);
+  z-index: -1;
+  pointer-events: none;
 }
 
 /* Halo violeta muy sutil detrás de la tapa */
@@ -3101,7 +3123,7 @@ body.has-sections .hero-content {
 }
 
 .album-section__volume {
-  color: var(--gold);
+  color: var(--ivory);
   font-family: var(--font-ui);
   font-size: 16px;
   font-weight: 600;
