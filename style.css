@@ -2838,6 +2838,7 @@ button:focus-visible {
   right: -40px;
   bottom: -10px;
   width: min(620px, 58vw);
+  max-width: none;
   height: auto;
   max-height: 108%;
   object-fit: contain;
