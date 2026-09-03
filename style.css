@@ -4243,7 +4243,7 @@ body.has-sections .hero-slogan {
 
 @media (min-width: 701px) {
   body.has-sections .hero-slogan {
-    font-size: clamp(55px, 4.6vw, 80px) !important;
+    font-size: clamp(50px, 4.6vw, 80px) !important;
   }
 }
 
