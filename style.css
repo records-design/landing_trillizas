@@ -3624,7 +3624,7 @@ body.has-sections .hero {
 .episode-tile__soon-visit {
   align-self: stretch;
   width: 100%;
-  margin-top: 10px;
+  margin-top: auto;
   padding: 8px 20px;
   border: 1px solid rgba(216, 178, 92, 0.55);
   border-radius: 999px;
