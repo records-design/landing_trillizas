@@ -3266,6 +3266,61 @@ button:focus-visible {
     gap: 20px;
   }
 
+  /* Card "Nuevos episodios": en mobile era vertical y muy alta (240px
+     de ancho, contenido centrado en columna). Se la pasa a un
+     formato horizontal y bajo, con el mismo ancho que las cards de
+     episodios de arriba — texto a la izquierda, logo a la derecha,
+     y el botón como una fila propia abajo. */
+  #serie-section .episode-tile--soon {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas:
+      "diamond title logo"
+      "sub sub logo";
+    column-gap: 12px;
+    row-gap: 3px;
+    align-items: center;
+
+    width: 100%;
+    max-width: none;
+    margin: 8px auto 0;
+    padding: 16px 20px;
+    text-align: left;
+  }
+
+  #serie-section .episode-tile__soon-diamond {
+    grid-area: diamond;
+    font-size: 15px;
+  }
+
+  #serie-section .episode-tile__soon-title {
+    grid-area: title;
+    font-size: 17px;
+    line-height: 1.15;
+  }
+
+  #serie-section .episode-tile__soon-title br {
+    display: none;
+  }
+
+  #serie-section .episode-tile__soon-sub {
+    grid-area: sub;
+    font-size: 10px;
+  }
+
+  #serie-section .episode-tile__soon-babidibu {
+    grid-area: logo;
+    width: 62px;
+    margin: 0;
+  }
+
+  #serie-section .episode-tile__soon-visit {
+    grid-column: 1 / -1;
+    align-self: auto;
+    width: 100%;
+    margin-top: 12px;
+  }
+
   .album-section__row {
     grid-template-columns: 1fr;
   }
