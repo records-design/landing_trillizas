@@ -3622,10 +3622,10 @@ body.has-sections {
 
 .site-nav__links a,
 .site-nav__soon {
-  color: var(--ivory);
+  color: var(--gold-light);
   font-family: var(--font-ui);
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 300;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   text-decoration: none;
@@ -3633,7 +3633,7 @@ body.has-sections {
 }
 
 .site-nav__links a:hover {
-  color: var(--gold-light);
+  color: var(--ivory);
 }
 
 .site-nav__soon {
@@ -3699,10 +3699,10 @@ body.has-sections {
 .site-nav__mobile .site-nav__soon {
   display: block;
   padding: 16px 20px;
-  color: var(--ivory);
+  color: var(--gold-light);
   font-family: var(--font-ui);
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 300;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   text-decoration: none;
