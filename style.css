@@ -3275,7 +3275,7 @@ button:focus-visible {
     display: grid;
     grid-template-columns: auto 1fr auto;
     grid-template-areas:
-      "diamond title logo"
+      "diamond title ."
       "sub sub logo";
     column-gap: 8px;
     row-gap: 3px;
