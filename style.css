@@ -2836,18 +2836,10 @@ button:focus-visible {
 }
 
 .episode-tile__title {
-  /* Título sans-serif más importante de la página (nombre de cada
-     episodio) — degradé dorado sutil en vez de un dorado plano. */
-  background: linear-gradient(
-    180deg,
-    var(--gold-title-shine-1),
-    var(--gold-title-shine-2) 55%,
-    var(--gold-title-shine-3)
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: var(--gold-title);
-  -webkit-text-fill-color: transparent;
+  /* El nombre de cada episodio va en blanco, no dorado (pedido
+     explícito) — distinto del resto de los títulos sans-serif de la
+     web, que sí son dorados. */
+  color: var(--ivory);
   font-family: var(--font-ui);
   font-size: clamp(19px, 2.4vw, 24px);
   font-weight: 700;
