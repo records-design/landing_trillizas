@@ -4835,8 +4835,18 @@ body.has-sections .hero-logo {
   left: 0;
   right: 0;
   z-index: 1;
-  height: clamp(70px, 12vh, 160px);
-  background: linear-gradient(to bottom, var(--violet-deep), transparent);
+  height: clamp(110px, 18vh, 240px);
+  /* Se mantiene sólido (mismo violeta que el fondo) durante la
+     primera mitad de la franja, y recién ahí empieza a desvanecer —
+     así tapa por completo el borde recortado del halo (que llega con
+     bastante intensidad hasta el límite de la sección) en vez de
+     dejarlo entreverse a través de un degradé lineal simple. */
+  background: linear-gradient(
+    to bottom,
+    var(--violet-deep) 0%,
+    var(--violet-deep) 45%,
+    transparent 100%
+  );
   pointer-events: none;
 }
 
@@ -4849,8 +4859,13 @@ body.has-sections .hero-logo {
   left: 0;
   right: 0;
   z-index: 1;
-  height: clamp(70px, 12vh, 160px);
-  background: linear-gradient(to top, var(--violet-deep), transparent);
+  height: clamp(110px, 18vh, 240px);
+  background: linear-gradient(
+    to top,
+    var(--violet-deep) 0%,
+    var(--violet-deep) 45%,
+    transparent 100%
+  );
   pointer-events: none;
 }
 
@@ -4858,4 +4873,19 @@ body.has-sections .hero-logo {
 .historia-section::after,
 .post-sections-footer::after {
   content: "";
+}
+
+/* El hero no tiene fondo violeta (es video oscuro), así que el fade
+   genérico de arriba no alcanza a disimular la costura hero → Serie.
+   Acá se pisa ESE fade puntual con uno propio que arranca casi negro
+   (el mismo tono al que ya llega el overlay del hero en su borde
+   inferior) y recién más abajo pasa a violeta — la costura deja de
+   verse como un corte de golpe entre negro y violeta. */
+body.has-sections .serie-section::before {
+  background: linear-gradient(
+    to bottom,
+    rgba(8, 3, 12, 0.92) 0%,
+    var(--violet-deep) 85%,
+    var(--violet-deep) 100%
+  );
 }
