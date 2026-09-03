@@ -2865,48 +2865,47 @@ button:focus-visible {
 .album-section__trixi-bg {
   position: absolute;
   z-index: 1;
-  right: 16px;
+  right: 8px;
   bottom: -14px;
-  width: min(500px, 32vw);
+  width: min(660px, 42vw);
   max-width: none;
   height: auto;
-  opacity: 0.48;
+  opacity: 0.68;
   pointer-events: none;
 
   /* Degradé completo: entra fundiéndose desde la izquierda (la cyan
      queda bien desvanecida, lejos del texto), se mantiene nítida en
      el medio/derecha (rosa y violeta) y vuelve a desaparecer antes
-     de llegar al borde derecho — nunca corta de golpe. */
+     de llegar al borde derecho — nunca corta de golpe. Transición
+     más corta que antes para que se vean definidas, no lavadas. */
   -webkit-mask-image:
     linear-gradient(
       to right,
       transparent 0%,
-      rgba(0, 0, 0, 0.35) 20%,
-      rgba(0, 0, 0, 0.85) 42%,
-      black 55%,
-      black 78%,
-      rgba(0, 0, 0, 0.55) 90%,
+      rgba(0, 0, 0, 0.5) 14%,
+      black 34%,
+      black 82%,
+      rgba(0, 0, 0, 0.5) 94%,
       transparent 100%
     ),
     linear-gradient(
       to bottom,
-      black 78%,
+      black 80%,
       transparent 100%
     );
   mask-image:
     linear-gradient(
       to right,
       transparent 0%,
-      rgba(0, 0, 0, 0.35) 20%,
-      rgba(0, 0, 0, 0.85) 42%,
-      black 55%,
-      black 78%,
-      rgba(0, 0, 0, 0.55) 90%,
+      rgba(0, 0, 0, 0.5) 14%,
+      black 34%,
+      black 82%,
+      rgba(0, 0, 0, 0.5) 94%,
       transparent 100%
     ),
     linear-gradient(
       to bottom,
-      black 78%,
+      black 80%,
       transparent 100%
     );
   -webkit-mask-composite: source-in, source-over;
@@ -2932,7 +2931,7 @@ button:focus-visible {
 
 .album-section__cover {
   position: relative;
-  width: min(330px, 78vw);
+  width: min(260px, 72vw);
   aspect-ratio: 1 / 1;
   flex: 0 0 auto;
 
@@ -2998,7 +2997,7 @@ button:focus-visible {
 }
 
 .album-section__info .magic-button {
-  margin-top: auto;
+  margin-top: 22px;
 }
 
 .album-section__info .magic-button__content {
@@ -3200,27 +3199,26 @@ body.has-sections .hero-content {
   }
 
   .album-section__row {
-    grid-template-columns: 330px minmax(0, 480px);
+    grid-template-columns: 260px minmax(0, 460px);
     justify-content: center;
-    align-items: start;
+    align-items: center;
     gap: clamp(48px, 6vw, 80px);
     justify-items: stretch;
     /* Corrido hacia la izquierda (margen derecho fijo en vez de
        centrado) para dejarle a las Trixi Pop todo el espacio que
        necesitan a la derecha sin que el viewport las recorte. */
-    margin: 0 clamp(240px, 24vw, 440px) 0 auto;
+    margin: 0 clamp(300px, 30vw, 540px) 0 auto;
   }
 
   .album-section__cover {
-    width: 330px;
+    width: 260px;
   }
 
   .album-section__info {
     align-items: flex-start;
     text-align: left;
     width: 100%;
-    max-width: 480px;
-    min-height: 330px;
+    max-width: 460px;
   }
 
   .album-section__info .section-divider {
