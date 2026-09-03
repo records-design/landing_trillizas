@@ -3360,6 +3360,7 @@ body.has-sections .hero-content {
     gap: clamp(32px, 4vw, 52px);
     justify-items: stretch;
     margin: 0 auto;
+    padding-left: clamp(24px, 6vw, 90px);
   }
 
   .album-section__cover {
