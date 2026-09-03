@@ -4495,24 +4495,43 @@ body.has-sections .hero-logo {
   flex-direction: column;
   align-items: center;
 
-  /* Truco de doble fondo: la primera capa (padding-box) pinta el
-     interior de la card; la segunda (border-box) sólo se ve en la
-     franja del borde, y es la que gira — así el destello recorre
-     el contorno sin tocar el interior de la card. */
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0) 45%) padding-box,
-    #241735 padding-box,
-    conic-gradient(
-      from var(--newsletter-border-angle),
-      transparent 0deg,
-      rgba(216, 178, 92, 0.9) 18deg,
-      rgba(216, 178, 92, 0.15) 50deg,
-      transparent 110deg,
-      transparent 360deg
-    ) border-box;
-  border: 2px solid transparent;
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0) 45%),
+    #241735;
+  border: 1.5px solid rgba(216, 178, 92, 0.22);
   border-radius: 24px;
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.35);
+}
+
+/* Destello que recorre el borde: un anillo aparte (no reemplaza el
+   borde fijo de arriba), hecho con conic-gradient + máscara doble en
+   "xor" para que solo quede visible la franja fina del contorno, y
+   girando encima de la card con el ángulo animado de --newsletter-
+   border-angle. */
+.post-sections-footer .newsletter-card::before {
+  content: "";
+  position: absolute;
+  inset: -1.5px;
+  z-index: 2;
+  border-radius: inherit;
+  padding: 1.5px;
+  pointer-events: none;
+
+  background: conic-gradient(
+    from var(--newsletter-border-angle),
+    transparent 0deg,
+    rgba(255, 241, 199, 0.95) 12deg,
+    rgba(216, 178, 92, 0.5) 34deg,
+    transparent 80deg,
+    transparent 360deg
+  );
+
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+
   animation: newsletterBorderSpin 5s linear infinite;
 }
 
