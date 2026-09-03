@@ -4872,15 +4872,13 @@ body.has-sections .hero-logo {
    DESTELLOS MÁGICOS (fucsia / violeta / cyan / dorado)
    ============================================================
    Capa decorativa independiente por sección (fuera del hero, que
-   tiene su propio tratamiento). No depende solo de box-shadow: hay
-   3 tipos — puntos simples, destellos de 4 puntas (cruz con brillo)
-   y un destello "protagonista" más grande con glow alrededor.
+   tiene su propio tratamiento). Solo puntitos de luz simples —
+   nada de cruces ni formas raras — que se encienden y apagan de a
+   poco (parpadeo suave), como los que ya existían cerca de las
+   Trixi Pop. Sutiles, no un fondo lleno de estrellas.
 
    z-index:1 (nunca negativo): por encima de los halos (z-index:0),
-   por debajo del contenido real de cada sección (z-index:2). La
-   opacidad base es alta (.55–.85) y la animación solo hace un
-   pulso de tamaño/brillo — nunca baja a 0 — para que sean
-   perceptibles todo el tiempo, no solo en un instante. */
+   por debajo del contenido real de cada sección (z-index:2). */
 .magic-sparkles {
   position: absolute;
   inset: 0;
@@ -4891,103 +4889,42 @@ body.has-sections .hero-logo {
 
 .sparkle {
   position: absolute;
-  opacity: 0.7;
-  animation: sparklePulse 4.5s ease-in-out infinite;
+  opacity: 0;
+  animation: sparkleBlink 5s ease-in-out infinite;
 }
-
-.sparkle--soft { opacity: 0.55; }
-.sparkle--bright { opacity: 0.85; }
 
 .sparkle--fuchsia { color: #ff3bbd; }
 .sparkle--violet  { color: #9b63ff; }
 .sparkle--cyan    { color: #38e4ff; }
 .sparkle--gold    { color: #f4d77d; }
 
-/* ---------- Tipo 1: puntos de luz ---------- */
 .sparkle--point {
   width: 5px;
   height: 5px;
   border-radius: 50%;
   background: currentColor;
-  box-shadow: 0 0 8px currentColor;
+  box-shadow: 0 0 7px currentColor;
 }
 
-.sparkle--point-sm { width: 3px; height: 3px; box-shadow: 0 0 6px currentColor; }
-.sparkle--point-lg { width: 7px; height: 7px; box-shadow: 0 0 11px currentColor; }
+.sparkle--point-sm { width: 3px; height: 3px; box-shadow: 0 0 5px currentColor; }
+.sparkle--point-lg { width: 6px; height: 6px; box-shadow: 0 0 8px currentColor; }
 .sparkle--point-blur { filter: blur(1px); }
 
-/* ---------- Tipo 2: destello de 4 puntas ---------- */
-.sparkle--cross {
-  width: 16px;
-  height: 16px;
-}
-
-.sparkle--cross::before,
-.sparkle--cross::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  border-radius: 999px;
-  background: currentColor;
-  box-shadow: 0 0 12px currentColor;
-}
-
-.sparkle--cross::before { width: 2px; height: 100%; }
-.sparkle--cross::after  { width: 100%; height: 2px; }
-
-.sparkle--cross-lg {
-  width: 22px;
-  height: 22px;
-}
-
-.sparkle--cross-lg::before,
-.sparkle--cross-lg::after {
-  box-shadow: 0 0 16px currentColor;
-}
-
-/* ---------- Tipo 3: destello protagonista (muy pocos por sección) ---------- */
-.sparkle--feature {
-  width: 28px;
-  height: 28px;
-}
-
-.sparkle--feature::before {
-  content: "";
-  position: absolute;
-  inset: -12px;
-  border-radius: 50%;
-  background: radial-gradient(circle, currentColor, transparent 70%);
-  opacity: 0.4;
-  filter: blur(5px);
-}
-
-.sparkle--feature::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 55%;
-  height: 55%;
-  border-radius: 50%;
-  background: currentColor;
-  box-shadow: 0 0 18px currentColor, 0 0 32px currentColor;
-}
-
-@keyframes sparklePulse {
+@keyframes sparkleBlink {
   0%, 100% {
-    transform: scale(1);
+    opacity: 0;
+    transform: scale(0.6);
   }
   50% {
-    transform: scale(1.18);
+    opacity: 0.8;
+    transform: scale(1);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .sparkle {
     animation: none;
+    opacity: 0.5;
   }
 }
 
