@@ -4869,89 +4869,125 @@ body.has-sections .hero-logo {
 }
 
 /* ============================================================
-   DESTELLOS (fucsia / violeta / cyan)
+   DESTELLOS MÁGICOS (fucsia / violeta / cyan / dorado)
    ============================================================
-   Los mismos puntitos de luz que ya existían cerca de las Trixi Pop
-   y de la tapa del álbum (radial-gradient + drop-shadow + la
-   animación "sparkleSoft" ya definida), repartidos ahora por los
-   espacios libres del resto de las secciones — siempre en las
-   esquinas/márgenes, nunca sobre el área donde caen las cards o el
-   texto. Mismo z-index que los halos (por debajo del contenido, que
-   está en z-index:2) y pointer-events:none. */
-.bg-sparkles {
+   Capa decorativa independiente por sección (fuera del hero, que
+   tiene su propio tratamiento). No depende solo de box-shadow: hay
+   3 tipos — puntos simples, destellos de 4 puntas (cruz con brillo)
+   y un destello "protagonista" más grande con glow alrededor.
+
+   z-index:1 (nunca negativo): por encima de los halos (z-index:0),
+   por debajo del contenido real de cada sección (z-index:2). La
+   opacidad base es alta (.55–.85) y la animación solo hace un
+   pulso de tamaño/brillo — nunca baja a 0 — para que sean
+   perceptibles todo el tiempo, no solo en un instante. */
+.magic-sparkles {
   position: absolute;
   inset: 0;
-  z-index: 0;
+  z-index: 1;
   pointer-events: none;
+  overflow: hidden;
 }
 
-.bg-sparkles i {
+.sparkle {
   position: absolute;
-  border-radius: 50%;
-  opacity: 0;
-  animation: sparkleSoft 5s ease-in-out infinite;
+  opacity: 0.7;
+  animation: sparklePulse 4.5s ease-in-out infinite;
 }
 
-/* ---------- Serie ---------- */
-.serie-section__sparkles i:nth-child(1) { top: 4%;   left: 6%;   width: 6px; height: 6px; background: radial-gradient(circle, rgba(103,232,249,0.95), transparent 70%); filter: drop-shadow(0 0 6px rgba(103,232,249,0.6)); animation-delay: .3s; }
-.serie-section__sparkles i:nth-child(2) { top: 8%;   right: 8%;  width: 5px; height: 5px; background: radial-gradient(circle, rgba(217,70,239,0.95), transparent 70%); filter: drop-shadow(0 0 6px rgba(217,70,239,0.6)); animation-delay: 1.6s; }
-.serie-section__sparkles i:nth-child(3) { top: 46%;  left: 3%;   width: 7px; height: 7px; background: radial-gradient(circle, rgba(124,58,237,0.95), transparent 70%); filter: drop-shadow(0 0 6px rgba(124,58,237,0.6)); animation-delay: 2.4s; }
-.serie-section__sparkles i:nth-child(4) { top: 58%;  right: 4%;  width: 5px; height: 5px; background: radial-gradient(circle, rgba(103,232,249,0.9), transparent 70%);  filter: drop-shadow(0 0 5px rgba(103,232,249,0.55)); animation-delay: 3.2s; animation-duration: 5.6s; }
-.serie-section__sparkles i:nth-child(5) { bottom: 6%; left: 12%; width: 6px; height: 6px; background: radial-gradient(circle, rgba(217,70,239,0.9), transparent 70%);  filter: drop-shadow(0 0 5px rgba(217,70,239,0.55)); animation-delay: 1s;   animation-duration: 4.6s; }
-.serie-section__sparkles i:nth-child(6) { bottom: 10%; right: 14%; width: 5px; height: 5px; background: radial-gradient(circle, rgba(124,58,237,0.9), transparent 70%);  filter: drop-shadow(0 0 5px rgba(124,58,237,0.55)); animation-delay: 2s; }
+.sparkle--soft { opacity: 0.55; }
+.sparkle--bright { opacity: 0.85; }
 
-/* ---------- Música (además de los que ya tenía cerca del arte) ---------- */
-.album-section__sparkles i:nth-child(1) { top: 4%;   left: 5%;   width: 6px; height: 6px; background: radial-gradient(circle, rgba(103,232,249,0.95), transparent 70%); filter: drop-shadow(0 0 6px rgba(103,232,249,0.6)); animation-delay: .5s; }
-.album-section__sparkles i:nth-child(2) { top: 6%;   right: 5%;  width: 5px; height: 5px; background: radial-gradient(circle, rgba(217,70,239,0.95), transparent 70%); filter: drop-shadow(0 0 6px rgba(217,70,239,0.6)); animation-delay: 1.8s; }
-.album-section__sparkles i:nth-child(3) { top: 50%;  left: 2%;   width: 5px; height: 5px; background: radial-gradient(circle, rgba(124,58,237,0.9), transparent 70%);  filter: drop-shadow(0 0 5px rgba(124,58,237,0.55)); animation-delay: 2.6s; animation-duration: 5.4s; }
-.album-section__sparkles i:nth-child(4) { top: 55%;  right: 2%;  width: 6px; height: 6px; background: radial-gradient(circle, rgba(103,232,249,0.9), transparent 70%);  filter: drop-shadow(0 0 5px rgba(103,232,249,0.55)); animation-delay: .8s; }
-.album-section__sparkles i:nth-child(5) { bottom: 5%; left: 8%;  width: 5px; height: 5px; background: radial-gradient(circle, rgba(217,70,239,0.9), transparent 70%);  filter: drop-shadow(0 0 5px rgba(217,70,239,0.55)); animation-delay: 1.4s; animation-duration: 4.8s; }
-.album-section__sparkles i:nth-child(6) { bottom: 8%; right: 8%; width: 7px; height: 7px; background: radial-gradient(circle, rgba(124,58,237,0.95), transparent 70%); filter: drop-shadow(0 0 6px rgba(124,58,237,0.6)); animation-delay: 2.2s; }
+.sparkle--fuchsia { color: #ff3bbd; }
+.sparkle--violet  { color: #9b63ff; }
+.sparkle--cyan    { color: #38e4ff; }
+.sparkle--gold    { color: #f4d77d; }
 
-/* ---------- Historia ---------- */
-.historia-section__sparkles i:nth-child(1) { top: 5%;   left: 5%;   width: 6px; height: 6px; background: radial-gradient(circle, rgba(124,58,237,0.95), transparent 70%); filter: drop-shadow(0 0 6px rgba(124,58,237,0.6)); animation-delay: .6s; }
-.historia-section__sparkles i:nth-child(2) { top: 8%;   right: 6%;  width: 5px; height: 5px; background: radial-gradient(circle, rgba(103,232,249,0.95), transparent 70%); filter: drop-shadow(0 0 6px rgba(103,232,249,0.6)); animation-delay: 1.9s; }
-.historia-section__sparkles i:nth-child(3) { top: 50%;  left: 2%;   width: 7px; height: 7px; background: radial-gradient(circle, rgba(217,70,239,0.9), transparent 70%);  filter: drop-shadow(0 0 5px rgba(217,70,239,0.55)); animation-delay: 2.7s; animation-duration: 5.2s; }
-.historia-section__sparkles i:nth-child(4) { top: 55%;  right: 3%;  width: 5px; height: 5px; background: radial-gradient(circle, rgba(124,58,237,0.9), transparent 70%);  filter: drop-shadow(0 0 5px rgba(124,58,237,0.55)); animation-delay: .9s; }
-.historia-section__sparkles i:nth-child(5) { bottom: 6%; left: 20%; width: 6px; height: 6px; background: radial-gradient(circle, rgba(103,232,249,0.9), transparent 70%);  filter: drop-shadow(0 0 5px rgba(103,232,249,0.55)); animation-delay: 1.3s; animation-duration: 4.7s; }
-.historia-section__sparkles i:nth-child(6) { bottom: 8%; right: 18%; width: 5px; height: 5px; background: radial-gradient(circle, rgba(217,70,239,0.95), transparent 70%); filter: drop-shadow(0 0 6px rgba(217,70,239,0.6)); animation-delay: 2.1s; }
+/* ---------- Tipo 1: puntos de luz ---------- */
+.sparkle--point {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 8px currentColor;
+}
 
-/* ---------- Redes + newsletter + footer ---------- */
-.post-sections-footer__sparkles i:nth-child(1) { top: 5%;   left: 10%;  width: 6px; height: 6px; background: radial-gradient(circle, rgba(217,70,239,0.95), transparent 70%); filter: drop-shadow(0 0 6px rgba(217,70,239,0.6)); animation-delay: .4s; }
-.post-sections-footer__sparkles i:nth-child(2) { top: 8%;   right: 10%; width: 5px; height: 5px; background: radial-gradient(circle, rgba(103,232,249,0.95), transparent 70%); filter: drop-shadow(0 0 6px rgba(103,232,249,0.6)); animation-delay: 1.7s; }
-.post-sections-footer__sparkles i:nth-child(3) { top: 40%;  left: 6%;   width: 5px; height: 5px; background: radial-gradient(circle, rgba(124,58,237,0.9), transparent 70%);  filter: drop-shadow(0 0 5px rgba(124,58,237,0.55)); animation-delay: 2.5s; animation-duration: 5.3s; }
-.post-sections-footer__sparkles i:nth-child(4) { top: 45%;  right: 6%;  width: 7px; height: 7px; background: radial-gradient(circle, rgba(217,70,239,0.9), transparent 70%);  filter: drop-shadow(0 0 5px rgba(217,70,239,0.55)); animation-delay: 1.1s; }
-.post-sections-footer__sparkles i:nth-child(5) { bottom: 8%; left: 15%; width: 6px; height: 6px; background: radial-gradient(circle, rgba(103,232,249,0.9), transparent 70%);  filter: drop-shadow(0 0 5px rgba(103,232,249,0.55)); animation-delay: 1.9s; animation-duration: 4.9s; }
-.post-sections-footer__sparkles i:nth-child(6) { bottom: 6%; right: 12%; width: 5px; height: 5px; background: radial-gradient(circle, rgba(124,58,237,0.95), transparent 70%); filter: drop-shadow(0 0 6px rgba(124,58,237,0.6)); animation-delay: 2.9s; }
+.sparkle--point-sm { width: 3px; height: 3px; box-shadow: 0 0 6px currentColor; }
+.sparkle--point-lg { width: 7px; height: 7px; box-shadow: 0 0 11px currentColor; }
+.sparkle--point-blur { filter: blur(1px); }
 
-@media (max-width: 700px) {
-  /* En mobile se mantienen bien pegados a los bordes (más cerca del
-     0%/100%) para no terminar nunca sobre las cards apiladas en el
-     centro, que en este ancho ocupan casi todo el ancho disponible. */
-  .serie-section__sparkles i:nth-child(3),
-  .historia-section__sparkles i:nth-child(3),
-  .album-section__sparkles i:nth-child(3),
-  .post-sections-footer__sparkles i:nth-child(3) {
-    left: 1%;
+/* ---------- Tipo 2: destello de 4 puntas ---------- */
+.sparkle--cross {
+  width: 16px;
+  height: 16px;
+}
+
+.sparkle--cross::before,
+.sparkle--cross::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  background: currentColor;
+  box-shadow: 0 0 12px currentColor;
+}
+
+.sparkle--cross::before { width: 2px; height: 100%; }
+.sparkle--cross::after  { width: 100%; height: 2px; }
+
+.sparkle--cross-lg {
+  width: 22px;
+  height: 22px;
+}
+
+.sparkle--cross-lg::before,
+.sparkle--cross-lg::after {
+  box-shadow: 0 0 16px currentColor;
+}
+
+/* ---------- Tipo 3: destello protagonista (muy pocos por sección) ---------- */
+.sparkle--feature {
+  width: 28px;
+  height: 28px;
+}
+
+.sparkle--feature::before {
+  content: "";
+  position: absolute;
+  inset: -12px;
+  border-radius: 50%;
+  background: radial-gradient(circle, currentColor, transparent 70%);
+  opacity: 0.4;
+  filter: blur(5px);
+}
+
+.sparkle--feature::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 55%;
+  height: 55%;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 18px currentColor, 0 0 32px currentColor;
+}
+
+@keyframes sparklePulse {
+  0%, 100% {
+    transform: scale(1);
   }
-
-  .serie-section__sparkles i:nth-child(4),
-  .historia-section__sparkles i:nth-child(4),
-  .album-section__sparkles i:nth-child(4),
-  .post-sections-footer__sparkles i:nth-child(4) {
-    right: 1%;
+  50% {
+    transform: scale(1.18);
   }
+}
 
-  .serie-section__sparkles i:nth-child(5),
-  .historia-section__sparkles i:nth-child(5),
-  .post-sections-footer__sparkles i:nth-child(5) {
-    left: 4%;
-  }
-
-  .serie-section__sparkles i:nth-child(6),
-  .historia-section__sparkles i:nth-child(6),
-  .post-sections-footer__sparkles i:nth-child(6) {
-    right: 4%;
+@media (prefers-reduced-motion: reduce) {
+  .sparkle {
+    animation: none;
   }
 }
 
