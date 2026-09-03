@@ -3527,7 +3527,7 @@ body.has-sections .hero {
   color: var(--ivory);
   font-family: var(--font-ui);
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   opacity: 0.7;
@@ -3606,7 +3606,7 @@ body.has-sections .hero {
   color: var(--ivory);
   font-family: var(--font-ui);
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 400;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   opacity: 0.9;
