@@ -4547,8 +4547,8 @@ body.has-sections .hero-logo {
   z-index: 1;
 
   width: 100%;
-  max-width: 560px;
-  padding: clamp(32px, 6vw, 56px) clamp(24px, 6vw, 40px);
+  max-width: 540px;
+  padding: clamp(32px, 6vw, 56px) clamp(20px, 4vw, 32px);
 
   display: flex;
   flex-direction: column;
@@ -4631,14 +4631,23 @@ body.has-sections .hero-logo {
 
 .post-sections-footer .newsletter-text {
   font-family: var(--font-ui);
-  font-size: clamp(15px, 1.4vw, 17px);
+  font-size: clamp(13px, 1vw, 14px);
   font-weight: 400;
   white-space: normal;
-  margin: 0 auto 32px;
+  margin: 0 auto 28px;
+}
+
+/* En desktop la bajada tiene que entrar en un solo renglón — en
+   mobile (ver @media max-width:700px más abajo) puede seguir
+   partiéndose si hace falta. */
+@media (min-width: 701px) {
+  .post-sections-footer .newsletter-text {
+    white-space: nowrap;
+  }
 }
 
 .post-sections-footer .newsletter-form {
-  --newsletter-form-width: 460px;
+  --newsletter-form-width: 420px;
   gap: 14px;
 }
 
