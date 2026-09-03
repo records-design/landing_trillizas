@@ -3669,10 +3669,17 @@ body.has-sections .hero {
 .historia-section__body {
   color: var(--ivory);
   font-family: var(--font-ui);
-  font-size: 15px;
+  font-size: clamp(16px, 1.3vw, 18px);
+  font-weight: 400;
   line-height: 1.7;
   opacity: 0.9;
   margin: 0;
+}
+
+.historia-section__body strong {
+  font-family: var(--font-ui);
+  font-weight: 600;
+  color: var(--ivory);
 }
 
 /* Las 3 cards se estiran a la misma altura que la columna de texto
