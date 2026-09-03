@@ -3002,27 +3002,21 @@ button:focus-visible {
   opacity: 0.86;
   pointer-events: none;
 
-  /* Máscara radial (un solo degradé, en las 4 direcciones a la vez):
-     nítidas en el centro/derecha (rosa y violeta), se van diluyendo
-     hacia todos los bordes por igual — así no queda ningún borde
-     recto/"cuadrado" del fondo propio de la imagen, ni arriba, ni a
-     la derecha, ni abajo (piernas). El radio vertical es bastante
-     más chico que el horizontal y el centro está corrido hacia
-     arriba (34% en vez de 44%) a propósito: así la base/piernas
-     quedan bien pasadas del radio de la elipse y se funden del todo
-     con el fondo, en vez de quedar casi opacas hasta el borde.
-     Centrado verticalmente (top/translateY) para quedar a la misma
-     altura que el arte de tapa. */
+  /* Máscara radial: nítidas en el centro/derecha, se diluyen hacia
+     los 4 bordes. Radio vertical más amplio que el intento anterior
+     (60% en vez de 46%) para que las piernas se sigan viendo bastante
+     antes de fundirse del todo cerca del borde — no un corte, pero
+     tampoco un fundido tan temprano que las tape. */
   -webkit-mask-image: radial-gradient(
-    ellipse 74% 46% at 66% 34%,
-    black 32%,
-    rgba(0, 0, 0, 0.5) 65%,
+    ellipse 76% 60% at 66% 40%,
+    black 34%,
+    rgba(0, 0, 0, 0.55) 68%,
     transparent 100%
   );
   mask-image: radial-gradient(
-    ellipse 74% 46% at 66% 34%,
-    black 32%,
-    rgba(0, 0, 0, 0.5) 65%,
+    ellipse 76% 60% at 66% 40%,
+    black 34%,
+    rgba(0, 0, 0, 0.55) 68%,
     transparent 100%
   );
 }
@@ -3234,31 +3228,6 @@ button:focus-visible {
   width: auto;
 }
 
-/* El ícono de Spotify es un círculo lleno (no una silueta fina como
-   los demás) — a la misma altura se ve más grande a simple vista,
-   así que se lo achica un poco para que pese visualmente igual. */
-.album-section__platform-icon--spotify img {
-  height: 19px;
-}
-
-/* YouTube: no hay un archivo con ícono + palabra juntos, así que se
-   arma acá — el ícono (play en caja roja) más "YouTube" escrito con
-   la tipografía del sitio, para que se lea completo como el resto de
-   los logos. */
-.album-section__platform-icon--youtube {
-  gap: 6px;
-}
-
-.album-section__platform-icon--youtube img {
-  height: 20px;
-}
-
-.album-section__platform-icon-label {
-  color: var(--ivory);
-  font-family: var(--font-ui);
-  font-size: 15px;
-  font-weight: 600;
-}
 
 .album-section__info .section-divider {
   justify-content: center;
