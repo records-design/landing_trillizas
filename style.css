@@ -2962,9 +2962,9 @@ button:focus-visible {
 .album-section__trixi-bg {
   position: absolute;
   z-index: 1;
-  right: 72px;
+  right: 24px;
   bottom: -14px;
-  width: min(610px, 40vw);
+  width: min(580px, 39vw);
   max-width: none;
   height: auto;
   opacity: 0.86;
