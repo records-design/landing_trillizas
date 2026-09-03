@@ -165,7 +165,7 @@
   />
 
   <!-- CSS -->
-  <link rel="stylesheet" href="style.css?v=20260902footer3" />
+  <link rel="stylesheet" href="style.css?v=20260902ytcta1" />
 </head>
 
 <body class="has-sections">
@@ -902,8 +902,14 @@
           '<span class="episode-tile__number">Episodio ' + episodeNum + '</span>' +
           '<span class="episode-tile__title">' + ep.title + '</span>' +
           '<span class="episode-tile__cta">' +
-          '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor" /></svg>' +
-          'Ver episodio</span>';
+          '<svg class="episode-tile__cta-icon" viewBox="0 0 28 20" aria-hidden="true">' +
+          '<rect x="0" y="0" width="28" height="20" rx="5" fill="#FF0000" />' +
+          '<path d="M11.5 5.5v9l7.5-4.5z" fill="#fff" /></svg>' +
+          '<span>Ver episodio en YouTube</span>' +
+          '<svg class="episode-tile__cta-arrow" viewBox="0 0 24 24" aria-hidden="true">' +
+          '<path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" ' +
+          'stroke-linecap="round" stroke-linejoin="round" /></svg>' +
+          '</span>';
 
         if (soonCard) {
           grid.insertBefore(a, soonCard);

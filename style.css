@@ -2831,22 +2831,45 @@ button:focus-visible {
   line-height: 1.25;
 }
 
+/* Botón rojo estilo YouTube — reemplaza el link de texto simple
+   "Ver episodio" para dejar clarísimo que el episodio se ve en
+   YouTube (no en un reproductor propio de la web). */
 .episode-tile__cta {
-  display: flex;
+  align-self: flex-start;
+  display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 9px;
 
-  color: var(--gold-light);
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: #FF0000;
+  box-shadow: 0 10px 22px rgba(255, 0, 0, 0.28);
+
+  color: #fff;
   font-family: var(--font-ui);
   font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  font-weight: 700;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
+
+  transition: transform .3s cubic-bezier(.22, 1, .36, 1), box-shadow .3s ease;
 }
 
-.episode-tile__cta svg {
-  width: 11px;
-  height: 11px;
+.episode-tile:hover .episode-tile__cta {
+  transform: translateX(3px);
+  box-shadow: 0 12px 26px rgba(255, 0, 0, 0.4);
+}
+
+.episode-tile__cta-icon {
+  width: 24px;
+  height: 17px;
+  flex: 0 0 auto;
+}
+
+.episode-tile__cta-arrow {
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
 }
 
 /* ---------- Álbum ---------- */
