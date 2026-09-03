@@ -3592,14 +3592,6 @@ body.has-sections .hero {
   font-size: 18px;
 }
 
-.episode-tile__soon-flourish {
-  display: block;
-  width: 34px;
-  height: 1px;
-  margin: 2px 0;
-  background: linear-gradient(90deg, transparent, rgba(216, 178, 92, 0.5), transparent);
-}
-
 .episode-tile__soon-title {
   color: var(--gold-light);
   font-family: var(--font-ui);
@@ -3620,28 +3612,37 @@ body.has-sections .hero {
   opacity: 0.9;
 }
 
-.episode-tile__soon-yt {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 2px;
-
-  color: #fff;
-  font-family: var(--font-ui);
-  font-size: 20px;
-  font-weight: 700;
-}
-
-.episode-tile__soon-yt svg {
-  width: 26px;
-  height: 19px;
-  flex: 0 0 auto;
-}
-
 .episode-tile__soon-babidibu {
-  width: 128px;
+  width: 148px;
   height: auto;
-  margin-top: 2px;
+  margin-top: 6px;
+}
+
+/* Botón chico para entrar directo al canal, sin esperar a que suba
+   un episodio nuevo — la card en sí no es un link (todavía no hay
+   nada que ver), pero esto sí lleva a algo real ahora mismo. */
+.episode-tile__soon-visit {
+  margin-top: 10px;
+  padding: 8px 20px;
+  border: 1px solid rgba(216, 178, 92, 0.55);
+  border-radius: 999px;
+  background: rgba(216, 178, 92, 0.10);
+
+  color: var(--gold-light);
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+
+  transition: background-color .25s ease, border-color .25s ease, transform .25s ease;
+}
+
+.episode-tile__soon-visit:hover {
+  background: rgba(216, 178, 92, 0.2);
+  border-color: rgba(216, 178, 92, 0.85);
+  transform: translateY(-2px);
 }
 
 /* ============================================================
