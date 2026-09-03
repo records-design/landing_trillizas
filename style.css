@@ -4276,7 +4276,7 @@ body.has-sections .hero-logo {
 .post-sections-footer {
   min-height: 100vh;
   min-height: 100dvh;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .post-sections-footer .follow-title {
