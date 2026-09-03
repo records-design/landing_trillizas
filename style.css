@@ -4271,7 +4271,7 @@ body.has-sections .hero-claim {
 
 @supports (container-type: inline-size) {
   body.has-sections .hero-claim {
-    font-size: clamp(16px, 3cqw, 26px) !important;
+    font-size: clamp(10px, 3cqw, 26px) !important;
   }
 }
 
