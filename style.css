@@ -3612,7 +3612,7 @@ body.has-sections .hero {
 
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
   gap: clamp(36px, 6vw, 72px);
 }
@@ -3621,6 +3621,7 @@ body.has-sections .hero {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  justify-content: center;
   gap: 14px;
   width: min(440px, 100%);
 }
@@ -3638,11 +3639,13 @@ body.has-sections .hero {
   margin: 0;
 }
 
+/* Las 3 cards se estiran a la misma altura que la columna de texto
+   (título + párrafo) en vez de quedar como iconitos chicos sueltos. */
 .historia-section__visual {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
-  gap: 14px;
+  gap: clamp(14px, 2vw, 28px);
   flex-wrap: wrap;
 }
 
@@ -3650,44 +3653,40 @@ body.has-sections .hero {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
-.historia-slot__placeholder {
-  width: 108px;
-  aspect-ratio: 1 / 1;
+.historia-slot__image {
+  flex: 1 1 auto;
+  width: clamp(150px, 15vw, 240px);
+  min-height: 0;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  border: 1px solid rgba(216, 178, 92, 0.3);
+  border-radius: 14px;
+  overflow: hidden;
 
-  border: 1px dashed rgba(216, 178, 92, 0.35);
-  border-radius: 12px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
+}
 
-  background:
-    radial-gradient(circle at 50% 30%, rgba(216, 178, 92, 0.10), transparent 60%),
-    rgba(27, 15, 46, 0.55);
-
-  color: var(--ivory);
-  font-family: var(--font-ui);
-  font-size: 11px;
-  font-weight: 600;
-  text-align: center;
-  line-height: 1.35;
-  opacity: 0.75;
-  padding: 6px;
+.historia-slot__image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 32%;
 }
 
 .historia-slot__label {
   color: var(--gold-light);
   font-family: var(--font-ui);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
 .historia-arrow {
+  align-self: center;
   color: var(--gold);
   font-size: 20px;
   opacity: 0.7;
@@ -3696,6 +3695,7 @@ body.has-sections .hero {
 @media (max-width: 700px) {
   .historia-section {
     flex-direction: column;
+    align-items: center;
   }
 
   .historia-section__text {
@@ -3709,6 +3709,13 @@ body.has-sections .hero {
 
   .historia-section__visual {
     flex-direction: column;
+    align-items: center;
+  }
+
+  .historia-slot__image {
+    width: min(220px, 60vw);
+    height: 220px;
+    flex: 0 0 auto;
   }
 
   .historia-arrow {
