@@ -4227,9 +4227,12 @@ body.has-sections .hero {
 body.has-sections .hero-slogan {
   white-space: normal;
   /* Agrandado para que el ancho real del texto (no solo la caja)
-     llegue de punta a punta del grupo de botones de abajo — medido:
-     a 48px el texto ocupaba ~484px contra ~701px de los botones. */
-  font-size: clamp(60px, 4.9vw, 74px);
+     se acerque al del grupo de botones de abajo. Tope real: la
+     segunda línea ("Cada canción, una aventura.") es la más larga —
+     si se agranda de más, se envuelve sola en 2 renglones dentro de
+     su propio span. Este tamaño la deja justo por debajo de ese
+     límite, en una sola línea. */
+  font-size: clamp(58px, 4.72vw, 71px);
 }
 
 @media (max-width: 700px) {
