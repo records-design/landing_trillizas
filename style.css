@@ -3345,44 +3345,19 @@ button:focus-visible {
     --button-width: min(360px, 86vw);
   }
 
-  /* En mobile las Trixi Pop quedan más recortadas, hacia el sector
-     inferior/derecho, y bastante más tenues para no restar
-     legibilidad al contenido apilado arriba. */
-  .album-section__trixi-bg {
-    right: -15%;
-    top: auto;
-    bottom: -4%;
-    transform: none;
-    width: 92vw;
-    opacity: 0.22;
-    -webkit-mask-image: linear-gradient(
-      to top,
-      black 30%,
-      rgba(0, 0, 0, 0.6) 55%,
-      transparent 85%
-    );
-    mask-image: linear-gradient(
-      to top,
-      black 30%,
-      rgba(0, 0, 0, 0.6) 55%,
-      transparent 85%
-    );
-  }
-
-  .album-section__trixi-halo {
-    width: 80vw;
-    right: -20%;
-    top: auto;
-    bottom: -15%;
-    transform: none;
-  }
-
+  /* En mobile, Trixi Pop de fondo se saca directamente: en pantallas
+     chicas restaba legibilidad y no había espacio para que se viera
+     bien recortada. */
+  .album-section__trixi-bg,
+  .album-section__trixi-halo,
   .album-section__trixi-sparkles {
-    right: -15%;
-    top: auto;
-    bottom: -4%;
-    transform: none;
-    width: 92vw;
+    display: none;
+  }
+
+  /* Más aire entre el botón "Escuchar el álbum" y "Disponible en
+     todas las plataformas" — quedaban muy pegados. */
+  .album-section__platforms {
+    margin-top: 20px;
   }
 
 }
