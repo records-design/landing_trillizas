@@ -2928,10 +2928,6 @@ button:focus-visible {
   margin: 12px auto 0;
 }
 
-.album-section__subtitle + .album-section__subtitle {
-  margin-top: 16px;
-}
-
 .album-section__subtitle strong {
   font-family: var(--font-ui);
   font-weight: 600;
@@ -3180,6 +3176,60 @@ button:focus-visible {
 .album-section__info .magic-button__label {
   font-size: 16px;
   letter-spacing: 0.02em;
+}
+
+/* "Disponible en todas las plataformas" + iconos — tercer bloque
+   dentro de .album-section__info, que ahora tiene 3 hijos (título,
+   botón, plataformas) en vez de 2: con justify-content:space-between
+   el botón deja de estar pegado al borde inferior (ahí queda esto)
+   y sube un poco, repartiendo mejor la misma altura de la tapa. */
+.album-section__platforms {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.album-section__platforms-label {
+  margin: 0;
+  color: var(--ivory);
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+
+.album-section__platforms-icons {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.album-section__platform-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid rgba(216, 178, 92, 0.3);
+  color: var(--gold-light);
+  opacity: 0.85;
+  transition: opacity .25s ease, border-color .25s ease, transform .25s ease;
+}
+
+.album-section__platform-icon:hover {
+  opacity: 1;
+  border-color: rgba(216, 178, 92, 0.7);
+  transform: translateY(-2px);
+}
+
+.album-section__platform-icon svg {
+  width: 16px;
+  height: 16px;
 }
 
 .album-section__info .section-divider {
@@ -3472,13 +3522,22 @@ body.has-sections .hero-content {
     max-width: 460px;
   }
 
-  /* Con .album-section__info estirado a toda la altura de la tapa y
-     justify-content:space-between, el título queda arriba del todo y
-     el botón abajo del todo (misma altura que el arte de tapa) — el
-     margin-top fijo de antes ya no hace falta, lo pisa el espacio
-     que reparte space-between. */
+  /* Con .album-section__info a la altura exacta de la tapa y
+     justify-content:space-between entre sus 3 hijos (título, botón,
+     plataformas), el título queda arriba del todo, "Disponible en
+     todas las plataformas" abajo del todo, y el botón repartido en
+     el medio — ya no pegado al borde inferior. El margin-top fijo de
+     antes no hace falta, lo pisa el espacio que reparte space-between. */
   .album-section__info .magic-button {
     margin-top: 0;
+  }
+
+  .album-section__platforms {
+    align-items: flex-start;
+  }
+
+  .album-section__platforms-label {
+    text-align: left;
   }
 
   .album-section__info .section-divider {
