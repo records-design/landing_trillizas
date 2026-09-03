@@ -3606,14 +3606,48 @@ body.has-sections .hero {
   background: linear-gradient(90deg, transparent, rgba(216, 178, 92, 0.5), transparent);
 }
 
-.episode-tile__soon-text {
+.episode-tile__soon-title {
   color: var(--gold-light);
   font-family: var(--font-ui);
-  font-size: 12px;
+  font-size: 24px;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
-  line-height: 1.6;
+  line-height: 1.2;
+}
+
+.episode-tile__soon-sub {
+  color: var(--ivory);
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+
+.episode-tile__soon-yt {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+
+  color: #fff;
+  font-family: var(--font-ui);
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.episode-tile__soon-yt svg {
+  width: 26px;
+  height: 19px;
+  flex: 0 0 auto;
+}
+
+.episode-tile__soon-babidibu {
+  width: 128px;
+  height: auto;
+  margin-top: 2px;
 }
 
 /* ============================================================
