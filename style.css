@@ -3128,7 +3128,7 @@ button:focus-visible {
 }
 
 .album-section__info {
-  --button-width: 280px;
+  --button-width: min(280px, 85%);
 
   position: relative;
   z-index: 2;
