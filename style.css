@@ -4567,7 +4567,7 @@ body.has-sections .hero-logo {
 
   width: 100%;
   max-width: 540px;
-  padding: clamp(32px, 6vw, 56px) clamp(20px, 4vw, 32px);
+  padding: clamp(24px, 4vh, 36px) clamp(20px, 4vw, 32px);
 
   display: flex;
   flex-direction: column;
