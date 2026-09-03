@@ -2710,6 +2710,12 @@ button:focus-visible {
   animation: sloganGlowBreathe 4s ease-in-out infinite;
 }
 
+/* En desktop, una sola línea (el <br> queda oculto y solo se
+   habilita en mobile más abajo). */
+.historia-title-break {
+  display: none;
+}
+
 .section-subtitle {
   color: var(--ivory);
   font-family: var(--font-ui);
@@ -3765,6 +3771,10 @@ body.has-sections .hero {
 
   .historia-arrow {
     transform: rotate(90deg);
+  }
+
+  .historia-title-break {
+    display: block;
   }
 }
 
