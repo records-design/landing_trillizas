@@ -4466,23 +4466,54 @@ body.has-sections .hero-logo {
   opacity: 0.4;
 }
 
+/* Ángulo animable para el destello que recorre el borde — sin esto,
+   la conic-gradient de abajo no puede animarse de forma continua
+   (saltaría de golpe en vez de girar). Si el navegador no soporta
+   @property, el borde queda con el degradé dorado fijo (sin girar),
+   nunca roto. */
+@property --newsletter-border-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes newsletterBorderSpin {
+  to {
+    --newsletter-border-angle: 360deg;
+  }
+}
+
 .post-sections-footer .newsletter-card {
   position: relative;
   z-index: 1;
 
   width: 100%;
-  padding: clamp(32px, 6vw, 56px) clamp(24px, 6vw, 48px);
+  max-width: 560px;
+  padding: clamp(32px, 6vw, 56px) clamp(24px, 6vw, 40px);
 
   display: flex;
   flex-direction: column;
   align-items: center;
 
+  /* Truco de doble fondo: la primera capa (padding-box) pinta el
+     interior de la card; la segunda (border-box) sólo se ve en la
+     franja del borde, y es la que gira — así el destello recorre
+     el contorno sin tocar el interior de la card. */
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0) 45%),
-    #241735;
-  border: 1px solid rgba(216, 178, 92, 0.22);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0) 45%) padding-box,
+    #241735 padding-box,
+    conic-gradient(
+      from var(--newsletter-border-angle),
+      transparent 0deg,
+      rgba(216, 178, 92, 0.9) 18deg,
+      rgba(216, 178, 92, 0.15) 50deg,
+      transparent 110deg,
+      transparent 360deg
+    ) border-box;
+  border: 2px solid transparent;
   border-radius: 24px;
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.35);
+  animation: newsletterBorderSpin 5s linear infinite;
 }
 
 /* Toda esta sección (portal social + suscripción + footer) ocupa un
