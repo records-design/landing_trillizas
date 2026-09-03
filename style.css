@@ -3808,6 +3808,39 @@ body.has-sections .hero {
     min-height: auto;
     padding-bottom: clamp(28px, 5vh, 48px);
   }
+
+  /* Pista de scroll al final del hero: solo mobile, para que se note
+     claramente que el hero termina ahí (video + texto + botones) y
+     que hay que seguir bajando para ver la sección de Serie. */
+  body.has-sections .hero-scroll-cue {
+    display: flex;
+    justify-content: center;
+    margin-top: clamp(18px, 3vh, 28px);
+  }
+}
+
+.hero-scroll-cue {
+  display: none;
+}
+
+.hero-scroll-cue__arrow {
+  width: 16px;
+  height: 16px;
+  border-right: 2px solid rgba(216, 178, 92, 0.75);
+  border-bottom: 2px solid rgba(216, 178, 92, 0.75);
+  transform: rotate(45deg);
+  animation: heroScrollCueBounce 1.8s ease-in-out infinite;
+}
+
+@keyframes heroScrollCueBounce {
+  0%, 100% {
+    transform: rotate(45deg) translate(0, 0);
+    opacity: 0.45;
+  }
+  50% {
+    transform: rotate(45deg) translate(5px, 5px);
+    opacity: 1;
+  }
 }
 
 
