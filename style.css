@@ -4017,6 +4017,41 @@ body.has-sections .hero {
 .historia-slot:nth-of-type(2) .historia-slot__image { animation-delay: 1.2s; }
 .historia-slot:nth-of-type(3) .historia-slot__image { animation-delay: 2.4s; }
 
+/* Destello diagonal que recorre la card cada tanto — una franja de
+   luz angosta, sutil, no una animación de "cargando". */
+.historia-slot__image::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+
+  background: linear-gradient(
+    115deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.16) 48%,
+    rgba(255, 244, 210, 0.28) 50%,
+    rgba(255, 255, 255, 0.16) 52%,
+    transparent 60%
+  );
+
+  transform: translateX(-140%);
+  animation: historiaCardShine 6s ease-in-out infinite;
+}
+
+.historia-slot:nth-of-type(1) .historia-slot__image::after { animation-delay: .6s; }
+.historia-slot:nth-of-type(2) .historia-slot__image::after { animation-delay: 1.8s; }
+.historia-slot:nth-of-type(3) .historia-slot__image::after { animation-delay: 3s; }
+
+@keyframes historiaCardShine {
+  0%, 18% {
+    transform: translateX(-140%);
+  }
+  38%, 100% {
+    transform: translateX(140%);
+  }
+}
+
 /* object-fit: contain (no recortar) — las fotos originales son
    horizontales (3 personas en fila); si se recortan para llenar una
    card vertical solo queda una persona en el medio. Mostrando la
@@ -4030,10 +4065,17 @@ body.has-sections .hero {
   object-position: 50% 30%;
 }
 
+/* Cápsula fina alrededor del nombre — borde dorado sutil, no un
+   botón pesado. */
 .historia-slot__label {
+  display: inline-block;
+  padding: 6px 18px;
+  border: 1px solid rgba(216, 178, 92, 0.4);
+  border-radius: 999px;
+
   color: var(--gold-light);
   font-family: var(--font-ui);
-  font-size: clamp(15px, 1.4vw, 18px);
+  font-size: clamp(14px, 1.3vw, 17px);
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
