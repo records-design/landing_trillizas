@@ -2659,6 +2659,8 @@ button:focus-visible {
 }
 
 .section-heading {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -2730,6 +2732,8 @@ button:focus-visible {
 /* ---------- Episodios ---------- */
 
 .episodes-grid {
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: clamp(16px, 2.6vw, 32px);
@@ -3419,6 +3423,8 @@ body.has-sections .hero-content {
 }
 
 .post-sections-footer .hero-content-mirror {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -4066,6 +4072,8 @@ body.has-sections .hero {
 }
 
 .historia-section__text {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -4097,6 +4105,8 @@ body.has-sections .hero {
 /* Las 3 cards se estiran a la misma altura que la columna de texto
    (título + párrafo) en vez de quedar como iconitos chicos sueltos. */
 .historia-section__visual {
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: stretch;
   justify-content: center;
@@ -4446,52 +4456,54 @@ body.has-sections .hero-logo {
   content: "";
   position: absolute;
   z-index: 0;
-  border-radius: 50%;
   pointer-events: none;
-  filter: blur(90px);
+  filter: blur(20px);
 }
 
 /* Halo violeta, centrado detrás de la card */
 .post-sections-footer .hero-newsletter::before {
   left: 50%;
   top: 50%;
-  width: 85%;
-  height: 75%;
+  width: clamp(420px, 60vw, 760px);
+  height: clamp(340px, 46vw, 560px);
   transform: translate(-50%, -50%);
   background: radial-gradient(
-    ellipse at center,
-    rgba(139, 92, 246, 0.4),
-    transparent 70%
+    circle,
+    rgba(142, 70, 255, 0.32) 0%,
+    rgba(142, 70, 255, 0.15) 30%,
+    rgba(142, 70, 255, 0.05) 50%,
+    transparent 72%
   );
-  opacity: 0.55;
 }
 
 /* Halo fucsia, sector inferior izquierdo */
 .post-sections-footer .hero-newsletter::after {
-  left: -8%;
-  bottom: -12%;
-  width: 55%;
-  height: 55%;
+  left: -10%;
+  bottom: -16%;
+  width: clamp(320px, 44vw, 520px);
+  height: clamp(320px, 44vw, 520px);
   background: radial-gradient(
-    ellipse at center,
-    rgba(217, 70, 239, 0.4),
+    circle,
+    rgba(255, 35, 170, 0.32) 0%,
+    rgba(255, 35, 170, 0.16) 25%,
+    rgba(255, 35, 170, 0.06) 45%,
     transparent 70%
   );
-  opacity: 0.45;
 }
 
 /* Halo cian, sector inferior derecho */
 .post-sections-footer .newsletter-halo--cyan {
-  right: -8%;
-  bottom: -14%;
-  width: 55%;
-  height: 55%;
+  right: -10%;
+  bottom: -18%;
+  width: clamp(320px, 44vw, 520px);
+  height: clamp(320px, 44vw, 520px);
   background: radial-gradient(
-    ellipse at center,
-    rgba(34, 211, 238, 0.35),
-    transparent 70%
+    circle,
+    rgba(25, 220, 255, 0.28) 0%,
+    rgba(25, 220, 255, 0.13) 30%,
+    rgba(25, 220, 255, 0.05) 50%,
+    transparent 72%
   );
-  opacity: 0.4;
 }
 
 /* Ángulo animable para el destello que recorre el borde — sin esto,
@@ -4708,108 +4720,96 @@ body.has-sections .hero-logo {
 /* ============================================================
    SISTEMA DE HALOS DE FONDO (fucsia / violeta / cyan)
    ============================================================
-   Manchas de luz difusas y orgánicas para que los fondos vacíos de
-   Serie, Música, Historia y el bloque final (redes + newsletter +
-   footer) tengan más atmósfera — el hero queda afuera a propósito,
-   ya tiene su propio tratamiento de fondo (video + partículas).
+   Manchas de luz difusas para que los fondos vacíos de Serie,
+   Música, Historia y el bloque final (redes + newsletter + footer)
+   tengan más atmósfera — el hero queda afuera a propósito, ya tiene
+   su propio tratamiento de fondo (video + partículas).
 
-   Solo CSS: radial-gradient + blur, sin imágenes. Van con z-index
-   negativo y la sección pasa a "isolation: isolate" para que ese
-   z-index negativo quede atrapado detrás del fondo/contenido de ESA
-   sección nada más, sin filtrarse detrás de toda la página. Como las
-   secciones ya tienen "overflow: hidden" (para sus propias cards/
-   imágenes), los halos quedan recortados a los límites de cada
-   sección — es lo que se quiere: que decoren esa sección puntual.
+   FIX (revisión): la primera versión usaba z-index:-1 para los
+   halos. Aunque en teoría un z-index negativo pinta encima del
+   fondo propio de la sección (no detrás), en la práctica quedaban
+   opacados por blur(90px) + opacity baja + alfas bajos del propio
+   gradiente — resultado: prácticamente invisibles. Ahora:
+     - los halos van con z-index: 0 (no negativo),
+     - el CONTENIDO real de cada sección (heading, grid, cards, etc.)
+       pasa a position:relative + z-index:1 o más, así siempre queda
+       por encima aunque el halo tenga z-index 0,
+     - blur mucho más bajo (20px, no 90-100px) para que el color se
+       note en vez de disolverse,
+     - alfas más altos en los propios stops del radial-gradient,
+     - tamaños grandes en px (450-900px), no vw chicos.
    ============================================================ */
 
 .serie-section,
 .album-section,
 .historia-section,
 .post-sections-footer {
-  isolation: isolate;
-}
-
-.historia-section,
-.post-sections-footer {
   position: relative;
+  isolation: isolate;
 }
 
 .bg-halo {
   position: absolute;
-  z-index: -1;
-  border-radius: 50%;
+  z-index: 0;
   pointer-events: none;
-  filter: blur(90px);
+  filter: blur(20px);
 }
 
 .bg-halo--fuchsia {
-  background: radial-gradient(ellipse at center, rgba(217, 70, 239, 0.32), transparent 70%);
-  opacity: 0.4;
+  background: radial-gradient(
+    circle,
+    rgba(255, 35, 170, 0.32) 0%,
+    rgba(255, 35, 170, 0.16) 25%,
+    rgba(255, 35, 170, 0.06) 45%,
+    transparent 70%
+  );
 }
 
 .bg-halo--violet {
-  background: radial-gradient(ellipse at center, rgba(139, 92, 246, 0.34), transparent 70%);
-  opacity: 0.42;
+  background: radial-gradient(
+    circle,
+    rgba(142, 70, 255, 0.32) 0%,
+    rgba(142, 70, 255, 0.15) 30%,
+    rgba(142, 70, 255, 0.05) 50%,
+    transparent 72%
+  );
 }
 
 .bg-halo--cyan {
-  background: radial-gradient(ellipse at center, rgba(34, 211, 238, 0.28), transparent 70%);
-  opacity: 0.35;
+  background: radial-gradient(
+    circle,
+    rgba(25, 220, 255, 0.28) 0%,
+    rgba(25, 220, 255, 0.13) 30%,
+    rgba(25, 220, 255, 0.05) 50%,
+    transparent 72%
+  );
 }
 
-/* ---------- Serie: fucsia arriba-izquierda, violeta centro-derecha (la más grande), cyan abajo-derecha ---------- */
-.serie-section__halo-a { top: -6%; left: -8%; width: 42vw; height: 42vw; max-width: 420px; max-height: 420px; }
-.serie-section__halo-b { top: 28%; right: -10%; width: 50vw; height: 50vw; max-width: 520px; max-height: 520px; }
-.serie-section__halo-c { bottom: -8%; right: 15%; width: 34vw; height: 34vw; max-width: 340px; max-height: 340px; }
+/* ---------- Serie: fucsia lateral izquierdo + violeta suave a la derecha ---------- */
+.serie-section__halo-a { top: -10%;  left: -14%;  width: clamp(340px, 50vw, 620px); height: clamp(340px, 50vw, 620px); }
+.serie-section__halo-b { top: 20%;   right: -16%; width: clamp(380px, 55vw, 720px); height: clamp(380px, 55vw, 720px); }
+.serie-section__halo-c { bottom: -14%; right: 10%; width: clamp(300px, 40vw, 480px); height: clamp(300px, 40vw, 480px); }
 
-/* ---------- Música: violeta centro (grande, detrás de la tapa/Trixi), fucsia abajo-izquierda, cyan arriba-derecha ---------- */
-.album-section__halo-a { top: 20%; left: 50%; width: 60vw; height: 60vw; max-width: 620px; max-height: 620px; transform: translateX(-50%); }
-.album-section__halo-b { bottom: -6%; left: -10%; width: 40vw; height: 40vw; max-width: 400px; max-height: 400px; }
-.album-section__halo-c { top: -8%; right: -8%; width: 36vw; height: 36vw; max-width: 360px; max-height: 360px; }
+/* ---------- Música: cyan detrás del arte de tapa (izquierda), violeta grande detrás de las Trixi (derecha), fucsia como acento abajo ---------- */
+.album-section__halo-a { top: 8%;    left: 8%;   width: clamp(360px, 46vw, 640px); height: clamp(360px, 46vw, 640px); }
+.album-section__halo-b { top: 4%;    right: -12%; width: clamp(420px, 58vw, 900px); height: clamp(420px, 58vw, 900px); }
+.album-section__halo-c { bottom: -12%; left: 30%; width: clamp(300px, 40vw, 480px); height: clamp(300px, 40vw, 480px); }
 
-/* ---------- Historia: cyan arriba-derecha, violeta centro-izquierda, fucsia abajo ---------- */
-.historia-section__halo-a { top: -6%; right: -6%; width: 40vw; height: 40vw; max-width: 400px; max-height: 400px; }
-.historia-section__halo-b { top: 35%; left: -12%; width: 48vw; height: 48vw; max-width: 480px; max-height: 480px; }
-.historia-section__halo-c { bottom: -10%; left: 30%; width: 34vw; height: 34vw; max-width: 340px; max-height: 340px; }
+/* ---------- Historia: cyan arriba a la derecha, violeta a la izquierda, fucsia como acento abajo ---------- */
+.historia-section__halo-a { top: -12%; right: -10%; width: clamp(340px, 48vw, 620px); height: clamp(340px, 48vw, 620px); }
+.historia-section__halo-b { top: 30%;  left: -16%;  width: clamp(380px, 52vw, 680px); height: clamp(380px, 52vw, 680px); }
+.historia-section__halo-c { bottom: -16%; left: 25%; width: clamp(300px, 38vw, 460px); height: clamp(300px, 38vw, 460px); }
 
-/* ---------- Bloque final (redes + newsletter + footer): fucsia arriba-izquierda, cyan arriba-derecha, violeta abajo-centro ---------- */
-.post-sections-footer__halo-a { top: 2%; left: -8%; width: 38vw; height: 38vw; max-width: 380px; max-height: 380px; }
-.post-sections-footer__halo-b { top: 10%; right: -10%; width: 36vw; height: 36vw; max-width: 360px; max-height: 360px; }
-.post-sections-footer__halo-c { bottom: -6%; left: 50%; width: 55vw; height: 55vw; max-width: 560px; max-height: 560px; transform: translateX(-50%); }
+/* ---------- Redes + newsletter + footer: violeta suave en el centro, cyan lateral ---------- */
+.post-sections-footer__halo-a { top: 6%;  left: 50%;  width: clamp(420px, 60vw, 820px); height: clamp(420px, 60vw, 820px); transform: translateX(-50%); }
+.post-sections-footer__halo-b { top: 14%; right: -14%; width: clamp(340px, 46vw, 600px); height: clamp(340px, 46vw, 600px); }
+.post-sections-footer__halo-c { display: none; }
 
 @media (max-width: 700px) {
-  /* En mobile, halos más chicos y contenidos — no queremos que un
-     halo pensado para un ancho de escritorio se vea gigante o tape
-     contenido en una pantalla angosta. */
+  /* En mobile, sigue siendo grande relativo a la pantalla (para que
+     efectivamente se note), pero un poco más contenido para no
+     empujar el layout ni tapar cards con su borde. */
   .bg-halo {
-    filter: blur(60px);
-  }
-
-  .serie-section__halo-a,
-  .serie-section__halo-c,
-  .album-section__halo-b,
-  .album-section__halo-c,
-  .historia-section__halo-a,
-  .historia-section__halo-c,
-  .post-sections-footer__halo-a,
-  .post-sections-footer__halo-b {
-    width: 60vw;
-    height: 60vw;
-  }
-
-  .serie-section__halo-b,
-  .historia-section__halo-b {
-    width: 70vw;
-    height: 70vw;
-  }
-
-  .album-section__halo-a {
-    width: 80vw;
-    height: 80vw;
-  }
-
-  .post-sections-footer__halo-c {
-    width: 85vw;
-    height: 85vw;
+    filter: blur(16px);
   }
 }
