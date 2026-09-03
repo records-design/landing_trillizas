@@ -3281,10 +3281,10 @@ button:focus-visible {
      y el botón como una fila propia abajo. */
   #serie-section .episode-tile--soon {
     display: grid;
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: auto 1fr;
     grid-template-areas:
-      "diamond title ."
-      ".      sub   logo";
+      "diamond title"
+      ".      line";
     column-gap: 8px;
     row-gap: 3px;
     align-items: center;
@@ -3311,17 +3311,23 @@ button:focus-visible {
     display: none;
   }
 
+  /* "Cada semana en el canal de" + logo, en la misma línea, como
+     parte de la misma frase (el logo pegado justo después del
+     texto, no en una columna aparte lejos de la oración). */
+  #serie-section .episode-tile__soon-line {
+    grid-area: line;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
   #serie-section .episode-tile__soon-sub {
-    grid-area: sub;
     font-size: 10px;
-    text-align: left;
   }
 
   #serie-section .episode-tile__soon-babidibu {
-    grid-area: logo;
-    width: 62px;
+    width: 46px;
     margin: 0;
-    justify-self: start;
   }
 
   #serie-section .episode-tile__soon-visit {
@@ -3914,6 +3920,15 @@ body.has-sections .hero {
   letter-spacing: 0.02em;
   text-transform: uppercase;
   line-height: 1.2;
+}
+
+/* Wrapper de "Cada semana en el canal de" + logo: en desktop/tablet
+   no cambia nada (display: contents lo saca del flujo, los hijos
+   siguen siendo ítems directos del flex column de siempre); solo en
+   mobile (ver media query) pasa a ser una fila propia para que el
+   logo quede pegado a la frase, como parte de ella. */
+.episode-tile__soon-line {
+  display: contents;
 }
 
 .episode-tile__soon-sub {
