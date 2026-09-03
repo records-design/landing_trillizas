@@ -2827,39 +2827,6 @@ button:focus-visible {
   align-items: center;
 }
 
-/* Trixi Pop escuchando música, de fondo/ambientación en el sector
-   derecho de la sección — se funde con el violeta hacia la izquierda
-   (mask-image) para no competir con el título ni con el cover. Es la
-   imagen ya existente del proyecto (imagenes/TRIXI MUSIC.png),
-   solo convertida a un JPG liviano para web. */
-.album-section__bg-trixi {
-  position: absolute;
-  z-index: 0;
-  right: -40px;
-  bottom: -10px;
-  width: min(620px, 58vw);
-  max-width: none;
-  height: auto;
-  max-height: 108%;
-  object-fit: contain;
-  opacity: 0.38;
-  mix-blend-mode: screen;
-  filter: blur(1.5px);
-  -webkit-mask-image: linear-gradient(
-    to left,
-    rgba(0, 0, 0, 1) 42%,
-    rgba(0, 0, 0, 0.7) 62%,
-    transparent 96%
-  );
-  mask-image: linear-gradient(
-    to left,
-    rgba(0, 0, 0, 1) 42%,
-    rgba(0, 0, 0, 0.7) 62%,
-    transparent 96%
-  );
-  pointer-events: none;
-}
-
 .album-section__heading {
   position: relative;
   z-index: 1;
@@ -2870,20 +2837,77 @@ button:focus-visible {
   color: var(--ivory);
 }
 
+/* Todo el contenido (cover + texto) corrido a la izquierda, con las
+   Trixi Pop como un bloque visual propio a la derecha — no un wash
+   de fondo detrás de todo, sino una composición de dos zonas. */
+.album-section__layout {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(32px, 5vw, 64px);
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
 /* Bloque editorial horizontal y compacto: la tapa y el texto ocupan
    prácticamente la misma altura, sueltos sobre el fondo violeta de
    la sección (sin card/panel envolviendo todo). */
 .album-section__row {
   position: relative;
-  z-index: 1;
   display: grid;
   grid-template-columns: 1fr;
   justify-items: center;
   align-items: center;
   gap: 28px;
+  flex: 1 1 auto;
+}
+
+/* Card visual con las Trixi Pop escuchando música — recorte limpio,
+   bordes redondeados iguales a la tapa, con un fundido muy sutil solo
+   en su borde izquierdo para integrarse al violeta (no un wash detrás
+   de todo el contenido). Imagen ya existente del proyecto
+   (imagenes/trixi pop music.png), solo comprimida para web. */
+.album-section__visual {
+  position: relative;
+  flex: 0 0 auto;
+  width: clamp(220px, 26vw, 320px);
+  height: min(330px, 78vw);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.4);
+}
+
+.album-section__visual img {
   width: 100%;
-  max-width: 1100px;
-  margin: 0 auto;
+  height: 100%;
+  object-fit: cover;
+  object-position: 60% 30%;
+  -webkit-mask-image: linear-gradient(
+    to left,
+    rgba(0, 0, 0, 1) 65%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to left,
+    rgba(0, 0, 0, 1) 65%,
+    transparent 100%
+  );
+}
+
+.album-section__visual::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    160deg,
+    rgba(124, 58, 237, 0.16),
+    rgba(27, 15, 46, 0.05) 60%
+  );
+  pointer-events: none;
 }
 
 .album-section__cover {
@@ -3015,6 +3039,10 @@ button:focus-visible {
     gap: 20px;
   }
 
+  .album-section__layout {
+    flex-direction: column;
+  }
+
   .album-section__row {
     grid-template-columns: 1fr;
   }
@@ -3023,24 +3051,28 @@ button:focus-visible {
     --button-width: min(360px, 86vw);
   }
 
-  /* En mobile las Trixi Pop pueden verse más grandes y más recortadas
-     (ambientación de fondo detrás de todo el contenido apilado), pero
-     bajamos un poco más la opacidad para no restar legibilidad. */
-  .album-section__bg-trixi {
-    right: -30%;
-    bottom: -6%;
-    width: 130vw;
-    max-height: 96%;
-    opacity: 0.28;
+  /* En mobile las Trixi Pop pasan a ser una banda ancha debajo del
+     botón: más grandes y recortadas, con menor opacidad para no
+     restar legibilidad al contenido de arriba. */
+  .album-section__visual {
+    width: 100%;
+    max-width: 420px;
+    height: 200px;
+    margin-top: 8px;
+  }
+
+  .album-section__visual img {
+    object-position: 50% 25%;
+    opacity: 0.55;
     mask-image: linear-gradient(
       to top,
-      rgba(0, 0, 0, 1) 30%,
-      transparent 85%
+      rgba(0, 0, 0, 1) 55%,
+      transparent 100%
     );
     -webkit-mask-image: linear-gradient(
       to top,
-      rgba(0, 0, 0, 1) 30%,
-      transparent 85%
+      rgba(0, 0, 0, 1) 55%,
+      transparent 100%
     );
   }
 }
