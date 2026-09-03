@@ -3022,6 +3022,7 @@ button:focus-visible {
 
 .album-section__cover {
   position: relative;
+  z-index: 2;
   width: min(295px, 74vw);
   aspect-ratio: 1 / 1;
   flex: 0 0 auto;
@@ -3105,6 +3106,7 @@ button:focus-visible {
   --button-width: 280px;
 
   position: relative;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
