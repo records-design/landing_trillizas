@@ -9,6 +9,14 @@
   --gold-light: #f0d998;
   --ivory: #f6f1e7;
 
+  /* Dorado unificado para TÍTULOS sans-serif (Poppins) en toda la
+     web — cálido y elegante, no amarillo. Los párrafos/textos
+     informativos siguen en --ivory, sin tocar. */
+  --gold-title: #e6c56e;
+  --gold-title-shine-1: #fff1a8;
+  --gold-title-shine-2: #e6c56e;
+  --gold-title-shine-3: #c9973a;
+
   --font-display: "Cormorant Garamond", serif;
   --font-ui: "Poppins", sans-serif;
 
@@ -1089,7 +1097,7 @@ button:focus-visible {
 .follow-title {
   margin-top: 15px;
 
-  color: var(--gold-light);
+  color: var(--gold-title);
   font-family: var(--font-ui);
   font-size: clamp(17px, 1.27vw, 19.5px);
   font-weight: 500;
@@ -1340,7 +1348,7 @@ button:focus-visible {
 .newsletter-title {
   margin: 0 0 14px;
 
-  color: var(--gold-light);
+  color: var(--gold-title);
   font-family: var(--font-ui);
   font-size: clamp(10px, 0.8vw, 12px);
   font-weight: 600;
@@ -2819,7 +2827,7 @@ button:focus-visible {
 }
 
 .episode-tile__number {
-  color: var(--gold);
+  color: var(--gold-title);
   font-family: var(--font-ui);
   font-size: 11px;
   font-weight: 700;
@@ -2828,7 +2836,18 @@ button:focus-visible {
 }
 
 .episode-tile__title {
-  color: var(--ivory);
+  /* Título sans-serif más importante de la página (nombre de cada
+     episodio) — degradé dorado sutil en vez de un dorado plano. */
+  background: linear-gradient(
+    180deg,
+    var(--gold-title-shine-1),
+    var(--gold-title-shine-2) 55%,
+    var(--gold-title-shine-3)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: var(--gold-title);
+  -webkit-text-fill-color: transparent;
   font-family: var(--font-ui);
   font-size: clamp(19px, 2.4vw, 24px);
   font-weight: 700;
@@ -3868,7 +3887,7 @@ body.has-sections .hero {
    BORRADOR VIERNES: eyebrow / season (La serie, Álbum)
    ============================================================ */
 .section-eyebrow {
-  color: var(--gold);
+  color: var(--gold-title);
   font-family: var(--font-ui);
   font-size: clamp(14px, 1.6vw, 18px);
   font-weight: 700;
@@ -3947,7 +3966,7 @@ body.has-sections .hero {
 }
 
 .episode-tile__soon-title {
-  color: var(--gold-light);
+  color: var(--gold-title);
   font-family: var(--font-ui);
   font-size: 24px;
   font-weight: 700;
@@ -4247,7 +4266,7 @@ body.has-sections .hero {
   border: 1px solid rgba(216, 178, 92, 0.4);
   border-radius: 999px;
 
-  color: var(--gold-light);
+  color: var(--gold-title);
   font-family: var(--font-ui);
   font-size: clamp(14px, 1.3vw, 17px);
   font-weight: 700;
