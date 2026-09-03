@@ -4396,6 +4396,95 @@ body.has-sections .hero-logo {
   margin-top: clamp(24px, 5vh, 48px);
 }
 
+/* ============================================================
+   REDISEÑO: card del newsletter (solo esta sección — el
+   .hero-newsletter del hero, que no pasa por .post-sections-footer,
+   no se toca). Card moderna y limpia (sin marco ornamental), con
+   halos de luz difusos detrás hechos solo con CSS. */
+
+/* .hero-newsletter pasa a ser únicamente el contenedor que posiciona
+   los halos; el fondo, borde y sombra de la card viven en
+   .newsletter-card, pintada después (encima) de los halos, así el
+   centro de cada halo queda tapado y solo se ve el brillo que
+   sobresale alrededor del borde de la card. */
+.post-sections-footer .hero-newsletter {
+  position: relative;
+  isolation: isolate;
+}
+
+.post-sections-footer .hero-newsletter::before,
+.post-sections-footer .hero-newsletter::after,
+.post-sections-footer .newsletter-halo {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(90px);
+}
+
+/* Halo violeta, centrado detrás de la card */
+.post-sections-footer .hero-newsletter::before {
+  left: 50%;
+  top: 50%;
+  width: 85%;
+  height: 75%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(
+    ellipse at center,
+    rgba(139, 92, 246, 0.4),
+    transparent 70%
+  );
+  opacity: 0.55;
+}
+
+/* Halo fucsia, sector inferior izquierdo */
+.post-sections-footer .hero-newsletter::after {
+  left: -8%;
+  bottom: -12%;
+  width: 55%;
+  height: 55%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(217, 70, 239, 0.4),
+    transparent 70%
+  );
+  opacity: 0.45;
+}
+
+/* Halo cian, sector inferior derecho */
+.post-sections-footer .newsletter-halo--cyan {
+  right: -8%;
+  bottom: -14%;
+  width: 55%;
+  height: 55%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(34, 211, 238, 0.35),
+    transparent 70%
+  );
+  opacity: 0.4;
+}
+
+.post-sections-footer .newsletter-card {
+  position: relative;
+  z-index: 1;
+
+  width: 100%;
+  padding: clamp(32px, 6vw, 56px) clamp(24px, 6vw, 48px);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0) 45%),
+    #241735;
+  border: 1px solid rgba(216, 178, 92, 0.22);
+  border-radius: 24px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.35);
+}
+
 /* Toda esta sección (portal social + suscripción + footer) ocupa un
    viewport completo propio, y la parte de suscripción se agranda
    bastante respecto del tamaño heredado del hero (ahí era chico a
