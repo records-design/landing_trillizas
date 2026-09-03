@@ -2928,6 +2928,16 @@ button:focus-visible {
   margin: 12px auto 0;
 }
 
+.album-section__subtitle + .album-section__subtitle {
+  margin-top: 16px;
+}
+
+.album-section__subtitle strong {
+  font-family: var(--font-ui);
+  font-weight: 600;
+  color: var(--ivory);
+}
+
 /* Halo muy difuso detrás de las Trixi Pop — violeta/fucsia/cyan
    apenas insinuados, nada de estética neón. Va DETRÁS de la imagen
    (z-index más bajo) para darle profundidad sin competir con nada. */
@@ -3450,10 +3460,21 @@ body.has-sections .hero-content {
   }
 
   .album-section__info {
+    align-self: stretch;
+    justify-content: space-between;
     align-items: flex-start;
     text-align: left;
     width: 100%;
     max-width: 460px;
+  }
+
+  /* Con .album-section__info estirado a toda la altura de la tapa y
+     justify-content:space-between, el título queda arriba del todo y
+     el botón abajo del todo (misma altura que el arte de tapa) — el
+     margin-top fijo de antes ya no hace falta, lo pisa el espacio
+     que reparte space-between. */
+  .album-section__info .magic-button {
+    margin-top: 0;
   }
 
   .album-section__info .section-divider {
