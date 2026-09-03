@@ -3845,15 +3845,24 @@ body.has-sections .hero-logo {
   justify-content: center;
 }
 
+.post-sections-footer .follow-title {
+  font-family: var(--font-ui);
+  font-weight: 700;
+}
+
 .post-sections-footer .newsletter-title {
+  font-family: var(--font-ui);
   font-size: clamp(20px, 2.2vw, 26px);
+  font-weight: 600;
   white-space: normal;
   max-width: 560px;
   margin: 0 auto 14px;
 }
 
 .post-sections-footer .newsletter-text {
+  font-family: var(--font-ui);
   font-size: clamp(15px, 1.4vw, 17px);
+  font-weight: 400;
   white-space: normal;
   margin: 0 auto 32px;
 }
