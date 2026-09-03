@@ -4247,6 +4247,27 @@ body.has-sections .hero-slogan {
   }
 }
 
+/* El cálculo en vw de arriba asume que el ancho del grupo de botones
+   crece siempre igual que el viewport, pero esa medida real depende
+   también de la ALTURA de la ventana (hay breakpoints viejos que
+   achican los botones en ventanas bajas sin achicar el ancho). Eso
+   hacía que en ciertas resoluciones (ej. MacBook Air) el título se
+   viera gigante y se envolviera en 4 líneas. Se reemplaza el cálculo
+   por unidades de container query (cqw), que miden el ancho REAL del
+   contenedor del título (que ya es igual al ancho del grupo de
+   botones) en vez de adivinarlo a partir del viewport. */
+body.has-sections .hero-slogan-wrap {
+  container-type: inline-size;
+}
+
+@supports (container-type: inline-size) {
+  @media (min-width: 701px) {
+    body.has-sections .hero-slogan {
+      font-size: clamp(50px, 9.2cqw, 84px) !important;
+    }
+  }
+}
+
 /* ============================================================
    AJUSTES: pasada de pulido (hero, jerarquías, spacing)
    Todo scoped a body.has-sections — index.html no se toca.
