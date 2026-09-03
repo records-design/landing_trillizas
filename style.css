@@ -3636,7 +3636,7 @@ body.has-sections .hero {
   align-items: stretch;
   text-align: center;
   gap: 14px;
-  width: min(780px, 100%);
+  width: min(920px, 100%);
 }
 
 .historia-section__text .section-divider {
