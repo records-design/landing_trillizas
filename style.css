@@ -3948,6 +3948,7 @@ body.has-sections .hero {
 }
 
 .historia-slot__image {
+  position: relative;
   flex: 1 1 auto;
   width: clamp(150px, 15vw, 240px);
   min-height: 0;
@@ -3965,7 +3966,56 @@ body.has-sections .hero {
     linear-gradient(160deg, rgba(46, 24, 74, 0.7), rgba(27, 15, 46, 0.55));
 
   box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
+  transition:
+    transform .4s cubic-bezier(.22, 1, .36, 1),
+    border-color .4s ease,
+    box-shadow .4s ease;
+  animation: historiaCardGlow 5s ease-in-out infinite;
 }
+
+/* Marco fino dorado en las esquinas — asoma apenas al pasar el
+   mouse, para que la card se sienta "enmarcada" sin recargarla. */
+.historia-slot__image::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  z-index: 2;
+  border: 1px solid rgba(216, 178, 92, 0);
+  border-radius: 9px;
+  pointer-events: none;
+  transition: border-color .4s ease, inset .4s ease;
+}
+
+.historia-slot:hover .historia-slot__image {
+  transform: translateY(-6px) scale(1.02);
+  border-color: rgba(216, 178, 92, 0.6);
+  box-shadow:
+    0 22px 44px rgba(0, 0, 0, 0.4),
+    0 0 26px rgba(216, 178, 92, 0.18);
+}
+
+.historia-slot:hover .historia-slot__image::before {
+  inset: 6px;
+  border-color: rgba(216, 178, 92, 0.5);
+}
+
+/* Brillo del borde "respirando" muy sutil, todo el tiempo, no solo
+   al pasar el mouse. */
+@keyframes historiaCardGlow {
+  0%, 100% {
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
+  }
+  50% {
+    box-shadow:
+      0 16px 36px rgba(0, 0, 0, 0.35),
+      0 0 20px rgba(216, 178, 92, 0.14);
+  }
+}
+
+/* Desfasadas entre sí para que no "respiren" las 3 al unísono. */
+.historia-slot:nth-of-type(1) .historia-slot__image { animation-delay: 0s; }
+.historia-slot:nth-of-type(2) .historia-slot__image { animation-delay: 1.2s; }
+.historia-slot:nth-of-type(3) .historia-slot__image { animation-delay: 2.4s; }
 
 /* object-fit: contain (no recortar) — las fotos originales son
    horizontales (3 personas en fila); si se recortan para llenar una
@@ -3989,13 +4039,51 @@ body.has-sections .hero {
   text-transform: uppercase;
 }
 
+/* Círculo dorado con la flecha adentro, en vez de una flecha suelta
+   flotando entre las cards. */
 .historia-arrow {
   align-self: center;
+  flex: 0 0 auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: clamp(40px, 3.6vw, 52px);
+  height: clamp(40px, 3.6vw, 52px);
+  border-radius: 50%;
+  border: 1.5px solid rgba(216, 178, 92, 0.5);
+
+  background:
+    radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.08), transparent 55%),
+    radial-gradient(circle at 50% 50%, rgba(216, 178, 92, 0.14), transparent 70%),
+    rgba(27, 15, 46, 0.6);
+
   color: var(--gold);
-  font-size: clamp(32px, 3.2vw, 44px);
-  font-weight: 300;
-  opacity: 0.9;
-  text-shadow: 0 0 18px rgba(216, 178, 92, 0.35);
+  font-size: clamp(18px, 1.7vw, 24px);
+  font-weight: 400;
+  line-height: 1;
+
+  box-shadow:
+    0 10px 22px rgba(0, 0, 0, 0.35),
+    0 0 16px rgba(216, 178, 92, 0.16);
+
+  animation: historiaArrowGlow 3.4s ease-in-out infinite;
+}
+
+@keyframes historiaArrowGlow {
+  0%, 100% {
+    border-color: rgba(216, 178, 92, 0.5);
+    box-shadow:
+      0 10px 22px rgba(0, 0, 0, 0.35),
+      0 0 16px rgba(216, 178, 92, 0.16);
+  }
+  50% {
+    border-color: rgba(216, 178, 92, 0.85);
+    box-shadow:
+      0 10px 22px rgba(0, 0, 0, 0.35),
+      0 0 24px rgba(216, 178, 92, 0.34);
+  }
 }
 
 @media (max-width: 700px) {
