@@ -4260,6 +4260,21 @@ body.has-sections .hero-slogan-wrap {
   container-type: inline-size;
 }
 
+/* La frase "Tres hermanas..." tiene que quedar siempre en 1 sola
+   línea y siempre más chica que el título de abajo, en cualquier
+   tamaño de pantalla — se calcula igual que el título, en base al
+   ancho real de este mismo contenedor (cqw), con margen de sobra
+   para que nunca llegue a envolverse. */
+body.has-sections .hero-claim {
+  white-space: nowrap;
+}
+
+@supports (container-type: inline-size) {
+  body.has-sections .hero-claim {
+    font-size: clamp(16px, 3cqw, 26px) !important;
+  }
+}
+
 @supports (container-type: inline-size) {
   @media (min-width: 701px) {
     body.has-sections .hero-slogan {
