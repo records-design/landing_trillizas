@@ -433,7 +433,16 @@ button:focus-visible {
   white-space: nowrap;
   text-align: center;
 
-  color: #e4b64f;
+  background: linear-gradient(
+    180deg,
+    var(--gold-title-shine-1),
+    var(--gold-title-shine-2) 55%,
+    var(--gold-title-shine-3)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: var(--gold-title);
+  -webkit-text-fill-color: transparent;
 
   text-shadow:
     0 1px 0 rgba(255, 255, 255, 0.34),
@@ -2685,7 +2694,7 @@ button:focus-visible {
 }
 
 .section-title {
-  color: var(--gold-light);
+  color: var(--gold-title);
   font-family: var(--font-display);
   font-size: clamp(28px, 3.4vw, 40px);
   font-weight: 600;
@@ -2710,7 +2719,16 @@ button:focus-visible {
   letter-spacing: -0.012em;
   text-transform: none;
 
-  color: #e4b64f;
+  background: linear-gradient(
+    180deg,
+    var(--gold-title-shine-1),
+    var(--gold-title-shine-2) 55%,
+    var(--gold-title-shine-3)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: var(--gold-title);
+  -webkit-text-fill-color: transparent;
   text-shadow:
     0 1px 0 rgba(255, 255, 255, 0.34),
     0 2px 0 rgba(113, 65, 16, 0.28),
@@ -3266,7 +3284,16 @@ button:focus-visible {
   letter-spacing: -0.012em;
   margin: 0;
 
-  color: #e4b64f;
+  background: linear-gradient(
+    180deg,
+    var(--gold-title-shine-1),
+    var(--gold-title-shine-2) 55%,
+    var(--gold-title-shine-3)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: var(--gold-title);
+  -webkit-text-fill-color: transparent;
   text-shadow:
     0 1px 0 rgba(255, 255, 255, 0.34),
     0 2px 0 rgba(113, 65, 16, 0.28),
@@ -4680,7 +4707,16 @@ body.has-sections .hero-logo {
   text-transform: none;
   max-width: 680px;
 
-  color: #e4b64f;
+  background: linear-gradient(
+    180deg,
+    var(--gold-title-shine-1),
+    var(--gold-title-shine-2) 55%,
+    var(--gold-title-shine-3)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: var(--gold-title);
+  -webkit-text-fill-color: transparent;
   text-shadow:
     0 1px 0 rgba(255, 255, 255, 0.34),
     0 2px 0 rgba(113, 65, 16, 0.28),
