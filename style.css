@@ -2829,7 +2829,7 @@ button:focus-visible {
 
 .album-section__heading {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   margin-bottom: clamp(20px, 3vh, 32px);
 }
 
@@ -2837,77 +2837,74 @@ button:focus-visible {
   color: var(--ivory);
 }
 
-/* Todo el contenido (cover + texto) corrido a la izquierda, con las
-   Trixi Pop como un bloque visual propio a la derecha — no un wash
-   de fondo detrás de todo, sino una composición de dos zonas. */
-.album-section__layout {
-  position: relative;
+/* Halo muy difuso detrás de las Trixi Pop — violeta/fucsia/cyan
+   apenas insinuados, nada de estética neón. Va DETRÁS de la imagen
+   (z-index más bajo) para darle profundidad sin competir con nada. */
+.album-section__trixi-halo {
+  position: absolute;
+  z-index: 0;
+  right: -10%;
+  bottom: -10%;
+  width: 52vw;
+  max-width: 640px;
+  aspect-ratio: 1 / 1;
+  background:
+    radial-gradient(circle at 65% 35%, rgba(124, 58, 237, 0.16), transparent 62%),
+    radial-gradient(circle at 40% 60%, rgba(217, 70, 239, 0.10), transparent 60%),
+    radial-gradient(circle at 75% 70%, rgba(103, 232, 249, 0.08), transparent 55%);
+  filter: blur(40px);
+  pointer-events: none;
+}
+
+/* Trixi Pop con auriculares, escuchando música — ilustración de fondo
+   integrada directamente sobre el violeta de la sección (PNG con
+   transparencia real, sin card, sin borde, sin recuadro). Se funde
+   hacia la izquierda con una máscara degradada para no competir con
+   el título ni con el botón. Imagen ya existente del proyecto
+   (imagenes/trixi pop music.png), solo comprimida a WebP para web. */
+.album-section__trixi-bg {
+  position: absolute;
   z-index: 1;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: clamp(32px, 5vw, 64px);
-  width: 100%;
-  max-width: 1280px;
-  margin: 0 auto;
+  right: -80px;
+  bottom: -20px;
+  width: min(760px, 46vw);
+  max-width: none;
+  height: auto;
+  opacity: 0.43;
+  filter: blur(0.5px);
+  pointer-events: none;
+
+  -webkit-mask-image: linear-gradient(
+    to left,
+    black 42%,
+    rgba(0, 0, 0, 0.85) 58%,
+    rgba(0, 0, 0, 0.45) 76%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to left,
+    black 42%,
+    rgba(0, 0, 0, 0.85) 58%,
+    rgba(0, 0, 0, 0.45) 76%,
+    transparent 100%
+  );
 }
 
 /* Bloque editorial horizontal y compacto: la tapa y el texto ocupan
    prácticamente la misma altura, sueltos sobre el fondo violeta de
-   la sección (sin card/panel envolviendo todo). */
+   la sección (sin card/panel envolviendo todo). Por encima de las
+   Trixi Pop de fondo. */
 .album-section__row {
   position: relative;
+  z-index: 2;
   display: grid;
   grid-template-columns: 1fr;
   justify-items: center;
   align-items: center;
   gap: 28px;
-  flex: 1 1 auto;
-}
-
-/* Card visual con las Trixi Pop escuchando música — recorte limpio,
-   bordes redondeados iguales a la tapa, con un fundido muy sutil solo
-   en su borde izquierdo para integrarse al violeta (no un wash detrás
-   de todo el contenido). Imagen ya existente del proyecto
-   (imagenes/trixi pop music.png), solo comprimida para web. */
-.album-section__visual {
-  position: relative;
-  flex: 0 0 auto;
-  width: clamp(220px, 26vw, 320px);
-  height: min(330px, 78vw);
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.4);
-}
-
-.album-section__visual img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 60% 30%;
-  -webkit-mask-image: linear-gradient(
-    to left,
-    rgba(0, 0, 0, 1) 65%,
-    transparent 100%
-  );
-  mask-image: linear-gradient(
-    to left,
-    rgba(0, 0, 0, 1) 65%,
-    transparent 100%
-  );
-}
-
-.album-section__visual::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    160deg,
-    rgba(124, 58, 237, 0.16),
-    rgba(27, 15, 46, 0.05) 60%
-  );
-  pointer-events: none;
+  max-width: 1100px;
+  margin: 0 auto;
 }
 
 .album-section__cover {
@@ -3039,10 +3036,6 @@ button:focus-visible {
     gap: 20px;
   }
 
-  .album-section__layout {
-    flex-direction: column;
-  }
-
   .album-section__row {
     grid-template-columns: 1fr;
   }
@@ -3051,29 +3044,32 @@ button:focus-visible {
     --button-width: min(360px, 86vw);
   }
 
-  /* En mobile las Trixi Pop pasan a ser una banda ancha debajo del
-     botón: más grandes y recortadas, con menor opacidad para no
-     restar legibilidad al contenido de arriba. */
-  .album-section__visual {
-    width: 100%;
-    max-width: 420px;
-    height: 200px;
-    margin-top: 8px;
-  }
-
-  .album-section__visual img {
-    object-position: 50% 25%;
-    opacity: 0.55;
-    mask-image: linear-gradient(
-      to top,
-      rgba(0, 0, 0, 1) 55%,
-      transparent 100%
-    );
+  /* En mobile las Trixi Pop quedan más recortadas, hacia el sector
+     inferior/derecho, y bastante más tenues para no restar
+     legibilidad al contenido apilado arriba. */
+  .album-section__trixi-bg {
+    right: -15%;
+    bottom: -4%;
+    width: 92vw;
+    opacity: 0.22;
     -webkit-mask-image: linear-gradient(
       to top,
-      rgba(0, 0, 0, 1) 55%,
-      transparent 100%
+      black 30%,
+      rgba(0, 0, 0, 0.6) 55%,
+      transparent 85%
     );
+    mask-image: linear-gradient(
+      to top,
+      black 30%,
+      rgba(0, 0, 0, 0.6) 55%,
+      transparent 85%
+    );
+  }
+
+  .album-section__trixi-halo {
+    width: 80vw;
+    right: -20%;
+    bottom: -15%;
   }
 }
 

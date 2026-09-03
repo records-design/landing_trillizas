@@ -165,7 +165,7 @@
   />
 
   <!-- CSS -->
-  <link rel="stylesheet" href="style.css?v=20260902trixi3" />
+  <link rel="stylesheet" href="style.css?v=20260902trixi4" />
 </head>
 
 <body class="has-sections">
@@ -443,6 +443,15 @@
 
   <!-- ÁLBUM -->
   <section class="album-section" id="album-section">
+    <div class="album-section__trixi-halo" aria-hidden="true"></div>
+    <img
+      src="imagenes/trixi_pop_music_web.webp"
+      alt=""
+      aria-hidden="true"
+      loading="lazy"
+      class="album-section__trixi-bg"
+    />
+
     <div class="section-heading album-section__heading">
       <span class="section-divider" aria-hidden="true">
         <span class="follow-line"></span>
@@ -452,76 +461,66 @@
       <p class="section-eyebrow">Nuestra música</p>
     </div>
 
-    <div class="album-section__layout">
-      <div class="album-section__row">
-        <div class="album-section__cover">
-          <img
-            src="imagenes/arte_de_tapa_trillizas.png"
-            alt="Tapa del álbum Las Trillizas de Oro y El Libro Mágico, Volumen 1"
-            loading="lazy"
-          />
-        </div>
-
-        <div class="album-section__info">
-          <div class="album-section__top">
-            <h3 class="album-section__name">
-              Las Trillizas de Oro<br />
-              y El Libro Mágico
-            </h3>
-            <p class="album-section__volume">Volumen 1</p>
-          </div>
-
-        <!-- PENDIENTE: no existe todavía ningún link real del álbum
-             completo en el proyecto (se revisó todo el sitio antes de
-             armar esto) — el único link de Spotify que había era el de
-             UNA canción suelta ("La Locomotora llega a la estación"),
-             no el álbum, así que no se reutiliza para no llevar a la
-             persona a un lugar equivocado. Reemplazar PENDIENTE-LINK-ALBUM
-             por el link real del álbum completo en Spotify cuando lo tengas. -->
-        <a
-          class="magic-button magic-button--gold"
-          href="PENDIENTE-LINK-ALBUM"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Escuchar el álbum"
-          data-event="ListenAlbum"
-          data-destination="Spotify"
-          data-track-button="escuchar_album"
-        >
-          <img
-            class="magic-button__frame"
-            src="imagenes/button-frame-gold.png"
-            alt=""
-            aria-hidden="true"
-          />
-          <span class="magic-button__content">
-            <span class="magic-button__icon">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-              >
-                <path d="M9 18V5l12-2v13" />
-                <circle cx="6" cy="18" r="3" />
-                <circle cx="18" cy="16" r="3" />
-              </svg>
-            </span>
-            <span class="magic-button__label">Escuchar el álbum</span>
-          </span>
-        </a>
-        </div>
-      </div>
-
-      <div class="album-section__visual" aria-hidden="true">
+    <div class="album-section__row">
+      <div class="album-section__cover">
         <img
-          src="imagenes/trixi_pop_music_web.jpg"
-          alt=""
+          src="imagenes/arte_de_tapa_trillizas.png"
+          alt="Tapa del álbum Las Trillizas de Oro y El Libro Mágico, Volumen 1"
           loading="lazy"
         />
+      </div>
+
+      <div class="album-section__info">
+        <div class="album-section__top">
+          <h3 class="album-section__name">
+            Las Trillizas de Oro<br />
+            y El Libro Mágico
+          </h3>
+          <p class="album-section__volume">Volumen 1</p>
+        </div>
+
+      <!-- PENDIENTE: no existe todavía ningún link real del álbum
+           completo en el proyecto (se revisó todo el sitio antes de
+           armar esto) — el único link de Spotify que había era el de
+           UNA canción suelta ("La Locomotora llega a la estación"),
+           no el álbum, así que no se reutiliza para no llevar a la
+           persona a un lugar equivocado. Reemplazar PENDIENTE-LINK-ALBUM
+           por el link real del álbum completo en Spotify cuando lo tengas. -->
+      <a
+        class="magic-button magic-button--gold"
+        href="PENDIENTE-LINK-ALBUM"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Escuchar el álbum"
+        data-event="ListenAlbum"
+        data-destination="Spotify"
+        data-track-button="escuchar_album"
+      >
+        <img
+          class="magic-button__frame"
+          src="imagenes/button-frame-gold.png"
+          alt=""
+          aria-hidden="true"
+        />
+        <span class="magic-button__content">
+          <span class="magic-button__icon">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M9 18V5l12-2v13" />
+              <circle cx="6" cy="18" r="3" />
+              <circle cx="18" cy="16" r="3" />
+            </svg>
+          </span>
+          <span class="magic-button__label">Escuchar el álbum</span>
+        </span>
+      </a>
       </div>
     </div>
   </section>
