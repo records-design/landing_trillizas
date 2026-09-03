@@ -2924,7 +2924,7 @@ button:focus-visible {
   line-height: 1.7;
   opacity: 0.9;
   text-align: center;
-  max-width: 720px;
+  max-width: 980px;
   margin: 12px auto 0;
 }
 
@@ -3208,28 +3208,33 @@ button:focus-visible {
   gap: 14px;
 }
 
+/* Logos reales de cada plataforma (ya vienen sin fondo, y los que
+   tenían el logo en negro se pasaron a blanco para que se vean sobre
+   el violeta). Se muestran a la misma altura, sin recuadro ni
+   círculo — cada logo tiene su propia forma/ancho. */
 .album-section__platform-icon {
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  border: 1px solid rgba(216, 178, 92, 0.3);
-  color: var(--gold-light);
   opacity: 0.85;
-  transition: opacity .25s ease, border-color .25s ease, transform .25s ease;
+  transition: opacity .25s ease, transform .25s ease;
 }
 
 .album-section__platform-icon:hover {
   opacity: 1;
-  border-color: rgba(216, 178, 92, 0.7);
   transform: translateY(-2px);
 }
 
-.album-section__platform-icon svg {
-  width: 16px;
-  height: 16px;
+.album-section__platform-icon img {
+  display: block;
+  height: 22px;
+  width: auto;
+}
+
+/* El ícono de Spotify es un círculo lleno (no una silueta fina como
+   los demás) — a la misma altura se ve más grande a simple vista,
+   así que se lo achica un poco para que pese visualmente igual. */
+.album-section__platform-icon--spotify img {
+  height: 19px;
 }
 
 .album-section__info .section-divider {
