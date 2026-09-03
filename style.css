@@ -3852,11 +3852,20 @@ body.has-sections .hero-logo {
 
 .post-sections-footer .newsletter-title {
   font-family: var(--font-ui);
-  font-size: clamp(20px, 2.2vw, 26px);
+  font-size: clamp(14px, 1.2vw, 17px);
   font-weight: 600;
+  line-height: 1.4;
   white-space: normal;
-  max-width: 560px;
+  max-width: 480px;
   margin: 0 auto 14px;
+}
+
+/* Forzado a 2 líneas ("Entrá al universo de" / "Las Trillizas de Oro
+   y el Libro Mágico") en vez de 3 — el <br> ya existe en el HTML,
+   solo hay que habilitarlo acá (por defecto está oculto, pensado
+   para otro breakpoint del hero). */
+.post-sections-footer .newsletter-title-break {
+  display: block;
 }
 
 .post-sections-footer .newsletter-text {
