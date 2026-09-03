@@ -3378,13 +3378,80 @@ body.has-sections .hero-content {
     aspect-ratio: 16 / 9;
   }
 
+  .post-sections-footer .hero-content-mirror {
+    max-width: 860px;
+  }
+
+  .post-sections-footer .hero-follow .follow-links {
+    gap: 28px;
+  }
+}
+
+/* Franja intermedia (901–1199px): no hay lugar cómodo para tapa +
+   texto + Trixi Pop lado a lado sin que se pisen. En vez de forzarlo,
+   se apila como en mobile (tapa arriba, texto debajo, centrado) y las
+   Trixi quedan como banda de fondo detrás de todo — mismo criterio
+   que ya se usa en mobile, solo que a este ancho se ven un poco más
+   grandes. El layout de 2 columnas con Trixi al costado queda
+   reservado para 1200px en adelante, donde sí entra sin apretarse. */
+@media (min-width: 901px) and (max-width: 1199px) {
+  .album-section__row {
+    grid-template-columns: 1fr;
+  }
+
+  .album-section__trixi-bg {
+    right: -10%;
+    top: auto;
+    bottom: -4%;
+    transform: none;
+    width: 78vw;
+    opacity: 0.3;
+    -webkit-mask-image: linear-gradient(
+      to top,
+      black 30%,
+      rgba(0, 0, 0, 0.6) 55%,
+      transparent 85%
+    );
+    mask-image: linear-gradient(
+      to top,
+      black 30%,
+      rgba(0, 0, 0, 0.6) 55%,
+      transparent 85%
+    );
+  }
+
+  .album-section__trixi-halo {
+    width: 65vw;
+    right: -15%;
+    top: auto;
+    bottom: -12%;
+    transform: none;
+  }
+
+  .album-section__trixi-sparkles {
+    right: -10%;
+    top: auto;
+    bottom: -4%;
+    transform: none;
+    width: 78vw;
+  }
+
+  .album-section__trixi-bottom-fade {
+    display: none;
+  }
+}
+
+/* 1200px en adelante: tapa a la izquierda, texto al medio, Trixi Pop
+   a la derecha compartiendo la misma altura que la tapa (ver
+   comentario en .album-section__cover más abajo). */
+@media (min-width: 1200px) {
   .album-section__row {
     grid-template-columns: min(375px, 23.3vw) minmax(0, min(460px, 36vw));
     /* Ancho de caja más grande que el contenido (cover+info) para
-       dejarle a las Trixi Pop —ahora dentro del mismo row, así
-       comparten exactamente la misma altura que la tapa— su propio
-       lugar a la derecha sin superponerse. El contenido del grid se
-       ancla a la izquierda de esta caja más ancha, no se estira. */
+       dejarle a las Trixi Pop —dentro del mismo row, así comparten
+       exactamente la misma altura que la tapa— su propio lugar a la
+       derecha sin superponerse. El contenido del grid se ancla a la
+       izquierda de esta caja más ancha, no se estira. */
     max-width: 1480px;
     justify-content: start;
     align-items: center;
@@ -3411,14 +3478,6 @@ body.has-sections .hero-content {
 
   .album-section__info .section-divider {
     justify-content: flex-start;
-  }
-
-  .post-sections-footer .hero-content-mirror {
-    max-width: 860px;
-  }
-
-  .post-sections-footer .hero-follow .follow-links {
-    gap: 28px;
   }
 }
 
