@@ -2874,18 +2874,16 @@ button:focus-visible {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+
+  min-height: 100vh;
+  min-height: 100dvh;
 }
 
 .album-section__heading {
   position: relative;
   z-index: 2;
   margin-bottom: clamp(20px, 3vh, 32px);
-}
-
-.album-section__heading .section-eyebrow {
-  color: var(--ivory);
-  font-size: clamp(22px, 2.6vw, 32px);
-  letter-spacing: 0.2em;
 }
 
 /* Halo muy difuso detrás de las Trixi Pop — violeta/fucsia/cyan
