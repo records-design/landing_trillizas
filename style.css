@@ -2684,6 +2684,15 @@ button:focus-visible {
   margin: 0;
 }
 
+/* Forzado a 2 líneas exactas ("Las Trillizas de Oro" / "y el Libro
+   Mágico" vía <br> en el HTML) — tamaño un poco más contenido que el
+   .section-title genérico para que la primera línea no vuelva a
+   partirse sola en una tercera línea. */
+.historia-section__title {
+  font-size: clamp(24px, 2.6vw, 34px);
+  line-height: 1.2;
+}
+
 .section-subtitle {
   color: var(--ivory);
   font-family: var(--font-ui);
@@ -3623,7 +3632,7 @@ body.has-sections .hero {
   align-items: flex-start;
   justify-content: center;
   gap: 14px;
-  width: min(440px, 100%);
+  width: min(480px, 100%);
 }
 
 .historia-section__text .section-divider {
@@ -3692,7 +3701,7 @@ body.has-sections .hero {
 .historia-slot__label {
   color: var(--gold-light);
   font-family: var(--font-ui);
-  font-size: 12px;
+  font-size: clamp(15px, 1.4vw, 18px);
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -3701,8 +3710,10 @@ body.has-sections .hero {
 .historia-arrow {
   align-self: center;
   color: var(--gold);
-  font-size: 20px;
-  opacity: 0.7;
+  font-size: clamp(32px, 3.2vw, 44px);
+  font-weight: 300;
+  opacity: 0.9;
+  text-shadow: 0 0 18px rgba(216, 178, 92, 0.35);
 }
 
 @media (max-width: 700px) {
