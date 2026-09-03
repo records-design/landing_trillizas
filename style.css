@@ -1558,23 +1558,18 @@ button:focus-visible {
   gap: 8px;
 }
 
-/* El de Records es más bajo que el de TV (proporción real de cada
-   archivo): se alinea por abajo para que ambos "pisen" la misma
-   línea en vez de quedar centrado con aire de más debajo. */
-.footer-logo {
-  align-self: flex-end;
-}
-
+/* Los dos logos tienen relaciones de aspecto bien distintas (el de
+   TV es más "cuadrado", el de Records más ancho/bajo) — en vez de
+   igualar el ANCHO (que es lo que los hacía ver desparejos, uno más
+   alto que el otro), se iguala el ALTO: así el tamaño de letra de
+   ambos wordmarks se percibe igual y quedan alineados en la misma
+   línea de forma natural. */
 .footer-logo,
 .footer-logo-tv {
-  width: clamp(95px, 8vw, 115px);
-  height: auto;
+  width: auto;
+  height: clamp(24px, 2.2vw, 30px);
   opacity: 0.72;
   filter: drop-shadow(0 0 10px rgba(232, 201, 123, 0.12));
-}
-
-.footer-logo-tv {
-  width: calc(clamp(95px, 8vw, 115px) * 1.155);
 }
 
 .footer-text {
@@ -2266,12 +2261,8 @@ button:focus-visible {
 
   .footer-logo,
   .footer-logo-tv {
-    width: 83px;
-    height: auto;
-  }
-
-  .footer-logo-tv {
-    width: calc(83px * 1.155);
+    width: auto;
+    height: 24px;
   }
 }
 
@@ -2504,12 +2495,8 @@ button:focus-visible {
 
   .footer-logo,
   .footer-logo-tv {
-    width: 73px;
-    height: auto;
-  }
-
-  .footer-logo-tv {
-    width: calc(73px * 1.155);
+    width: auto;
+    height: 20px;
   }
 
   /* --------------------------------------------------------
@@ -4623,6 +4610,17 @@ body.has-sections .hero-logo {
   min-height: 100vh;
   min-height: 100dvh;
   justify-content: flex-start;
+}
+
+@media (max-width: 700px) {
+  /* En mobile el contenido (redes + card del newsletter + logos)
+     casi nunca llega a llenar un viewport completo — forzarlo dejaba
+     un colchón de espacio vacío debajo de los logos del footer. Se
+     achica al alto real del contenido, igual que se hizo con el
+     hero. */
+  .post-sections-footer {
+    min-height: auto;
+  }
 }
 
 .post-sections-footer .follow-title {
