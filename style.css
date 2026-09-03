@@ -2926,6 +2926,14 @@ button:focus-visible {
   text-align: center;
   max-width: 980px;
   margin: 12px auto 0;
+  text-wrap: balance;
+}
+
+@media (max-width: 700px) {
+  .album-section__subtitle {
+    font-size: 14px;
+    line-height: 1.6;
+  }
 }
 
 .album-section__subtitle strong {
