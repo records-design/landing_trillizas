@@ -3614,29 +3614,33 @@ body.has-sections .hero {
 /* ============================================================
    HISTORIA
    ============================================================ */
+/* Layout apilado y centrado: título + párrafo arriba (ocupando el
+   mismo ancho que la fila de cards), la fila de cards debajo — en
+   vez de intentar una fila lado a lado que en muchos anchos de
+   escritorio terminaba envolviendo igual, con el texto angosto y
+   descentrado respecto de las cards. */
 .historia-section {
   width: 100%;
   padding: clamp(48px, 8vh, 96px) 20px;
   background: var(--violet-deep);
 
   display: flex;
-  flex-wrap: wrap;
-  align-items: stretch;
-  justify-content: center;
-  gap: clamp(36px, 6vw, 72px);
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(32px, 5vh, 56px);
 }
 
 .historia-section__text {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
+  align-items: stretch;
+  text-align: center;
   gap: 14px;
-  width: min(480px, 100%);
+  width: min(780px, 100%);
 }
 
 .historia-section__text .section-divider {
-  justify-content: flex-start;
+  justify-content: center;
 }
 
 .historia-section__body {
