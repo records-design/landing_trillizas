@@ -3277,7 +3277,7 @@ button:focus-visible {
     grid-template-areas:
       "diamond title logo"
       "sub sub logo";
-    column-gap: 12px;
+    column-gap: 8px;
     row-gap: 3px;
     align-items: center;
 
@@ -3306,12 +3306,14 @@ button:focus-visible {
   #serie-section .episode-tile__soon-sub {
     grid-area: sub;
     font-size: 10px;
+    text-align: right;
   }
 
   #serie-section .episode-tile__soon-babidibu {
     grid-area: logo;
     width: 62px;
     margin: 0;
+    justify-self: start;
   }
 
   #serie-section .episode-tile__soon-visit {
