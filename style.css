@@ -2838,26 +2838,20 @@ button:focus-visible {
   align-self: flex-start;
   display: inline-flex;
   align-items: center;
-  gap: 9px;
+  gap: 8px;
 
-  padding: 10px 16px;
-  border-radius: 999px;
-  background: #FF0000;
-  box-shadow: 0 10px 22px rgba(255, 0, 0, 0.28);
-
-  color: #fff;
+  color: var(--gold-light);
   font-family: var(--font-ui);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
 
-  transition: transform .3s cubic-bezier(.22, 1, .36, 1), box-shadow .3s ease;
+  transition: transform .3s cubic-bezier(.22, 1, .36, 1);
 }
 
 .episode-tile:hover .episode-tile__cta {
   transform: translateX(3px);
-  box-shadow: 0 12px 26px rgba(255, 0, 0, 0.4);
 }
 
 .episode-tile__cta-icon {
