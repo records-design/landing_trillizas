@@ -3348,7 +3348,7 @@ body.has-sections .hero-content {
   }
 
   .album-section__row {
-    grid-template-columns: 295px minmax(0, 460px);
+    grid-template-columns: min(295px, 20vw) minmax(0, 460px);
     /* Ancho de caja más grande que el contenido (cover+info) para
        dejarle a las Trixi Pop —ahora dentro del mismo row, así
        comparten exactamente la misma altura que la tapa— su propio
@@ -3364,7 +3364,11 @@ body.has-sections .hero-content {
   }
 
   .album-section__cover {
-    width: 295px;
+    /* min(295px, 20vw) escala en la misma proporción que el ancho de
+       las Trixi Pop (min(450px, 30vw) — 30/1.5 = 20), así ambas
+       alturas se mantienen igualadas en cualquier ancho de pantalla,
+       no solo en uno puntual. */
+    width: min(295px, 20vw);
   }
 
   .album-section__info {
