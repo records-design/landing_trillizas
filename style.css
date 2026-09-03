@@ -3622,6 +3622,8 @@ body.has-sections .hero {
    un episodio nuevo — la card en sí no es un link (todavía no hay
    nada que ver), pero esto sí lleva a algo real ahora mismo. */
 .episode-tile__soon-visit {
+  align-self: stretch;
+  width: 100%;
   margin-top: 10px;
   padding: 8px 20px;
   border: 1px solid rgba(216, 178, 92, 0.55);
@@ -3635,6 +3637,7 @@ body.has-sections .hero {
   letter-spacing: 0.06em;
   text-transform: uppercase;
   text-decoration: none;
+  text-align: center;
 
   transition: background-color .25s ease, border-color .25s ease, transform .25s ease;
 }
