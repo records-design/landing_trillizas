@@ -2970,7 +2970,7 @@ button:focus-visible {
   right: 24px;
   top: 50%;
   transform: translateY(-50%);
-  width: min(600px, 39vw);
+  width: min(560px, 35vw);
   max-width: none;
   height: auto;
   opacity: 0.86;
@@ -3015,7 +3015,7 @@ button:focus-visible {
   right: 24px;
   top: 50%;
   transform: translateY(-50%);
-  width: min(600px, 39vw);
+  width: min(560px, 35vw);
   aspect-ratio: 1.5 / 1;
   background: linear-gradient(
     to bottom,
@@ -3379,7 +3379,7 @@ body.has-sections .hero-content {
   }
 
   .album-section__row {
-    grid-template-columns: min(400px, 26vw) minmax(0, 460px);
+    grid-template-columns: min(375px, 23.3vw) minmax(0, 460px);
     /* Ancho de caja más grande que el contenido (cover+info) para
        dejarle a las Trixi Pop —ahora dentro del mismo row, así
        comparten exactamente la misma altura que la tapa— su propio
@@ -3395,12 +3395,11 @@ body.has-sections .hero-content {
   }
 
   .album-section__cover {
-    /* min(400px, 26vw) escala en la misma proporción que el ancho de
-       las Trixi Pop (min(600px, 39vw) — 39/1.5 = 26), así ambas
+    /* min(375px, 23.3vw) escala en la misma proporción que el ancho de
+       las Trixi Pop (min(560px, 35vw) — 35/1.5 = 23.3), así ambas
        alturas se mantienen igualadas en cualquier ancho de pantalla,
-       no solo en uno puntual. Más grande que antes: la composición
-       se sentía perdida en el viewport completo. */
-    width: min(400px, 26vw);
+       no solo en uno puntual. */
+    width: min(375px, 23.3vw);
   }
 
   .album-section__info {
