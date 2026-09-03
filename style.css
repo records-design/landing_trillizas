@@ -3526,7 +3526,7 @@ body.has-sections .hero {
 .section-season {
   color: var(--ivory);
   font-family: var(--font-ui);
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
