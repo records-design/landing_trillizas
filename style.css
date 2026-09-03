@@ -3460,7 +3460,11 @@ body.has-sections .hero-content {
   }
 
   .album-section__info {
-    align-self: stretch;
+    /* Misma altura EXACTA que la tapa (no la del row completo, que es
+       mucho más alto porque llena el viewport) — así title arriba y
+       botón abajo quedan realmente a la altura del arte de tapa, ni
+       más arriba ni más abajo. Misma fórmula que .album-section__cover. */
+    height: min(375px, 23.3vw);
     justify-content: space-between;
     align-items: flex-start;
     text-align: left;
