@@ -2865,9 +2865,9 @@ button:focus-visible {
 .album-section__trixi-bg {
   position: absolute;
   z-index: 1;
-  right: -120px;
+  right: 16px;
   bottom: -14px;
-  width: min(540px, 36vw);
+  width: min(500px, 32vw);
   max-width: none;
   height: auto;
   opacity: 0.48;
@@ -3205,6 +3205,10 @@ body.has-sections .hero-content {
     align-items: start;
     gap: clamp(48px, 6vw, 80px);
     justify-items: stretch;
+    /* Corrido hacia la izquierda (margen derecho fijo en vez de
+       centrado) para dejarle a las Trixi Pop todo el espacio que
+       necesitan a la derecha sin que el viewport las recorte. */
+    margin: 0 clamp(240px, 24vw, 440px) 0 auto;
   }
 
   .album-section__cover {
