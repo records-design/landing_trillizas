@@ -3833,6 +3833,46 @@ body.has-sections .hero-logo {
   margin-top: clamp(24px, 5vh, 48px);
 }
 
+/* Toda esta sección (portal social + suscripción + footer) ocupa un
+   viewport completo propio, y la parte de suscripción se agranda
+   bastante respecto del tamaño heredado del hero (ahí era chico a
+   propósito para entrar en un espacio muy ajustado; acá sobra
+   lugar). También se separa el bloque de texto del form, que
+   quedaba pegado. */
+.post-sections-footer {
+  min-height: 100vh;
+  min-height: 100dvh;
+  justify-content: center;
+}
+
+.post-sections-footer .newsletter-title {
+  font-size: clamp(20px, 2.2vw, 26px);
+  white-space: normal;
+  max-width: 560px;
+  margin: 0 auto 14px;
+}
+
+.post-sections-footer .newsletter-text {
+  font-size: clamp(15px, 1.4vw, 17px);
+  white-space: normal;
+  margin: 0 auto 32px;
+}
+
+.post-sections-footer .newsletter-form {
+  --newsletter-form-width: 460px;
+  gap: 14px;
+}
+
+.post-sections-footer .newsletter-input {
+  height: 54px;
+  font-size: 15px;
+}
+
+.post-sections-footer .newsletter-button {
+  width: 54px;
+  height: 54px;
+}
+
 /* ============================================================
    PULIDO: sección "Serie" — jerarquía tipográfica más fuerte
    (solo esta sección; no toca el título de Historia ni de Álbum,
