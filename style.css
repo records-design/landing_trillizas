@@ -4228,9 +4228,22 @@ body.has-sections .hero-slogan {
   white-space: normal;
 }
 
+/* El sistema de tamaños del hero original tiene muchísimos breakpoints
+   (por ancho Y por alto) pensados para el slogan corto de una sola
+   línea del sitio en vivo. El título nuevo del borrador (2 oraciones,
+   2 líneas fijas) es más largo y en varios de esos breakpoints
+   terminaba envolviéndose en más de 2 líneas. Se fuerza acá un
+   tamaño chico pero seguro con !important, para que gane siempre sin
+   importar cuál de esas reglas viejas aplique en cada caso. */
 @media (max-width: 700px) {
   body.has-sections .hero-slogan {
-    font-size: clamp(28px, 7.2vw, 40px);
+    font-size: clamp(28px, 7.2vw, 40px) !important;
+  }
+}
+
+@media (min-width: 701px) {
+  body.has-sections .hero-slogan {
+    font-size: clamp(34px, 2.8vw, 48px) !important;
   }
 }
 
