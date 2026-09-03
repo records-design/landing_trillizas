@@ -2970,7 +2970,7 @@ button:focus-visible {
   right: 24px;
   top: 50%;
   transform: translateY(-50%);
-  width: min(450px, 30vw);
+  width: min(600px, 39vw);
   max-width: none;
   height: auto;
   opacity: 0.86;
@@ -3001,6 +3001,30 @@ button:focus-visible {
     rgba(0, 0, 0, 0.55) 97%,
     transparent 100%
   );
+}
+
+/* Fundido inferior de las Trixi Pop hacia el violeta de fondo — usa
+   exactamente la misma caja que .album-section__trixi-bg (mismo
+   right/top/transform/ancho + el mismo aspect-ratio 1.5 para que la
+   altura coincida siempre), así el degradé cae justo donde terminan
+   los pies, sin cortes duros. Un overlay de color sólido (no una
+   máscara) para que se vea igual en todos los navegadores. */
+.album-section__trixi-bottom-fade {
+  position: absolute;
+  z-index: 1;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: min(600px, 39vw);
+  aspect-ratio: 1.5 / 1;
+  background: linear-gradient(
+    to bottom,
+    rgba(27, 15, 46, 0) 0%,
+    rgba(27, 15, 46, 0) 62%,
+    rgba(27, 15, 46, 0.55) 82%,
+    rgba(27, 15, 46, 0.92) 100%
+  );
+  pointer-events: none;
 }
 
 /* Bloque editorial horizontal y compacto: la tapa y el texto ocupan
@@ -3242,6 +3266,13 @@ button:focus-visible {
     transform: none;
     width: 92vw;
   }
+
+  /* En mobile el fundido inferior ya lo resuelve la máscara de
+     .album-section__trixi-bg (fade hacia arriba); este overlay
+     pensado para desktop no hace falta acá. */
+  .album-section__trixi-bottom-fade {
+    display: none;
+  }
 }
 
 /* Solo cuando el body tiene la clase "has-sections" (borrador viernes,
@@ -3348,7 +3379,7 @@ body.has-sections .hero-content {
   }
 
   .album-section__row {
-    grid-template-columns: min(295px, 20vw) minmax(0, 460px);
+    grid-template-columns: min(400px, 26vw) minmax(0, 460px);
     /* Ancho de caja más grande que el contenido (cover+info) para
        dejarle a las Trixi Pop —ahora dentro del mismo row, así
        comparten exactamente la misma altura que la tapa— su propio
@@ -3364,11 +3395,12 @@ body.has-sections .hero-content {
   }
 
   .album-section__cover {
-    /* min(295px, 20vw) escala en la misma proporción que el ancho de
-       las Trixi Pop (min(450px, 30vw) — 30/1.5 = 20), así ambas
+    /* min(400px, 26vw) escala en la misma proporción que el ancho de
+       las Trixi Pop (min(600px, 39vw) — 39/1.5 = 26), así ambas
        alturas se mantienen igualadas en cualquier ancho de pantalla,
-       no solo en uno puntual. */
-    width: min(295px, 20vw);
+       no solo en uno puntual. Más grande que antes: la composición
+       se sentía perdida en el viewport completo. */
+    width: min(400px, 26vw);
   }
 
   .album-section__info {
