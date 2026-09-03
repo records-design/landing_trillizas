@@ -4813,3 +4813,49 @@ body.has-sections .hero-logo {
     filter: blur(16px);
   }
 }
+
+/* ============================================================
+   FADES entre secciones
+   ============================================================
+   Como todas estas secciones comparten el mismo violeta de fondo
+   (--violet-deep), el corte entre una y otra debería ser invisible —
+   pero los halos de arriba, al quedar recortados justo en el borde
+   de cada sección (por su "overflow: hidden"), podían dejar un corte
+   duro y recto donde el color del halo se corta de golpe. Estas
+   franjas finas en degradé (mismo violeta → transparente) tapan
+   apenas ese borde, así la transición entre secciones se siente
+   difuminada en vez de una línea recta. */
+.serie-section::before,
+.historia-section::before,
+.post-sections-footer::before,
+.album-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  height: clamp(70px, 12vh, 160px);
+  background: linear-gradient(to bottom, var(--violet-deep), transparent);
+  pointer-events: none;
+}
+
+.serie-section::after,
+.historia-section::after,
+.post-sections-footer::after,
+.album-section__fade-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  height: clamp(70px, 12vh, 160px);
+  background: linear-gradient(to top, var(--violet-deep), transparent);
+  pointer-events: none;
+}
+
+.serie-section::after,
+.historia-section::after,
+.post-sections-footer::after {
+  content: "";
+}
