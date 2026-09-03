@@ -2688,9 +2688,26 @@ button:focus-visible {
    Mágico" vía <br> en el HTML) — tamaño un poco más contenido que el
    .section-title genérico para que la primera línea no vuelva a
    partirse sola en una tercera línea. */
+/* Misma tipografía exacta que el slogan del hero (.hero-slogan):
+   serif, peso 500, tracking -0.012em, sin mayúsculas, dorado con el
+   mismo stack de sombras, más el glow "respirando" infinito
+   (@keyframes sloganGlowBreathe, ya definido para el hero). */
 .historia-section__title {
+  font-family: var(--font-display);
   font-size: clamp(24px, 2.6vw, 34px);
+  font-weight: 500;
   line-height: 1.2;
+  letter-spacing: -0.012em;
+  text-transform: none;
+
+  color: #e4b64f;
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.34),
+    0 2px 0 rgba(113, 65, 16, 0.28),
+    0 5px 14px rgba(0, 0, 0, 0.34),
+    0 0 12px rgba(231, 181, 74, 0.10);
+
+  animation: sloganGlowBreathe 4s ease-in-out infinite;
 }
 
 .section-subtitle {
