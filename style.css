@@ -2880,6 +2880,28 @@ button:focus-visible {
   min-height: 100dvh;
 }
 
+/* Base/piso de luz muy sutil al fondo de la sección, para que no se
+   sienta vacía debajo de la composición (tapa + texto + Trixi). */
+.album-section::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  left: 50%;
+  bottom: -10%;
+  width: min(1100px, 90vw);
+  height: 220px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse,
+    rgba(216, 178, 92, 0.10),
+    rgba(124, 58, 237, 0.08) 55%,
+    transparent 75%
+  );
+  filter: blur(30px);
+  pointer-events: none;
+}
+
 .album-section__heading {
   position: relative;
   z-index: 2;
@@ -2892,18 +2914,44 @@ button:focus-visible {
 .album-section__trixi-halo {
   position: absolute;
   z-index: 0;
-  right: -10%;
-  bottom: -10%;
-  width: 52vw;
-  max-width: 640px;
+  right: -6%;
+  bottom: -8%;
+  width: 58vw;
+  max-width: 700px;
   aspect-ratio: 1 / 1;
   background:
-    radial-gradient(circle at 65% 35%, rgba(124, 58, 237, 0.16), transparent 62%),
-    radial-gradient(circle at 40% 60%, rgba(217, 70, 239, 0.10), transparent 60%),
-    radial-gradient(circle at 75% 70%, rgba(103, 232, 249, 0.08), transparent 55%);
-  filter: blur(40px);
+    radial-gradient(circle at 65% 35%, rgba(124, 58, 237, 0.24), transparent 62%),
+    radial-gradient(circle at 38% 58%, rgba(217, 70, 239, 0.17), transparent 60%),
+    radial-gradient(circle at 76% 72%, rgba(103, 232, 249, 0.20), transparent 55%);
+  filter: blur(42px);
   pointer-events: none;
 }
+
+/* Destellos finos cyan/violeta/fucsia detrás de las Trixi Pop —
+   sutiles, reutilizan la misma animación de brillo del hero. */
+.album-section__trixi-sparkles {
+  position: absolute;
+  z-index: 1;
+  inset: -8% 4% 4% -4%;
+  pointer-events: none;
+}
+
+.album-section__trixi-sparkles i {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  opacity: 0;
+  border-radius: 50%;
+  transform: scale(0.35);
+  animation: sparkleSoft 5.2s ease-in-out infinite;
+}
+
+.album-section__trixi-sparkles i:nth-child(1) { top: 6%;  left: 18%; width: 6px; height: 6px; background: radial-gradient(circle, rgba(103,232,249,0.95), transparent 70%); filter: drop-shadow(0 0 6px rgba(103,232,249,0.6)); animation-delay: .4s; }
+.album-section__trixi-sparkles i:nth-child(2) { top: 14%; left: 55%; width: 5px; height: 5px; background: radial-gradient(circle, rgba(217,70,239,0.95), transparent 70%); filter: drop-shadow(0 0 6px rgba(217,70,239,0.6)); animation-delay: 1.4s; }
+.album-section__trixi-sparkles i:nth-child(3) { top: 32%; left: 82%; width: 7px; height: 7px; background: radial-gradient(circle, rgba(124,58,237,0.95), transparent 70%); filter: drop-shadow(0 0 6px rgba(124,58,237,0.6)); animation-delay: 2.2s; }
+.album-section__trixi-sparkles i:nth-child(4) { top: 58%; left: 8%;  width: 5px; height: 5px; background: radial-gradient(circle, rgba(217,70,239,0.9), transparent 70%);  filter: drop-shadow(0 0 5px rgba(217,70,239,0.55)); animation-delay: 3.1s; }
+.album-section__trixi-sparkles i:nth-child(5) { top: 70%; left: 62%; width: 6px; height: 6px; background: radial-gradient(circle, rgba(103,232,249,0.9), transparent 70%);  filter: drop-shadow(0 0 5px rgba(103,232,249,0.55)); animation-delay: .9s; }
+.album-section__trixi-sparkles i:nth-child(6) { top: 46%; left: 40%; width: 5px; height: 5px; background: radial-gradient(circle, rgba(124,58,237,0.9), transparent 70%);  filter: drop-shadow(0 0 5px rgba(124,58,237,0.55)); animation-delay: 1.9s; }
 
 /* Trixi Pop con auriculares, escuchando música — ilustración de fondo
    integrada directamente sobre el violeta de la sección (PNG con
@@ -2914,37 +2962,38 @@ button:focus-visible {
 .album-section__trixi-bg {
   position: absolute;
   z-index: 1;
-  right: 8px;
+  right: 72px;
   bottom: -14px;
-  width: min(660px, 42vw);
+  width: min(610px, 40vw);
   max-width: none;
   height: auto;
-  opacity: 0.68;
+  opacity: 0.86;
   pointer-events: none;
 
   /* Degradé horizontal: entra fundiéndose desde la izquierda (la cyan
      queda bien desvanecida, lejos del texto), se mantiene nítida en
      el medio/derecha (rosa y violeta) y vuelve a desaparecer antes
-     de llegar al borde derecho — nunca corta de golpe. El fundido
-     inferior (piernas) va aparte, con un overlay de color sólido
-     (.album-section__trixi-bottom-fade) — más confiable entre
+     de llegar al borde derecho — nunca corta de golpe. Plateau
+     central más ancho que antes (menos oscurecimiento, más nitidez).
+     El fundido inferior (piernas) va aparte, con un overlay de color
+     sólido (.album-section__trixi-bottom-fade) — más confiable entre
      navegadores que combinar dos máscaras con mask-composite. */
   -webkit-mask-image: linear-gradient(
     to right,
     transparent 0%,
-    rgba(0, 0, 0, 0.5) 14%,
-    black 34%,
-    black 82%,
-    rgba(0, 0, 0, 0.5) 94%,
+    rgba(0, 0, 0, 0.55) 8%,
+    black 24%,
+    black 90%,
+    rgba(0, 0, 0, 0.55) 97%,
     transparent 100%
   );
   mask-image: linear-gradient(
     to right,
     transparent 0%,
-    rgba(0, 0, 0, 0.5) 14%,
-    black 34%,
-    black 82%,
-    rgba(0, 0, 0, 0.5) 94%,
+    rgba(0, 0, 0, 0.55) 8%,
+    black 24%,
+    black 90%,
+    rgba(0, 0, 0, 0.55) 97%,
     transparent 100%
   );
 }
@@ -2959,12 +3008,12 @@ button:focus-visible {
   right: 0;
   bottom: 0;
   left: 42%;
-  height: 42%;
+  height: 32%;
   background: linear-gradient(
     to bottom,
     rgba(27, 15, 46, 0) 0%,
-    rgba(27, 15, 46, 0.55) 55%,
-    rgba(27, 15, 46, 0.94) 100%
+    rgba(27, 15, 46, 0.45) 60%,
+    rgba(27, 15, 46, 0.82) 100%
   );
   pointer-events: none;
 }
@@ -2988,7 +3037,7 @@ button:focus-visible {
 
 .album-section__cover {
   position: relative;
-  width: min(260px, 72vw);
+  width: min(295px, 74vw);
   aspect-ratio: 1 / 1;
   flex: 0 0 auto;
 
@@ -3023,12 +3072,36 @@ button:focus-visible {
 .album-section__cover::before {
   content: "";
   position: absolute;
-  inset: -22px;
+  inset: -26px;
   z-index: -1;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(124, 58, 237, 0.20), transparent 68%);
+  background:
+    radial-gradient(circle at 30% 30%, rgba(103, 232, 249, 0.14), transparent 60%),
+    radial-gradient(circle at 70% 70%, rgba(217, 70, 239, 0.14), transparent 60%),
+    radial-gradient(circle, rgba(124, 58, 237, 0.22), transparent 68%);
   pointer-events: none;
 }
+
+/* Destellos finos cyan/violeta/fucsia alrededor de la tapa. */
+.album-section__cover-sparkles {
+  position: absolute;
+  z-index: 2;
+  inset: -14%;
+  pointer-events: none;
+}
+
+.album-section__cover-sparkles i {
+  position: absolute;
+  opacity: 0;
+  border-radius: 50%;
+  transform: scale(0.35);
+  animation: sparkleSoft 5s ease-in-out infinite;
+}
+
+.album-section__cover-sparkles i:nth-child(1) { top: 4%;  left: 8%;  width: 6px; height: 6px; background: radial-gradient(circle, rgba(103,232,249,0.95), transparent 70%); filter: drop-shadow(0 0 6px rgba(103,232,249,0.6)); animation-delay: .6s; }
+.album-section__cover-sparkles i:nth-child(2) { top: 88%; left: 12%; width: 5px; height: 5px; background: radial-gradient(circle, rgba(217,70,239,0.95), transparent 70%); filter: drop-shadow(0 0 6px rgba(217,70,239,0.6)); animation-delay: 1.7s; }
+.album-section__cover-sparkles i:nth-child(3) { top: 10%; left: 92%; width: 6px; height: 6px; background: radial-gradient(circle, rgba(124,58,237,0.95), transparent 70%); filter: drop-shadow(0 0 6px rgba(124,58,237,0.6)); animation-delay: 2.6s; }
+.album-section__cover-sparkles i:nth-child(4) { top: 92%; left: 90%; width: 5px; height: 5px; background: radial-gradient(circle, rgba(103,232,249,0.9), transparent 70%);  filter: drop-shadow(0 0 5px rgba(103,232,249,0.55)); animation-delay: 3.4s; }
 
 .album-section__cover img {
   position: relative;
@@ -3041,7 +3114,7 @@ button:focus-visible {
 }
 
 .album-section__info {
-  --button-width: 250px;
+  --button-width: 280px;
 
   position: relative;
   display: flex;
@@ -3054,27 +3127,43 @@ button:focus-visible {
 }
 
 .album-section__info .magic-button {
-  margin-top: 22px;
+  margin-top: 24px;
+  animation: albumButtonGlow 3.2s ease-in-out infinite;
+}
+
+@keyframes albumButtonGlow {
+  0%, 100% {
+    filter:
+      drop-shadow(0 12px 22px rgba(0, 0, 0, 0.40))
+      drop-shadow(0 22px 48px rgba(0, 0, 0, 0.22))
+      drop-shadow(0 0 18px rgba(232, 201, 123, 0.16));
+  }
+  50% {
+    filter:
+      drop-shadow(0 12px 22px rgba(0, 0, 0, 0.40))
+      drop-shadow(0 22px 48px rgba(0, 0, 0, 0.22))
+      drop-shadow(0 0 30px rgba(232, 201, 123, 0.4));
+  }
 }
 
 .album-section__info .magic-button__content {
-  padding: 0 20px;
-  gap: 8px;
+  padding: 0 22px;
+  gap: 10px;
 }
 
 .album-section__info .magic-button__icon {
-  width: 28px;
-  height: 28px;
-  flex: 0 0 28px;
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
 }
 
 .album-section__info .magic-button__icon svg {
-  width: 13px;
-  height: 13px;
+  width: 14px;
+  height: 14px;
 }
 
 .album-section__info .magic-button__label {
-  font-size: 15px;
+  font-size: 16px;
   letter-spacing: 0.02em;
 }
 
@@ -3256,19 +3345,19 @@ body.has-sections .hero-content {
   }
 
   .album-section__row {
-    grid-template-columns: 260px minmax(0, 460px);
+    grid-template-columns: 295px minmax(0, 460px);
     justify-content: center;
     align-items: center;
-    gap: clamp(48px, 6vw, 80px);
+    gap: clamp(32px, 4vw, 52px);
     justify-items: stretch;
     /* Corrido hacia la izquierda (margen derecho fijo en vez de
        centrado) para dejarle a las Trixi Pop todo el espacio que
        necesitan a la derecha sin que el viewport las recorte. */
-    margin: 0 clamp(300px, 30vw, 540px) 0 auto;
+    margin: 0 clamp(280px, 28vw, 480px) 0 auto;
   }
 
   .album-section__cover {
-    width: 260px;
+    width: 295px;
   }
 
   .album-section__info {
