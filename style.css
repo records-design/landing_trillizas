@@ -2874,7 +2874,7 @@ button:focus-visible {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 
   min-height: 100vh;
   min-height: 100dvh;
@@ -3010,6 +3010,7 @@ button:focus-visible {
 .album-section__row {
   position: relative;
   z-index: 2;
+  flex: 1 1 auto;
   display: grid;
   grid-template-columns: 1fr;
   justify-items: center;
@@ -3348,14 +3349,17 @@ body.has-sections .hero-content {
 
   .album-section__row {
     grid-template-columns: 295px minmax(0, 460px);
-    justify-content: center;
+    /* Ancho de caja más grande que el contenido (cover+info) para
+       dejarle a las Trixi Pop —ahora dentro del mismo row, así
+       comparten exactamente la misma altura que la tapa— su propio
+       lugar a la derecha sin superponerse. El contenido del grid se
+       ancla a la izquierda de esta caja más ancha, no se estira. */
+    max-width: 1480px;
+    justify-content: start;
     align-items: center;
     gap: clamp(32px, 4vw, 52px);
     justify-items: stretch;
-    /* Corrido hacia la izquierda (margen derecho fijo en vez de
-       centrado) para dejarle a las Trixi Pop todo el espacio que
-       necesitan a la derecha sin que el viewport las recorte. */
-    margin: 0 clamp(280px, 28vw, 480px) 0 auto;
+    margin: 0 auto;
   }
 
   .album-section__cover {
