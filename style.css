@@ -2908,6 +2908,26 @@ button:focus-visible {
   margin-bottom: clamp(20px, 3vh, 32px);
 }
 
+/* "Nuestra música" quedaba muy chico/perdido con el tamaño genérico
+   de eyebrow (el mismo que "Serie original") — acá se lo agranda. */
+.album-section__heading .section-eyebrow {
+  font-size: clamp(20px, 2vw, 26px);
+}
+
+/* Subtítulo blanco debajo de "Nuestra música", mismo tratamiento
+   exacto que el párrafo de la sección Historia (.historia-section__body). */
+.album-section__subtitle {
+  color: var(--ivory);
+  font-family: var(--font-ui);
+  font-size: clamp(16px, 1.3vw, 18px);
+  font-weight: 400;
+  line-height: 1.7;
+  opacity: 0.9;
+  text-align: center;
+  max-width: 720px;
+  margin: 12px auto 0;
+}
+
 /* Halo muy difuso detrás de las Trixi Pop — violeta/fucsia/cyan
    apenas insinuados, nada de estética neón. Va DETRÁS de la imagen
    (z-index más bajo) para darle profundidad sin competir con nada. */
@@ -2976,55 +2996,25 @@ button:focus-visible {
   opacity: 0.86;
   pointer-events: none;
 
-  /* Degradé horizontal: entra fundiéndose desde la izquierda (la cyan
-     queda bien desvanecida, lejos del texto), se mantiene nítida en
-     el medio/derecha (rosa y violeta) y vuelve a desaparecer antes
-     de llegar al borde derecho — nunca corta de golpe. Plateau
-     central más ancho que antes (menos oscurecimiento, más nitidez).
-     Centrado verticalmente (top/translateY) para quedar a la misma
-     altura que el arte de tapa, ya no pegado abajo. */
-  -webkit-mask-image: linear-gradient(
-    to right,
-    transparent 0%,
-    rgba(0, 0, 0, 0.55) 8%,
-    black 24%,
-    black 90%,
-    rgba(0, 0, 0, 0.55) 97%,
+  /* Máscara radial (un solo degradé, en las 4 direcciones a la vez):
+     nítidas en el centro/derecha (rosa y violeta), se van diluyendo
+     hacia todos los bordes por igual — así no queda ningún borde
+     recto/"cuadrado" del fondo propio de la imagen, ni arriba, ni a
+     la derecha, ni abajo (piernas). Centrado verticalmente
+     (top/translateY) para quedar a la misma altura que el arte de
+     tapa. */
+  -webkit-mask-image: radial-gradient(
+    ellipse 72% 68% at 64% 44%,
+    black 45%,
+    rgba(0, 0, 0, 0.6) 72%,
     transparent 100%
   );
-  mask-image: linear-gradient(
-    to right,
-    transparent 0%,
-    rgba(0, 0, 0, 0.55) 8%,
-    black 24%,
-    black 90%,
-    rgba(0, 0, 0, 0.55) 97%,
+  mask-image: radial-gradient(
+    ellipse 72% 68% at 64% 44%,
+    black 45%,
+    rgba(0, 0, 0, 0.6) 72%,
     transparent 100%
   );
-}
-
-/* Fundido inferior de las Trixi Pop hacia el violeta de fondo — usa
-   exactamente la misma caja que .album-section__trixi-bg (mismo
-   right/top/transform/ancho + el mismo aspect-ratio 1.5 para que la
-   altura coincida siempre), así el degradé cae justo donde terminan
-   los pies, sin cortes duros. Un overlay de color sólido (no una
-   máscara) para que se vea igual en todos los navegadores. */
-.album-section__trixi-bottom-fade {
-  position: absolute;
-  z-index: 1;
-  right: 24px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: min(560px, 35vw);
-  aspect-ratio: 1.5 / 1;
-  background: linear-gradient(
-    to bottom,
-    rgba(27, 15, 46, 0) 0%,
-    rgba(27, 15, 46, 0) 62%,
-    rgba(27, 15, 46, 0.55) 82%,
-    rgba(27, 15, 46, 0.92) 100%
-  );
-  pointer-events: none;
 }
 
 /* Bloque editorial horizontal y compacto: la tapa y el texto ocupan
@@ -3267,12 +3257,6 @@ button:focus-visible {
     width: 92vw;
   }
 
-  /* En mobile el fundido inferior ya lo resuelve la máscara de
-     .album-section__trixi-bg (fade hacia arriba); este overlay
-     pensado para desktop no hace falta acá. */
-  .album-section__trixi-bottom-fade {
-    display: none;
-  }
 }
 
 /* Solo cuando el body tiene la clase "has-sections" (borrador viernes,
@@ -3434,10 +3418,6 @@ body.has-sections .hero-content {
     bottom: -4%;
     transform: none;
     width: 78vw;
-  }
-
-  .album-section__trixi-bottom-fade {
-    display: none;
   }
 }
 
