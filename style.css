@@ -3204,8 +3204,9 @@ button:focus-visible {
 }
 
 .album-section__info .magic-button__label {
-  font-size: 16px;
-  letter-spacing: 0.02em;
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: 0.015em;
 }
 
 /* "Disponible en todas las plataformas" + iconos — tercer bloque
