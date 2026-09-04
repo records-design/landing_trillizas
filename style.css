@@ -3742,6 +3742,27 @@ body.has-sections .hero-content {
   background: rgba(15, 8, 26, 0.92);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid rgba(216, 178, 92, 0.25);
+
+  transition: transform 0.35s ease;
+}
+
+/* Se esconde al hacer scroll hacia abajo (ver script.js) — solo en
+   desktop, controlado por JS con un chequeo de ancho de pantalla. */
+.site-nav--hidden {
+  transform: translateY(-100%);
+}
+
+/* Franja angosta e invisible pegada al borde superior: sigue ahí
+   aunque la nav esté escondida (translateY la saca de la pantalla),
+   así el mouse la puede "hoverear" para traer la nav de vuelta. */
+.site-nav-hover-zone {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 16px;
+  z-index: 51;
+  pointer-events: auto;
 }
 
 /* Como la barra ahora es "fixed" (fuera del flujo normal), se le

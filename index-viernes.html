@@ -165,7 +165,7 @@
   />
 
   <!-- CSS -->
-  <link rel="stylesheet" href="style.css?v=20260903hero53" />
+  <link rel="stylesheet" href="style.css?v=20260903hero54" />
 </head>
 
 <body class="has-sections">
@@ -180,6 +180,13 @@
        pero sin link, marcado "Próximamente". "Tienda" ya tiene su
        link real.
        ================================================ -->
+  <!-- Franja invisible arriba de todo: cuando la nav está oculta por
+       scroll, esto sigue detectando el mouse cerca del borde superior
+       para volver a mostrarla (la nav en sí no se puede "hoverear" una
+       vez que se movió fuera de la pantalla). Solo importa en
+       desktop — ver script.js. -->
+  <div class="site-nav-hover-zone" aria-hidden="true"></div>
+
   <nav class="site-nav">
     <div class="site-nav__inner">
       <ul class="site-nav__links">
@@ -984,7 +991,7 @@
 
   <script src="config.js?v=20260827152227"></script>
   <script src="tracking.js?v=20260714151543"></script>
-  <script src="script.js?v=20260901fix1"></script>
+  <script src="script.js?v=20260904navhide1"></script>
 
   <!-- ================================================
        BORRADOR VIERNES: datos de los episodios de la serie.

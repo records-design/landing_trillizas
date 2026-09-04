@@ -195,3 +195,58 @@ if (newsletterForm) {
       });
   });
 }
+
+// Nav bar: se esconde al scrollear hacia abajo y vuelve a aparecer si
+// se pasa el mouse cerca del borde de arriba. Solo en desktop (en
+// mobile la nav se queda fija siempre) — no existe en index.html
+// (sitio en vivo), así que esto no le afecta.
+(function () {
+  const nav = document.querySelector('.site-nav');
+  const hoverZone = document.querySelector('.site-nav-hover-zone');
+  if (!nav) return;
+
+  const DESKTOP_MIN_WIDTH = 701;
+  const HIDE_THRESHOLD = 80;
+  let lastScrollY = window.scrollY;
+
+  function isDesktop() {
+    return window.innerWidth >= DESKTOP_MIN_WIDTH;
+  }
+
+  function showNav() {
+    nav.classList.remove('site-nav--hidden');
+  }
+
+  window.addEventListener(
+    'scroll',
+    () => {
+      if (!isDesktop()) {
+        showNav();
+        lastScrollY = window.scrollY;
+        return;
+      }
+
+      const currentScrollY = window.scrollY;
+      const scrollingDown = currentScrollY > lastScrollY;
+
+      if (currentScrollY <= HIDE_THRESHOLD) {
+        showNav();
+      } else if (scrollingDown) {
+        nav.classList.add('site-nav--hidden');
+      }
+
+      lastScrollY = currentScrollY;
+    },
+    { passive: true }
+  );
+
+  if (hoverZone) {
+    hoverZone.addEventListener('mouseenter', () => {
+      if (isDesktop()) showNav();
+    });
+  }
+
+  nav.addEventListener('mouseenter', () => {
+    if (isDesktop()) showNav();
+  });
+})();
