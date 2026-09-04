@@ -1562,17 +1562,24 @@ button:focus-visible {
   gap: 8px;
 }
 
-/* Los dos logos tienen relaciones de aspecto bien distintas (el de
-   TV es más "cuadrado", el de Records más ancho/bajo) — en vez de
-   igualar el ANCHO (que es lo que los hacía ver desparejos, uno más
-   alto que el otro), se iguala el ALTO: así el tamaño de letra de
-   ambos wordmarks se percibe igual y quedan alineados en la misma
-   línea de forma natural. */
-.footer-logo,
-.footer-logo-tv {
+/* El de Records queda como referencia de tamaño (altura base); el de
+   TV, al ser más "cuadrado" (relación de aspecto bien distinta:
+   ancho/alto ~2.47 contra ~3.64 del de Records), se agranda un poco
+   más en altura para que su ANCHO renderizado termine igualando al
+   de Records — así se ven parejos en tamaño real, no solo alineados
+   por la línea de base. Opacidad más alta para que ambos se noten
+   bien sobre el violeta oscuro. */
+.footer-logo {
   width: auto;
   height: clamp(24px, 2.2vw, 30px);
-  opacity: 0.72;
+  opacity: 0.95;
+  filter: drop-shadow(0 0 10px rgba(232, 201, 123, 0.12));
+}
+
+.footer-logo-tv {
+  width: auto;
+  height: calc(clamp(24px, 2.2vw, 30px) * 1.48);
+  opacity: 0.95;
   filter: drop-shadow(0 0 10px rgba(232, 201, 123, 0.12));
 }
 
@@ -2263,10 +2270,14 @@ button:focus-visible {
     height: 46px;
   }
 
-  .footer-logo,
-  .footer-logo-tv {
+  .footer-logo {
     width: auto;
     height: 24px;
+  }
+
+  .footer-logo-tv {
+    width: auto;
+    height: calc(24px * 1.48);
   }
 }
 
@@ -2497,10 +2508,14 @@ button:focus-visible {
     text-align: center;
   }
 
-  .footer-logo,
-  .footer-logo-tv {
+  .footer-logo {
     width: auto;
     height: 20px;
+  }
+
+  .footer-logo-tv {
+    width: auto;
+    height: calc(20px * 1.48);
   }
 
   /* --------------------------------------------------------
