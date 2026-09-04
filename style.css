@@ -4679,6 +4679,27 @@ body.has-sections .hero-logo {
     max-width: 340px;
     padding-left: 16px;
     padding-right: 16px;
+    padding-top: 22px;
+    padding-bottom: 16px;
+  }
+
+  /* El título también tiene que entrar siempre en exactamente 2
+     líneas (la de arriba corta + "Las Trillizas de Oro y el Libro
+     Mágico" en una sola línea) en cualquier ancho de mobile — con el
+     tamaño de desktop, esa segunda línea era demasiado larga para
+     una card de 340px y terminaba partiéndose en 2-3 líneas más. */
+  .post-sections-footer .newsletter-title {
+    font-size: 11px;
+    white-space: nowrap;
+  }
+
+  /* El espacio reservado para el mensaje de éxito/error (que casi
+     siempre está vacío) sumado al padding de abajo dejaba un
+     colchón grande debajo del input — se lo achica en mobile. */
+  .post-sections-footer .newsletter-feedback {
+    min-height: 0;
+    margin-top: 6px;
+    font-size: 11px;
   }
 }
 
