@@ -1372,6 +1372,10 @@ button:focus-visible {
   display: none;
 }
 
+.newsletter-title-break2 {
+  display: none;
+}
+
 /* Una sola lÃ­nea siempre, sin scroll: el contenedor completo de
    hero-newsletter (no el ancho mÃ¡s angosto del formulario) le da
    lugar de sobra en desktop/tablet; en mobile el tamaÃ±o se achica
@@ -4648,9 +4652,10 @@ body.has-sections .hero-logo {
 }
 
 /* Forzado a 2 líneas ("Entrá al universo de" / "Las Trillizas de Oro
-   y el Libro Mágico") en vez de 3 — el <br> ya existe en el HTML,
+   y el Libro Mágico") en desktop — el <br> ya existe en el HTML,
    solo hay que habilitarlo acá (por defecto está oculto, pensado
-   para otro breakpoint del hero). */
+   para otro breakpoint del hero). En mobile (ver @media abajo) pasa
+   a 3 líneas más grandes, con el segundo <br> también habilitado. */
 .post-sections-footer .newsletter-title-break {
   display: block;
 }
@@ -4663,18 +4668,15 @@ body.has-sections .hero-logo {
   margin: 0 auto 28px;
 }
 
-/* La bajada blanca entra en un solo renglón siempre, también en
-   mobile — achica la letra lo justo para que entre y así la card
-   puede ser más angosta/baja en vez de partirse en dos líneas. */
-.post-sections-footer .newsletter-text {
-  white-space: nowrap;
+/* En desktop la bajada entra en un solo renglón. En mobile (ver
+   @media abajo) se permite que use 2 líneas, con letra más grande. */
+@media (min-width: 701px) {
+  .post-sections-footer .newsletter-text {
+    white-space: nowrap;
+  }
 }
 
 @media (max-width: 700px) {
-  .post-sections-footer .newsletter-text {
-    font-size: 9px;
-  }
-
   .post-sections-footer .newsletter-card {
     max-width: 340px;
     padding-left: 16px;
@@ -4683,14 +4685,23 @@ body.has-sections .hero-logo {
     padding-bottom: 16px;
   }
 
-  /* El título también tiene que entrar siempre en exactamente 2
-     líneas (la de arriba corta + "Las Trillizas de Oro y el Libro
-     Mágico" en una sola línea) en cualquier ancho de mobile — con el
-     tamaño de desktop, esa segunda línea era demasiado larga para
-     una card de 340px y terminaba partiéndose en 2-3 líneas más. */
+  /* Título en 3 líneas cortas en vez de 2 largas — permite agrandar
+     bastante la letra sin que ninguna línea se pase del ancho de la
+     card. Se habilita el segundo <br> (oculto en desktop). */
+  .post-sections-footer .newsletter-title-break2 {
+    display: block;
+  }
+
   .post-sections-footer .newsletter-title {
-    font-size: 11px;
+    font-size: 16px;
     white-space: nowrap;
+  }
+
+  /* La bajada blanca pasa a 2 líneas (no 1 forzada), con letra más
+     grande ahora que hay lugar de sobra. */
+  .post-sections-footer .newsletter-text {
+    font-size: 13px;
+    white-space: normal;
   }
 
   /* El espacio reservado para el mensaje de éxito/error (que casi
