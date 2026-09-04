@@ -3902,7 +3902,7 @@ body.has-sections .hero {
   color: var(--ivory);
   font-family: var(--font-ui);
   font-size: clamp(19px, 2.4vw, 25px);
-  font-weight: 300;
+  font-weight: 600;
   letter-spacing: 0.04em;
   line-height: 1.4;
   text-align: center;
