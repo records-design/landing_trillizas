@@ -4039,7 +4039,7 @@ body.has-sections .hero {
   border-radius: 999px;
   background: rgba(216, 178, 92, 0.28);
 
-  color: var(--gold-light);
+  color: var(--ivory);
   font-family: var(--font-ui);
   font-size: 12px;
   font-weight: 700;
@@ -4049,12 +4049,37 @@ body.has-sections .hero {
   text-align: center;
 
   transition: background-color .25s ease, border-color .25s ease, transform .25s ease;
+  animation: soonVisitPulse 2.6s ease-in-out infinite;
 }
 
 .episode-tile__soon-visit:hover {
   background: rgba(216, 178, 92, 0.4);
   border-color: rgba(216, 178, 92, 0.85);
   transform: translateY(-2px);
+  animation-play-state: paused;
+}
+
+/* Pulso suave y constante para invitar al click — sin ser agresivo,
+   solo un "respiro" de brillo/escala en el fondo y el borde. */
+@keyframes soonVisitPulse {
+  0%, 100% {
+    background: rgba(216, 178, 92, 0.28);
+    border-color: rgba(216, 178, 92, 0.55);
+    box-shadow: 0 0 0 rgba(216, 178, 92, 0);
+    transform: scale(1);
+  }
+  50% {
+    background: rgba(216, 178, 92, 0.42);
+    border-color: rgba(216, 178, 92, 0.9);
+    box-shadow: 0 0 14px rgba(216, 178, 92, 0.35);
+    transform: scale(1.02);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .episode-tile__soon-visit {
+    animation: none;
+  }
 }
 
 /* ============================================================
