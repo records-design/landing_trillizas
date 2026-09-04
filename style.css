@@ -1020,7 +1020,7 @@ button:focus-visible {
   color: var(--ivory);
   font-family: var(--font-display);
   font-size: clamp(19px, 1.45vw, 22px);
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1;
   letter-spacing: 0.035em;
   text-transform: uppercase;
