@@ -3662,6 +3662,34 @@ body.has-sections .hero-content {
   }
 }
 
+/* Ajuste fino solo para tablet (901-1199px, ej. iPad Pro apaisado):
+   con las proporciones completas de desktop, tapa+texto+Trixi no
+   entran sin pisarse (el "row" no llega a su ancho máximo de 1480px
+   a este ancho de pantalla). Se achican un poco las 3 piezas (mismo
+   layout, mismo criterio de proporción para que tapa y Trixi sigan
+   compartiendo la misma altura) y se reduce el padding/gap, así
+   entran igual sin superponerse. */
+@media (min-width: 901px) and (max-width: 1199px) {
+  .album-section__row {
+    grid-template-columns: min(300px, 19vw) minmax(0, min(380px, 30vw));
+    gap: clamp(20px, 2.5vw, 32px);
+    padding-left: clamp(0px, 2vw, 40px);
+  }
+
+  .album-section__cover {
+    width: min(300px, 19vw);
+  }
+
+  .album-section__info {
+    height: min(300px, 19vw);
+    max-width: 380px;
+  }
+
+  .album-section__trixi-bg {
+    width: min(450px, 28.5vw);
+  }
+}
+
 .album-section__volume {
   color: var(--ivory);
   font-family: var(--font-ui);
