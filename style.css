@@ -3386,7 +3386,75 @@ button:focus-visible {
     width: 100%;
     margin-top: 12px;
   }
+}
 
+/* La card "Nuevos episodios" quedaba en un hueco sin cubrir: el
+   layout horizontal de arriba era solo para mobile (hasta 700px) y
+   el de 3 columnas de más abajo arranca recién en 901px — entre
+   medio (tablet, ~701-900px) cae al diseño viejo, vertical y angosto
+   (240px centrado), que ya no está pensado para verse bien. Se le
+   da el mismo tratamiento horizontal que en mobile, pero sin tocar
+   la grilla de 2 columnas de los episodios (que en ese ancho ya se
+   ve bien). */
+@media (min-width: 701px) and (max-width: 900px) {
+  #serie-section .episode-tile--soon {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      "diamond title"
+      ".      line";
+    column-gap: 8px;
+    row-gap: 3px;
+    align-items: center;
+
+    width: 100%;
+    max-width: none;
+    margin: 20px auto 0;
+    padding: 18px 22px;
+    text-align: left;
+  }
+
+  #serie-section .episode-tile__soon-diamond {
+    grid-area: diamond;
+    font-size: 16px;
+  }
+
+  #serie-section .episode-tile__soon-title {
+    grid-area: title;
+    font-size: 18px;
+    line-height: 1.15;
+  }
+
+  #serie-section .episode-tile__soon-title br {
+    display: none;
+  }
+
+  #serie-section .episode-tile__soon-line {
+    grid-area: line;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  #serie-section .episode-tile__soon-sub {
+    font-size: 11px;
+  }
+
+  #serie-section .episode-tile__soon-babidibu {
+    width: 78px;
+    margin: 0;
+    align-self: center;
+  }
+
+  #serie-section .episode-tile__soon-visit {
+    grid-column: 1 / -1;
+    align-self: auto;
+    width: 100%;
+    margin-top: 14px;
+  }
+}
+
+@media (max-width: 700px) {
   .album-section__row {
     grid-template-columns: 1fr;
   }
