@@ -4353,6 +4353,15 @@ body.has-sections .hero {
     flex: 0 0 auto;
   }
 
+  /* La caja cuadrada de mobile recorta mucho más que la de desktop
+     (fotos verticales dentro de un marco 1:1) — con el mismo 30% de
+     antes, el sujeto real (las chicas, el libro) quedaba muy abajo
+     en el recuadro y se cortaba por debajo. Se baja la ventana de
+     recorte para mostrar más de la mitad inferior de cada foto. */
+  .historia-slot__image img {
+    object-position: 50% 70%;
+  }
+
   .historia-arrow {
     transform: rotate(90deg);
   }
