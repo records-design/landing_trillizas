@@ -3375,8 +3375,9 @@ button:focus-visible {
   }
 
   #serie-section .episode-tile__soon-babidibu {
-    width: 46px;
+    width: 58px;
     margin: 0;
+    align-self: center;
   }
 
   #serie-section .episode-tile__soon-visit {
@@ -4036,7 +4037,7 @@ body.has-sections .hero {
   padding: 8px 20px;
   border: 1px solid rgba(216, 178, 92, 0.55);
   border-radius: 999px;
-  background: rgba(216, 178, 92, 0.10);
+  background: rgba(216, 178, 92, 0.28);
 
   color: var(--gold-light);
   font-family: var(--font-ui);
@@ -4051,7 +4052,7 @@ body.has-sections .hero {
 }
 
 .episode-tile__soon-visit:hover {
-  background: rgba(216, 178, 92, 0.2);
+  background: rgba(216, 178, 92, 0.4);
   border-color: rgba(216, 178, 92, 0.85);
   transform: translateY(-2px);
 }
