@@ -1581,6 +1581,15 @@ button:focus-visible {
   height: calc(clamp(24px, 2.2vw, 30px) * 1.68);
   opacity: 0.95;
   filter: drop-shadow(0 0 10px rgba(232, 201, 123, 0.12));
+  /* El archivo de Babidibu TV tiene mucho más aire vacío arriba (el
+     ícono de tele sobresale por encima de las letras) que el de
+     Records (donde "BABIDIBU" arranca pegado al borde superior de la
+     imagen) — al centrar ambas cajas verticalmente, el TEXTO de TV
+     queda más abajo que el de Records. translateY en % se recalcula
+     solo con la propia altura del logo, así que este mismo ajuste
+     sirve en cualquier tamaño (mobile, tablet, desktop) sin tener que
+     repetirlo por breakpoint. */
+  transform: translateY(-16%);
 }
 
 .footer-text {
