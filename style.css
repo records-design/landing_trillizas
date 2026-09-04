@@ -1578,7 +1578,7 @@ button:focus-visible {
 
 .footer-logo-tv {
   width: auto;
-  height: calc(clamp(24px, 2.2vw, 30px) * 1.48);
+  height: calc(clamp(24px, 2.2vw, 30px) * 1.68);
   opacity: 0.95;
   filter: drop-shadow(0 0 10px rgba(232, 201, 123, 0.12));
 }
@@ -2277,7 +2277,7 @@ button:focus-visible {
 
   .footer-logo-tv {
     width: auto;
-    height: calc(24px * 1.48);
+    height: calc(24px * 1.68);
   }
 }
 
@@ -2515,7 +2515,7 @@ button:focus-visible {
 
   .footer-logo-tv {
     width: auto;
-    height: calc(20px * 1.48);
+    height: calc(20px * 1.68);
   }
 
   /* --------------------------------------------------------
