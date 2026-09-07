@@ -160,12 +160,12 @@
   />
 
   <link
-    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Poppins:wght@400;500;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
     rel="stylesheet"
   />
 
   <!-- CSS -->
-  <link rel="stylesheet" href="style.css?v=20260903hero41" />
+  <link rel="stylesheet" href="style.css?v=20260907ep34grid1" />
 </head>
 
 <body class="has-sections">
@@ -180,6 +180,13 @@
        pero sin link, marcado "Próximamente". "Tienda" ya tiene su
        link real.
        ================================================ -->
+  <!-- Franja invisible arriba de todo: cuando la nav está oculta por
+       scroll, esto sigue detectando el mouse cerca del borde superior
+       para volver a mostrarla (la nav en sí no se puede "hoverear" una
+       vez que se movió fuera de la pantalla). Solo importa en
+       desktop — ver script.js. -->
+  <div class="site-nav-hover-zone" aria-hidden="true"></div>
+
   <nav class="site-nav">
     <div class="site-nav__inner">
       <ul class="site-nav__links">
@@ -306,13 +313,16 @@
            Spotify directo) -->
       <div class="hero-ctas">
 
-        <!-- Baja a la sección "La serie" -->
+        <!-- Abre directo el canal de YouTube de Babidibu TV -->
         <a
           id="ctaVideoclip"
           class="magic-button magic-button--purple"
-          href="#serie-section"
+          href="https://linktw.in/Dnofjd"
+          target="_blank"
+          rel="noopener noreferrer"
           aria-label="Ver la serie"
-          data-event="ScrollToSerie"
+          data-event="OpenSocial"
+          data-destination="YouTube"
           data-track-button="ver_serie"
         >
 
@@ -351,13 +361,16 @@
 
         </a>
 
-        <!-- Baja a la sección "Álbum" -->
+        <!-- Abre directo el smart link del álbum -->
         <a
           id="ctaSpotify"
           class="magic-button magic-button--gold"
-          href="#album-section"
+          href="https://ffm.to/libromagico1"
+          target="_blank"
+          rel="noopener noreferrer"
           aria-label="Escuchar el álbum"
-          data-event="ScrollToAlbum"
+          data-event="ListenAlbum"
+          data-destination="SmartLink"
           data-track-button="escuchar_album"
         >
 
@@ -473,7 +486,7 @@
         </span>
         <a
           class="episode-tile__soon-visit"
-          href="https://linktw.in/qeBBaV"
+          href="https://linktw.in/Dnofjd"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Suscribirse al canal de YouTube de Babidibu"
@@ -984,7 +997,7 @@
 
   <script src="config.js?v=20260827152227"></script>
   <script src="tracking.js?v=20260714151543"></script>
-  <script src="script.js?v=20260901fix1"></script>
+  <script src="script.js?v=20260904navhide1"></script>
 
   <!-- ================================================
        BORRADOR VIERNES: datos de los episodios de la serie.
@@ -1001,14 +1014,28 @@
         episode: 1,
         title: 'Trixipop',
         thumbnail: 'imagenes/miniaturas-ytminiatura_-trixipop%201.png',
-        youtubeUrl: 'PENDIENTE-LINK-EPISODIO-1'
+        youtubeUrl: 'https://linktw.in/WLomzs'
       },
       {
         season: 1,
         episode: 2,
         title: 'Locomotora llega a la Estación',
         thumbnail: 'imagenes/miniatura_locomotora_web.jpg',
-        youtubeUrl: 'PENDIENTE-LINK-EPISODIO-2'
+        youtubeUrl: 'https://linktw.in/QtAEqZ'
+      },
+      {
+        season: 1,
+        episode: 3,
+        title: 'Amiga Hermana',
+        thumbnail: '',
+        youtubeUrl: 'https://linktw.in/Dnofjd'
+      },
+      {
+        season: 1,
+        episode: 4,
+        title: 'Susanita',
+        thumbnail: '',
+        youtubeUrl: 'https://linktw.in/Dnofjd'
       }
     ];
 
