@@ -165,7 +165,7 @@
   />
 
   <!-- CSS -->
-  <link rel="stylesheet" href="style.css?v=20260907ep34grid1" />
+  <link rel="stylesheet" href="style.css?v=20260907accordion1" />
 </head>
 
 <body class="has-sections">
@@ -1048,66 +1048,134 @@
       }
     ];
 
-    function renderEpisodes(list) {
+    function buildEpisodeTile(ep) {
+      var a = document.createElement('a');
+      a.className = 'episode-tile';
+      a.href = ep.youtubeUrl || '#';
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      a.setAttribute('aria-label', 'Ver episodio ' + ep.episode + ': ' + ep.title);
+      a.setAttribute('data-event', 'WatchVideo');
+      a.setAttribute('data-destination', 'YouTube');
+      a.setAttribute('data-track-button', 'episodio_' + ep.episode);
+
+      var playIconHtml =
+        '<span class="episode-tile__play" aria-hidden="true">'
+        + '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="none" '
+        + 'stroke="currentColor" stroke-width="1.6" stroke-linecap="round" '
+        + 'stroke-linejoin="round" /></svg></span>';
+
+      // Con imagen real: solo la foto (sin ícono de play encima —
+      // ya está el CTA "Ver episodio" abajo, no hace falta duplicar
+      // la señal). Sin imagen todavía: el ícono de play como antes,
+      // para que no quede una miniatura vacía.
+      var thumbHtml = ep.thumbnail
+        ? '<img src="' + ep.thumbnail + '" alt="" loading="lazy" />'
+        : playIconHtml;
+
+      var episodeNum = ep.episode < 10 ? '0' + ep.episode : String(ep.episode);
+
+      a.innerHTML =
+        '<span class="episode-tile__thumb">' + thumbHtml + '</span>' +
+        '<span class="episode-tile__number">Episodio ' + episodeNum + '</span>' +
+        '<span class="episode-tile__title">' + ep.title + '</span>' +
+        '<span class="episode-tile__cta">' +
+        '<svg class="episode-tile__cta-icon" viewBox="0 0 28 20" aria-hidden="true">' +
+        '<rect x="0" y="0" width="28" height="20" rx="5" fill="#FF0000" />' +
+        '<path d="M11.5 5.5v9l7.5-4.5z" fill="#fff" /></svg>' +
+        '<span>Ver episodio en YouTube</span>' +
+        '<svg class="episode-tile__cta-arrow" viewBox="0 0 24 24" aria-hidden="true">' +
+        '<path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" ' +
+        'stroke-linecap="round" stroke-linejoin="round" /></svg>' +
+        '</span>';
+
+      return a;
+    }
+
+    // Con 1 sola temporada: la grilla fija de siempre, sin tocar nada
+    // (mismo HTML/CSS que ya está probado). Esto es lo único que corre
+    // hoy — el modo de abajo (varias temporadas) recién entra en juego
+    // solo el día que se carguen episodios con season 2 desde el panel.
+    function renderEpisodesFlat(list) {
       var grid = document.getElementById('episodesGrid');
       if (!grid) return;
       var soonCard = grid.querySelector('.episode-tile--soon');
 
-      // Saca las cards de episodio que ya estén pintadas (del render
-      // fijo de acá abajo, o de una corrida anterior) antes de volver
-      // a armar la lista — así no se duplican si esto corre 2 veces
-      // (una con el array fijo, otra con lo que venga del panel).
       grid.querySelectorAll('.episode-tile:not(.episode-tile--soon)').forEach(function (el) {
         el.remove();
       });
 
       list.forEach(function (ep) {
-        var a = document.createElement('a');
-        a.className = 'episode-tile';
-        a.href = ep.youtubeUrl || '#';
-        a.target = '_blank';
-        a.rel = 'noopener noreferrer';
-        a.setAttribute('aria-label', 'Ver episodio ' + ep.episode + ': ' + ep.title);
-        a.setAttribute('data-event', 'WatchVideo');
-        a.setAttribute('data-destination', 'YouTube');
-        a.setAttribute('data-track-button', 'episodio_' + ep.episode);
-
-        var playIconHtml =
-          '<span class="episode-tile__play" aria-hidden="true">'
-          + '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="none" '
-          + 'stroke="currentColor" stroke-width="1.6" stroke-linecap="round" '
-          + 'stroke-linejoin="round" /></svg></span>';
-
-        // Con imagen real: solo la foto (sin ícono de play encima —
-        // ya está el CTA "Ver episodio" abajo, no hace falta duplicar
-        // la señal). Sin imagen todavía: el ícono de play como antes,
-        // para que no quede una miniatura vacía.
-        var thumbHtml = ep.thumbnail
-          ? '<img src="' + ep.thumbnail + '" alt="" loading="lazy" />'
-          : playIconHtml;
-
-        var episodeNum = ep.episode < 10 ? '0' + ep.episode : String(ep.episode);
-
-        a.innerHTML =
-          '<span class="episode-tile__thumb">' + thumbHtml + '</span>' +
-          '<span class="episode-tile__number">Episodio ' + episodeNum + '</span>' +
-          '<span class="episode-tile__title">' + ep.title + '</span>' +
-          '<span class="episode-tile__cta">' +
-          '<svg class="episode-tile__cta-icon" viewBox="0 0 28 20" aria-hidden="true">' +
-          '<rect x="0" y="0" width="28" height="20" rx="5" fill="#FF0000" />' +
-          '<path d="M11.5 5.5v9l7.5-4.5z" fill="#fff" /></svg>' +
-          '<span>Ver episodio en YouTube</span>' +
-          '<svg class="episode-tile__cta-arrow" viewBox="0 0 24 24" aria-hidden="true">' +
-          '<path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" ' +
-          'stroke-linecap="round" stroke-linejoin="round" /></svg>' +
-          '</span>';
-
+        var tile = buildEpisodeTile(ep);
         if (soonCard) {
-          grid.insertBefore(a, soonCard);
+          grid.insertBefore(tile, soonCard);
         } else {
-          grid.appendChild(a);
+          grid.appendChild(tile);
         }
       });
+    }
+
+    // Con 2+ temporadas: arma un acordeón (una <details> por
+    // temporada, la más nueva abierta), moviendo la card fija
+    // "Nuevos episodios" adentro de la última. Reemplaza la grilla
+    // fija (se esconde, no se borra) por el acordeón armado.
+    function renderEpisodesAccordion(list) {
+      var flatGrid = document.getElementById('episodesGrid');
+      if (!flatGrid) return;
+      var soonCard = flatGrid.querySelector('.episode-tile--soon');
+
+      var existingAccordion = flatGrid.parentNode.querySelector('.season-accordion');
+      if (existingAccordion) existingAccordion.remove();
+      flatGrid.style.display = 'none';
+
+      var bySeason = {};
+      list.forEach(function (ep) {
+        var s = ep.season || 1;
+        (bySeason[s] = bySeason[s] || []).push(ep);
+      });
+      var seasonNumbers = Object.keys(bySeason).map(Number).sort(function (a, b) { return a - b; });
+
+      var accordion = document.createElement('div');
+      accordion.className = 'season-accordion';
+
+      seasonNumbers.forEach(function (seasonNum, i) {
+        var isLast = i === seasonNumbers.length - 1;
+
+        var details = document.createElement('details');
+        details.className = 'season-block';
+        if (isLast) details.open = true;
+
+        var summary = document.createElement('summary');
+        summary.innerHTML =
+          '<svg class="season-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">' +
+          '<path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" /></svg>' +
+          '<span class="season-label">Temporada ' + seasonNum + '</span>';
+        details.appendChild(summary);
+
+        var seasonGrid = document.createElement('div');
+        seasonGrid.className = 'episodes-grid';
+        bySeason[seasonNum].forEach(function (ep) {
+          seasonGrid.appendChild(buildEpisodeTile(ep));
+        });
+        if (isLast && soonCard) {
+          seasonGrid.appendChild(soonCard);
+        }
+        details.appendChild(seasonGrid);
+
+        accordion.appendChild(details);
+      });
+
+      flatGrid.parentNode.insertBefore(accordion, flatGrid.nextSibling);
+    }
+
+    function renderEpisodes(list) {
+      var seasons = {};
+      list.forEach(function (ep) { seasons[ep.season || 1] = true; });
+      if (Object.keys(seasons).length > 1) {
+        renderEpisodesAccordion(list);
+      } else {
+        renderEpisodesFlat(list);
+      }
     }
 
     renderEpisodes(episodes);
