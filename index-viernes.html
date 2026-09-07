@@ -273,13 +273,13 @@
       <!-- SLOGAN + TÍTULO -->
       <div class="hero-slogan-wrap">
 
-        <p class="hero-claim">
+        <p class="hero-claim" data-content-key="hero_claim">
           Tres hermanas, un libro, música y magia
         </p>
 
         <h1 class="hero-slogan hero-slogan--static">
-          <span class="hero-slogan__line">Cada página abre un portal</span>
-          <span class="hero-slogan__line">Cada canción, una aventura</span>
+          <span class="hero-slogan__line" data-content-key="hero_title_line1">Cada página abre un portal</span>
+          <span class="hero-slogan__line" data-content-key="hero_title_line2">Cada canción, una aventura</span>
         </h1>
 
         <span
@@ -318,6 +318,7 @@
           id="ctaVideoclip"
           class="magic-button magic-button--purple"
           href="https://linktw.in/Dnofjd"
+          data-content-key="cta_serie_link"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Ver la serie"
@@ -366,6 +367,7 @@
           id="ctaSpotify"
           class="magic-button magic-button--gold"
           href="https://ffm.to/libromagico1"
+          data-content-key="cta_album_link"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Escuchar el álbum"
@@ -487,6 +489,7 @@
         <a
           class="episode-tile__soon-visit"
           href="https://linktw.in/Dnofjd"
+          data-content-key="youtube_channel_link"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Suscribirse al canal de YouTube de Babidibu"
@@ -561,15 +564,16 @@
       <div class="album-section__info">
         <div class="album-section__top">
           <h3 class="album-section__name">
-            Las Trillizas de Oro<br />
-            y El Libro Mágico
+            <span data-content-key="album_name_line1">Las Trillizas de Oro</span><br />
+            <span data-content-key="album_name_line2">y El Libro Mágico</span>
           </h3>
-          <p class="album-section__volume">Volumen 1</p>
+          <p class="album-section__volume" data-content-key="album_volume">Volumen 1</p>
         </div>
 
       <a
         class="magic-button magic-button--gold"
         href="https://ffm.to/libromagico1"
+        data-content-key="cta_album_link"
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Escuchar el álbum"
@@ -747,6 +751,7 @@
           <a
             class="follow-link"
             href="https://www.instagram.com/lastrillizasdeoro_libromagico/?hl=es"
+            data-content-key="instagram_link"
             aria-label="Abrir Instagram de Las Trillizas de Oro y El Libro Mágico"
             data-event="OpenSocial"
             data-destination="Instagram"
@@ -802,6 +807,7 @@
           <a
             class="follow-link"
             href="https://linktw.in/iJcKCL"
+            data-content-key="spotify_link"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Abrir el perfil de Spotify de Las Trillizas de Oro"
@@ -839,6 +845,7 @@
           <a
             class="follow-link"
             href="https://linktw.in/qeBBaV"
+            data-content-key="youtube_channel_link"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Abrir el canal de YouTube de Babidibu"
@@ -958,6 +965,7 @@
           <span class="footer-text">By Babidibu Records</span>
           <a
             href="https://linktw.in/qeBBaV"
+            data-content-key="youtube_channel_link"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Abrir el canal de YouTube de Babidibu TV"
@@ -975,6 +983,7 @@
           </a>
           <a
             href="https://babidiburecords.com/"
+            data-content-key="babidibu_records_link"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Abrir el sitio de Babidibu Records"
@@ -1039,12 +1048,20 @@
       }
     ];
 
-    (function () {
+    function renderEpisodes(list) {
       var grid = document.getElementById('episodesGrid');
       if (!grid) return;
       var soonCard = grid.querySelector('.episode-tile--soon');
 
-      episodes.forEach(function (ep) {
+      // Saca las cards de episodio que ya estén pintadas (del render
+      // fijo de acá abajo, o de una corrida anterior) antes de volver
+      // a armar la lista — así no se duplican si esto corre 2 veces
+      // (una con el array fijo, otra con lo que venga del panel).
+      grid.querySelectorAll('.episode-tile:not(.episode-tile--soon)').forEach(function (el) {
+        el.remove();
+      });
+
+      list.forEach(function (ep) {
         var a = document.createElement('a');
         a.className = 'episode-tile';
         a.href = ep.youtubeUrl || '#';
@@ -1091,6 +1108,44 @@
           grid.appendChild(a);
         }
       });
+    }
+
+    renderEpisodes(episodes);
+  </script>
+
+  <!-- ================================================
+       Panel de contenido editable (statics-8f2k1/content.php): si
+       backend/content.php responde bien (solo pasa en el hosting
+       real — GitHub Pages no corre PHP, así que en el preview esto
+       falla siempre y se queda con el HTML fijo de arriba, que sigue
+       funcionando igual). Nunca puede dejar la página rota: si algo
+       falla acá (red, JSON inválido, lo que sea), no se toca nada. -->
+  <script>
+    (function () {
+      fetch('backend/content.php', { cache: 'no-store' })
+        .then(function (res) { return res.json(); })
+        .then(function (data) {
+          if (data && data.content) {
+            document.querySelectorAll('[data-content-key]').forEach(function (el) {
+              var key = el.getAttribute('data-content-key');
+              var value = data.content[key];
+              if (value === undefined || value === '') return;
+              if (el.tagName === 'A') {
+                el.href = value;
+              } else {
+                el.textContent = value;
+              }
+            });
+          }
+          if (data && Array.isArray(data.episodes) && data.episodes.length) {
+            renderEpisodes(data.episodes);
+          }
+        })
+        .catch(function () {
+          // Sin conexión al panel (o corriendo en el preview de GitHub
+          // Pages, que no ejecuta PHP): se queda con el contenido fijo
+          // de siempre, no pasa nada.
+        });
     })();
   </script>
 

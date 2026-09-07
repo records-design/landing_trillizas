@@ -134,6 +134,39 @@ CREATE TABLE IF NOT EXISTS login_attempts (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ------------------------------------------------------------
+-- Contenido editable de la landing (textos y links) desde el panel
+-- privado, sin tocar código. Clave/valor simple: cada fila es un
+-- campo editable (ver statics-8f2k1/content.php). Si una clave no
+-- está en la tabla, la landing usa el texto que ya tiene puesto en
+-- el HTML (no rompe nada mientras no se haya guardado nada todavía).
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS site_content (
+    content_key    VARCHAR(80)  NOT NULL,
+    content_value  TEXT         NOT NULL,
+    updated_at     DATETIME     NOT NULL,
+    PRIMARY KEY (content_key)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ------------------------------------------------------------
+-- Episodios de la serie, editables desde el panel. Reemplaza al
+-- array fijo `episodes` que antes vivía escrito a mano en el HTML.
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS episodes (
+    id             BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    season         INT UNSIGNED NOT NULL DEFAULT 1,
+    episode_number INT UNSIGNED NOT NULL,
+    title          VARCHAR(255) NOT NULL,
+    thumbnail      VARCHAR(500) DEFAULT NULL,  -- ruta/URL de la miniatura, o vacío (ícono de play)
+    youtube_url    VARCHAR(500) NOT NULL,
+    sort_order     INT NOT NULL DEFAULT 0,     -- orden en la grilla (no siempre = episode_number)
+    is_visible     TINYINT(1)   NOT NULL DEFAULT 1,
+    created_at     DATETIME     NOT NULL,
+    updated_at     DATETIME     NOT NULL,
+    PRIMARY KEY (id),
+    KEY idx_sort_order (sort_order)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ------------------------------------------------------------
 -- Migraciones: agrega columnas nuevas a tablas que ya existan de
 -- una importación anterior de este archivo. Si la tabla se crea
 -- recién ahora (arriba), ya nace con estas columnas y esto no hace
@@ -151,3 +184,27 @@ ALTER TABLE subscribers
 
 ALTER TABLE events
     ADD COLUMN IF NOT EXISTS dwell_ms INT UNSIGNED DEFAULT NULL AFTER destination;
+
+-- ------------------------------------------------------------
+-- Datos iniciales: lo que la landing ya tiene puesto a mano hoy,
+-- para que el panel arranque mostrando exactamente lo mismo que ya
+-- está en vivo (no un formulario vacío). INSERT IGNORE: si ya existe
+-- la fila (se re-corre este archivo de nuevo), no la pisa.
+-- ------------------------------------------------------------
+INSERT IGNORE INTO site_content (content_key, content_value, updated_at) VALUES
+    ('hero_claim', 'Tres hermanas, un libro, música y magia', UTC_TIMESTAMP()),
+    ('hero_title_line1', 'Cada página abre un portal', UTC_TIMESTAMP()),
+    ('hero_title_line2', 'Cada canción, una aventura', UTC_TIMESTAMP()),
+    ('cta_serie_link', 'https://linktw.in/Dnofjd', UTC_TIMESTAMP()),
+    ('cta_album_link', 'https://ffm.to/libromagico1', UTC_TIMESTAMP()),
+    ('youtube_channel_link', 'https://linktw.in/qeBBaV', UTC_TIMESTAMP()),
+    ('spotify_link', 'https://linktw.in/iJcKCL', UTC_TIMESTAMP()),
+    ('instagram_link', 'https://www.instagram.com/lastrillizasdeoro_libromagico/?hl=es', UTC_TIMESTAMP()),
+    ('babidibu_records_link', 'https://babidiburecords.com/', UTC_TIMESTAMP()),
+    ('album_name_line1', 'Las Trillizas de Oro', UTC_TIMESTAMP()),
+    ('album_name_line2', 'y El Libro Mágico', UTC_TIMESTAMP()),
+    ('album_volume', 'Volumen 1', UTC_TIMESTAMP());
+
+INSERT IGNORE INTO episodes (id, season, episode_number, title, thumbnail, youtube_url, sort_order, is_visible, created_at, updated_at) VALUES
+    (1, 1, 1, 'Trixipop', 'imagenes/miniaturas-ytminiatura_-trixipop%201.png', 'https://linktw.in/WLomzs', 1, 1, UTC_TIMESTAMP(), UTC_TIMESTAMP()),
+    (2, 1, 2, 'Locomotora llega a la Estación', 'imagenes/miniatura_locomotora_web.jpg', 'https://linktw.in/QtAEqZ', 2, 1, UTC_TIMESTAMP(), UTC_TIMESTAMP());
