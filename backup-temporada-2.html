@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<!--
+  BACKUP / PROTOTIPO — Temporada 2
+  ================================
+  Esto NO está conectado a la landing real ni al borrador
+  (index-viernes.html). Es un archivo aparte para no arriesgar nada
+  de lo que ya está en vivo. Cuando llegue el momento real de subir
+  la Temporada 2:
+
+    1. Copiar el patrón de acordeón de acá abajo (la estructura
+       <details>/<summary> + el CSS de ".season-accordion") adentro
+       de index-viernes.html, reemplazando el <div class="section-heading">
+       + <div class="episodes-grid"> actual de la sección "serie-section".
+    2. Reemplazar los episodios de ejemplo de "Temporada 2" de acá
+       abajo por los reales (título, miniatura, link de YouTube).
+    3. Probar bien en el borrador, confirmar que se ve bien, y recién
+       ahí subir a FileZilla.
+
+  Se linkea al style.css real del proyecto para que se vea con la
+  tipografía/colores reales — el CSS del acordeón en sí (que no
+  existe todavía en el proyecto) está accá abajo, en su propio
+  <style>, sin tocar el style.css compartido.
+-->
+<html lang="es" class="has-sections">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>BACKUP — Temporada 2 (prototipo, no en vivo)</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    /* ============================================================
+       Acordeón de temporadas — NUEVO, no existe en style.css todavía.
+       Reemplaza al <div class="section-heading"> fijo de una sola
+       temporada. Cada <details> es una temporada; <summary> es el
+       encabezado clickeable (con la flechita que rota al abrir).
+       ============================================================ */
+    .season-accordion {
+      width: min(1360px, calc(100% - 40px));
+      margin: 0 auto 28px;
+    }
+
+    .season-block {
+      border-bottom: 1px solid rgba(216, 178, 92, 0.22);
+    }
+
+    .season-block:first-child {
+      border-top: 1px solid rgba(216, 178, 92, 0.22);
+    }
+
+    .season-block summary {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      list-style: none;
+      cursor: pointer;
+      padding: 22px 10px;
+      user-select: none;
+    }
+
+    .season-block summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .season-block summary .season-label {
+      color: var(--gold-title);
+      font-family: var(--font-ui);
+      font-size: clamp(15px, 1.4vw, 18px);
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .season-block summary .season-arrow {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+      color: var(--gold);
+      transition: transform 0.3s ease;
+    }
+
+    .season-block[open] summary .season-arrow {
+      transform: rotate(90deg);
+    }
+
+    .season-block .episodes-grid {
+      padding-bottom: 32px;
+    }
+
+    /* Mismo criterio de "todo a la vista" que ya usamos para los
+       episodios sueltos: dentro de una temporada abierta, se ven
+       todas las cards juntas, sin carrusel ni flechas adentro. */
+  </style>
+</head>
+
+<body class="has-sections">
+  <section class="serie-section" id="serie-section" style="min-height: auto; padding: 80px 20px;">
+    <span class="bg-halo bg-halo--fuchsia serie-section__halo-a" aria-hidden="true"></span>
+    <span class="bg-halo bg-halo--violet serie-section__halo-b" aria-hidden="true"></span>
+    <span class="bg-halo bg-halo--cyan serie-section__halo-c" aria-hidden="true"></span>
+
+    <div class="section-heading">
+      <span class="mini-divider" aria-hidden="true">
+        <span class="mini-divider__line"></span>
+        <span class="mini-divider__diamond"></span>
+        <span class="mini-divider__line"></span>
+      </span>
+      <p class="section-eyebrow">Serie original</p>
+      <h2 class="section-title">Las Trillizas de Oro y el Libro Mágico</h2>
+    </div>
+
+    <div class="season-accordion">
+
+      <!-- ============ TEMPORADA 1 (real, abierta por defecto) ============ -->
+      <details class="season-block" open>
+        <summary>
+          <svg class="season-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          <span class="season-label">Temporada 1</span>
+        </summary>
+
+        <div class="episodes-grid">
+          <a class="episode-tile" href="https://linktw.in/WLomzs" target="_blank" rel="noopener noreferrer" aria-label="Ver episodio 1: Trixipop">
+            <span class="episode-tile__thumb"><img src="imagenes/miniaturas-ytminiatura_-trixipop%201.png" alt="" loading="lazy" /></span>
+            <span class="episode-tile__number">Episodio 01</span>
+            <span class="episode-tile__title">Trixipop</span>
+            <span class="episode-tile__cta">
+              <svg class="episode-tile__cta-icon" viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" rx="5" fill="#FF0000" /><path d="M11.5 5.5v9l7.5-4.5z" fill="#fff" /></svg>
+              <span>Ver episodio en YouTube</span>
+              <svg class="episode-tile__cta-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+            </span>
+          </a>
+
+          <a class="episode-tile" href="https://linktw.in/QtAEqZ" target="_blank" rel="noopener noreferrer" aria-label="Ver episodio 2: Locomotora llega a la Estación">
+            <span class="episode-tile__thumb"><img src="imagenes/miniatura_locomotora_web.jpg" alt="" loading="lazy" /></span>
+            <span class="episode-tile__number">Episodio 02</span>
+            <span class="episode-tile__title">Locomotora llega a la Estación</span>
+            <span class="episode-tile__cta">
+              <svg class="episode-tile__cta-icon" viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" rx="5" fill="#FF0000" /><path d="M11.5 5.5v9l7.5-4.5z" fill="#fff" /></svg>
+              <span>Ver episodio en YouTube</span>
+              <svg class="episode-tile__cta-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+            </span>
+          </a>
+
+          <a class="episode-tile" href="https://linktw.in/Dnofjd" target="_blank" rel="noopener noreferrer" aria-label="Ver episodio 3: Amiga Hermana">
+            <span class="episode-tile__thumb"><span class="episode-tile__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg></span></span>
+            <span class="episode-tile__number">Episodio 03</span>
+            <span class="episode-tile__title">Amiga Hermana</span>
+            <span class="episode-tile__cta">
+              <svg class="episode-tile__cta-icon" viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" rx="5" fill="#FF0000" /><path d="M11.5 5.5v9l7.5-4.5z" fill="#fff" /></svg>
+              <span>Ver episodio en YouTube</span>
+              <svg class="episode-tile__cta-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+            </span>
+          </a>
+
+          <a class="episode-tile" href="https://linktw.in/Dnofjd" target="_blank" rel="noopener noreferrer" aria-label="Ver episodio 4: Susanita">
+            <span class="episode-tile__thumb"><span class="episode-tile__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg></span></span>
+            <span class="episode-tile__number">Episodio 04</span>
+            <span class="episode-tile__title">Susanita</span>
+            <span class="episode-tile__cta">
+              <svg class="episode-tile__cta-icon" viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" rx="5" fill="#FF0000" /><path d="M11.5 5.5v9l7.5-4.5z" fill="#fff" /></svg>
+              <span>Ver episodio en YouTube</span>
+              <svg class="episode-tile__cta-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+            </span>
+          </a>
+
+          <!-- La card "Nuevos episodios" (fija, suscribite al canal) va acá
+               dentro de la temporada más nueva, como siempre. -->
+          <div class="episode-tile episode-tile--soon">
+            <span class="episode-tile__soon-diamond">&#10022;</span>
+            <span class="episode-tile__soon-title">Nuevos <br />episodios</span>
+            <span class="episode-tile__soon-line">
+              <span class="episode-tile__soon-sub">Cada semana en el canal de</span>
+              <img class="episode-tile__soon-babidibu" src="imagenes/Logo%20BABIDIBU%20TV.png" alt="Babidibu TV" loading="lazy" />
+            </span>
+            <a class="episode-tile__soon-visit" href="https://linktw.in/Dnofjd" target="_blank" rel="noopener noreferrer" aria-label="Suscribirse al canal de YouTube de Babidibu">
+              Suscribite al canal
+            </a>
+          </div>
+        </div>
+      </details>
+
+      <!-- ============ TEMPORADA 2 (EJEMPLO — reemplazar por los episodios reales) ============ -->
+      <details class="season-block">
+        <summary>
+          <svg class="season-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          <span class="season-label">Temporada 2</span>
+        </summary>
+
+        <div class="episodes-grid">
+          <a class="episode-tile" href="#" aria-label="Ver episodio 1 de la temporada 2 (ejemplo)">
+            <span class="episode-tile__thumb"><span class="episode-tile__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg></span></span>
+            <span class="episode-tile__number">Episodio 01</span>
+            <span class="episode-tile__title">(Título de ejemplo — reemplazar)</span>
+            <span class="episode-tile__cta">
+              <svg class="episode-tile__cta-icon" viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" rx="5" fill="#FF0000" /><path d="M11.5 5.5v9l7.5-4.5z" fill="#fff" /></svg>
+              <span>Ver episodio en YouTube</span>
+              <svg class="episode-tile__cta-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+            </span>
+          </a>
+
+          <a class="episode-tile" href="#" aria-label="Ver episodio 2 de la temporada 2 (ejemplo)">
+            <span class="episode-tile__thumb"><span class="episode-tile__play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg></span></span>
+            <span class="episode-tile__number">Episodio 02</span>
+            <span class="episode-tile__title">(Título de ejemplo — reemplazar)</span>
+            <span class="episode-tile__cta">
+              <svg class="episode-tile__cta-icon" viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" rx="5" fill="#FF0000" /><path d="M11.5 5.5v9l7.5-4.5z" fill="#fff" /></svg>
+              <span>Ver episodio en YouTube</span>
+              <svg class="episode-tile__cta-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+            </span>
+          </a>
+        </div>
+      </details>
+
+    </div>
+  </section>
+</body>
+</html>
