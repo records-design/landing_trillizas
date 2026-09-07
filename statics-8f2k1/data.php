@@ -51,10 +51,10 @@ $range = [$fromDt, $toDt];
 $adFilter = (isset($_GET['ad_id']) && $_GET['ad_id'] !== '') ? substr((string) $_GET['ad_id'], 0, 64) : null;
 $sourceFilter = (isset($_GET['utm_source']) && $_GET['utm_source'] !== '') ? substr((string) $_GET['utm_source'], 0, 120) : null;
 
-// "directo" en el selector representa utm_source vacío/NULL (así lo
+// "landing" en el selector representa utm_source vacío/NULL (así lo
 // muestra el gráfico de "Fuentes de tráfico"), no el texto literal
-// "directo" — hay que traducirlo a "IS NULL OR = ''" sin parámetro.
-$sourceIsDirecto = $sourceFilter === 'directo';
+// "landing" — hay que traducirlo a "IS NULL OR = ''" sin parámetro.
+$sourceIsDirecto = $sourceFilter === 'landing';
 
 /** Devuelve [sql, params] para el filtro de utm_source, con el prefijo de tabla dado (o ''). */
 function sourceCond($sourceFilter, $sourceIsDirecto, $prefix = '')
@@ -154,10 +154,10 @@ $clicksByButton = q($pdo,
     array_merge($range, $adEventsParam));
 
 // ------------------------------------------------------------
-// Fuentes de tráfico (utm_source; 'directo' si es NULL)
+// Fuentes de tráfico (utm_source; 'landing' si es NULL)
 // ------------------------------------------------------------
 $sources = q($pdo,
-    "SELECT COALESCE(NULLIF(utm_source,''),'directo') src, COUNT(*) n
+    "SELECT COALESCE(NULLIF(utm_source,''),'landing') src, COUNT(*) n
      FROM sessions WHERE first_seen BETWEEN ? AND ?{$adSessionsCond}
      GROUP BY src ORDER BY n DESC",
     array_merge($range, $adSessionsParam));
@@ -165,7 +165,7 @@ $sources = q($pdo,
 // Igual, pero siempre sin filtrar (para poblar el selector de fuentes
 // con todas las opciones posibles, aunque haya un filtro activo).
 $sourcesAll = q($pdo,
-    "SELECT COALESCE(NULLIF(utm_source,''),'directo') src, COUNT(*) n
+    "SELECT COALESCE(NULLIF(utm_source,''),'landing') src, COUNT(*) n
      FROM sessions WHERE first_seen BETWEEN ? AND ?
      GROUP BY src ORDER BY n DESC",
     $range);

@@ -25,7 +25,7 @@ $adCond = '';
 $adParam = [];
 if ($adFilter !== null) { $adCond .= ' AND ad_id = ?'; $adParam[] = $adFilter; }
 if ($sourceFilter !== null) {
-    if ($sourceFilter === 'directo') {
+    if ($sourceFilter === 'landing') {
         $adCond .= " AND (utm_source IS NULL OR utm_source = '')";
     } else {
         $adCond .= ' AND utm_source = ?';

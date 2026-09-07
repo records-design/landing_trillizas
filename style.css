@@ -3559,8 +3559,12 @@ body.has-sections .hero-content {
 
 /* ---------- Ajustes de escritorio (pantallas grandes) ---------- */
 @media (min-width: 901px) {
+  /* Grilla pareja de 3 columnas (en vez de 2fr/2fr/1fr, pensado solo
+     para 2 episodios + la card fija): así entran bien tantos
+     episodios como haya, ocupando cada uno el mismo ancho, y la
+     card "Nuevos episodios" siempre al final como una más. */
   #serie-section .episodes-grid {
-    grid-template-columns: 2fr 2fr 1fr;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     align-items: stretch;
     width: min(1360px, calc(100% - 40px));
     gap: 32px;

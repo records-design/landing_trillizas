@@ -124,7 +124,7 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
       <div class="panel">
         <h2>Placement</h2>
         <table id="tblPlacement"><thead><tr><th>Placement</th><th class="n">Sesiones</th></tr></thead><tbody></tbody></table>
-        <p class="muted">"Placement" es en qué parte de Instagram o Facebook apareció el anuncio que trajo a esa persona (el feed, las Historias, los Reels, etc.). Solo se completa si viene de un anuncio de Meta con ese dato configurado — el resto del tráfico (QR, redes, directo) aparece como "(sin dato)".</p>
+        <p class="muted">"Placement" es en qué parte de Instagram o Facebook apareció el anuncio que trajo a esa persona (el feed, las Historias, los Reels, etc.). Solo se completa si viene de un anuncio de Meta con ese dato configurado — el resto del tráfico (QR, redes, landing) aparece como "(sin dato)".</p>
       </div>
       <div class="panel">
         <h2>Países</h2>
@@ -174,6 +174,10 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
     const charts = {};
 
     function fmt(n) { return (n ?? 0).toLocaleString('es-AR'); }
+
+    // Solo para mostrar: "qr_academia" -> "qr academia". El valor real
+    // (utm_source) no cambia, así que el filtro sigue funcionando igual.
+    function prettySource(s) { return String(s).replace(/_/g, ' '); }
 
     function setPreset(days) {
       const to = new Date();
@@ -249,7 +253,7 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
         d.sources_list.forEach((s) => {
           const opt = document.createElement('option');
           opt.value = s.src;
-          opt.textContent = s.src;
+          opt.textContent = prettySource(s.src);
           srcSel.appendChild(opt);
         });
         srcSel.dataset.loaded = '1';
@@ -296,7 +300,7 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
       drawChart('chartButtons', 'bar',
         d.clicks_by_button.map(r => r.button), d.clicks_by_button.map(r => +r.n));
       drawChart('chartSources', 'doughnut',
-        d.sources.map(r => r.src), d.sources.map(r => +r.n));
+        d.sources.map(r => prettySource(r.src)), d.sources.map(r => +r.n));
       drawChart('chartDevices', 'doughnut',
         d.devices.map(r => r.device), d.devices.map(r => +r.n));
       drawChart('chartNewReturning', 'doughnut',

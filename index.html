@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="has-sections">
 <head>
   <!-- Google Tag Manager -->
   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -160,22 +160,67 @@
   />
 
   <link
-    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Poppins:wght@400;500;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
     rel="stylesheet"
   />
 
   <!-- CSS -->
-  <link rel="stylesheet" href="style.css?v=20260827152227" />
+  <link rel="stylesheet" href="style.css?v=20260904navopaque1" />
 </head>
 
-<body>
+<body class="has-sections">
   <!-- Google Tag Manager (noscript) -->
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TP3NSZ8C"
   height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- End Google Tag Manager (noscript) -->
 
+  <!-- ================================================
+       BORRADOR VIERNES: barra de navegación. "Contacto" sigue siendo
+       un placeholder (todavía no existe esa página) — queda visible
+       pero sin link, marcado "Próximamente". "Tienda" ya tiene su
+       link real.
+       ================================================ -->
+  <!-- Franja invisible arriba de todo: cuando la nav está oculta por
+       scroll, esto sigue detectando el mouse cerca del borde superior
+       para volver a mostrarla (la nav en sí no se puede "hoverear" una
+       vez que se movió fuera de la pantalla). Solo importa en
+       desktop — ver script.js. -->
+  <div class="site-nav-hover-zone" aria-hidden="true"></div>
+
+  <nav class="site-nav">
+    <div class="site-nav__inner">
+      <ul class="site-nav__links">
+        <li><a href="#top">Inicio</a></li>
+        <li><a href="#historia-section">Historia</a></li>
+        <li><a href="#serie-section">Serie</a></li>
+        <li><a href="#album-section">Música</a></li>
+        <li><a href="https://lastrillizasdeoroyellibromagico.store/" target="_blank" rel="noopener noreferrer">Tienda</a></li>
+        <li><a href="#suscribirse">Newsletter</a></li>
+      </ul>
+      <button
+        class="site-nav__burger"
+        id="siteNavBurger"
+        aria-label="Abrir menú"
+        aria-expanded="false"
+        aria-controls="siteNavMobile"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <ul class="site-nav__mobile" id="siteNavMobile">
+      <li><a href="#top">Inicio</a></li>
+      <li><a href="#historia-section">Historia</a></li>
+      <li><a href="#serie-section">Serie</a></li>
+      <li><a href="#album-section">Música</a></li>
+      <li><a href="https://lastrillizasdeoroyellibromagico.store/" target="_blank" rel="noopener noreferrer">Tienda</a></li>
+      <li><a href="#suscribirse">Newsletter</a></li>
+    </ul>
+  </nav>
+
   <!-- HERO -->
-  <section class="hero">
+  <section class="hero" id="top">
 
     <video
       class="hero-video"
@@ -225,11 +270,16 @@
         </span>
       </div>
 
-      <!-- SLOGAN -->
+      <!-- SLOGAN + TÍTULO -->
       <div class="hero-slogan-wrap">
 
-        <h1 class="hero-slogan">
-          Tres hermanas, un libro, música y magia.
+        <p class="hero-claim">
+          Tres hermanas, un libro, música y magia
+        </p>
+
+        <h1 class="hero-slogan hero-slogan--static">
+          <span class="hero-slogan__line">Cada página abre un portal</span>
+          <span class="hero-slogan__line">Cada canción, una aventura</span>
         </h1>
 
         <span
@@ -259,20 +309,21 @@
 
       </div>
 
-      <!-- BOTONES PRINCIPALES -->
+      <!-- BOTONES PRINCIPALES: bajan a las secciones (no abren YouTube/
+           Spotify directo) -->
       <div class="hero-ctas">
 
-        <!-- YouTube -->
+        <!-- Abre directo el canal de YouTube de Babidibu TV -->
         <a
           id="ctaVideoclip"
           class="magic-button magic-button--purple"
-          href="https://linktw.in/rVjywT"
+          href="https://linktw.in/Dnofjd"
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="Ver el videoclip de La Locomotora llega a la estación en YouTube"
-          data-event="WatchVideo"
+          aria-label="Ver la serie"
+          data-event="OpenSocial"
           data-destination="YouTube"
-          data-track-button="videoclip"
+          data-track-button="ver_serie"
         >
 
           <img
@@ -303,24 +354,24 @@
             </span>
 
             <span class="magic-button__label">
-              Mirá el videoclip
+              Ver la serie
             </span>
 
           </span>
 
         </a>
 
-        <!-- Spotify -->
+        <!-- Abre directo el smart link del álbum -->
         <a
           id="ctaSpotify"
           class="magic-button magic-button--gold"
-          href="https://ffm.to/locomotora"
+          href="https://ffm.to/libromagico1"
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="Escuchar La Locomotora llega a la estación en Spotify"
-          data-event="ListenSong"
-          data-destination="Spotify"
-          data-track-button="cancion_spotify"
+          aria-label="Escuchar el álbum"
+          data-event="ListenAlbum"
+          data-destination="SmartLink"
+          data-track-button="escuchar_album"
         >
 
           <img
@@ -351,7 +402,7 @@
             </span>
 
             <span class="magic-button__label">
-              Escuchá la canción
+              Escuchar el álbum
             </span>
 
           </span>
@@ -360,7 +411,317 @@
 
       </div>
 
+      <!-- Pista de scroll: solo se ve en mobile (ver CSS), indica que
+           hay más contenido debajo del hero. -->
+      <div class="hero-scroll-cue" aria-hidden="true">
+        <span class="hero-scroll-cue__arrow"></span>
+      </div>
+
       <!-- PORTAL + REDES SOCIALES -->
+
+    </div>
+
+  </section>
+
+  <!-- ================================================
+       BORRADOR VIERNES: "La serie" + "Álbum".
+       Los episodios se cargan desde el array `episodes` (ver el
+       <script> cerca del final del archivo) — para agregar un
+       episodio nuevo, agregar un objeto al array, no tocar este HTML.
+       Los href/rutas "PENDIENTE-" son placeholders reales: reemplazar
+       antes de subir a producción.
+       ================================================ -->
+
+  <!-- LA SERIE -->
+  <section class="serie-section" id="serie-section">
+    <span class="bg-halo bg-halo--fuchsia serie-section__halo-a" aria-hidden="true"></span>
+    <span class="bg-halo bg-halo--violet serie-section__halo-b" aria-hidden="true"></span>
+    <span class="bg-halo bg-halo--cyan serie-section__halo-c" aria-hidden="true"></span>
+    <div class="magic-sparkles" aria-hidden="true">
+      <span class="sparkle sparkle--point sparkle--violet" style="top:5%; left:4%; animation-delay:.2s;"></span>
+      <span class="sparkle sparkle--point sparkle--gold" style="top:10%; right:6%; animation-delay:1.4s;"></span>
+      <span class="sparkle sparkle--point sparkle--cyan" style="top:22%; left:2%; animation-delay:2.6s;"></span>
+      <span class="sparkle sparkle--point sparkle--point-sm sparkle--violet" style="top:35%; right:3%; animation-delay:.9s;"></span>
+      <span class="sparkle sparkle--point sparkle--gold" style="top:55%; left:5%; animation-delay:3.1s;"></span>
+      <span class="sparkle sparkle--point sparkle--point-lg sparkle--point-blur sparkle--violet" style="top:68%; right:5%; animation-delay:1.8s;"></span>
+      <span class="sparkle sparkle--point sparkle--cyan" style="top:85%; left:9%; animation-delay:2.2s;"></span>
+
+      <span class="sparkle sparkle--point sparkle--gold" style="top:8%; right:16%; animation-delay:.6s;"></span>
+      <span class="sparkle sparkle--point sparkle--violet" style="top:48%; left:1.5%; animation-delay:2.9s;"></span>
+      <span class="sparkle sparkle--point sparkle--point-lg sparkle--cyan" style="top:88%; right:22%; animation-delay:1.3s;"></span>
+
+      <span class="sparkle sparkle--point sparkle--point-lg sparkle--violet" style="top:40%; right:2%; animation-delay:.4s;"></span>
+    </div>
+
+    <div class="section-heading">
+      <span class="mini-divider" aria-hidden="true">
+        <span class="mini-divider__line"></span>
+        <span class="mini-divider__diamond"></span>
+        <span class="mini-divider__line"></span>
+      </span>
+      <p class="section-eyebrow">Serie original</p>
+      <h2 class="section-title">Las Trillizas de Oro y el Libro Mágico</h2>
+      <span class="season-flourish">
+        <span class="season-flourish__line"></span>
+        <span class="section-season">Primera Temporada</span>
+        <span class="season-flourish__line"></span>
+      </span>
+    </div>
+
+    <div class="episodes-grid" id="episodesGrid">
+      <!-- Los primeros 2 bloques (episodios) los genera JS a partir del
+           array `episodes` — ver <script> al final del archivo. La card
+           "Nuevos episodios" de acá abajo queda fija, siempre al final. -->
+      <div class="episode-tile episode-tile--soon">
+        <span class="episode-tile__soon-diamond">&#10022;</span>
+        <span class="episode-tile__soon-title">Nuevos <br />episodios</span>
+        <span class="episode-tile__soon-line">
+          <span class="episode-tile__soon-sub">Cada semana en el canal de</span>
+          <img
+            class="episode-tile__soon-babidibu"
+            src="imagenes/Logo%20BABIDIBU%20TV.png"
+            alt="Babidibu TV"
+            loading="lazy"
+          />
+        </span>
+        <a
+          class="episode-tile__soon-visit"
+          href="https://linktw.in/Dnofjd"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Suscribirse al canal de YouTube de Babidibu"
+          data-event="OpenSocial"
+          data-destination="YouTube"
+          data-track-button="proximos_episodios_canal"
+        >
+          Suscribite al canal
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ÁLBUM -->
+  <section class="album-section" id="album-section">
+    <span class="bg-halo bg-halo--violet album-section__halo-a" aria-hidden="true"></span>
+    <span class="bg-halo bg-halo--fuchsia album-section__halo-b" aria-hidden="true"></span>
+    <span class="bg-halo bg-halo--cyan album-section__halo-c" aria-hidden="true"></span>
+    <div class="magic-sparkles" aria-hidden="true">
+      <span class="sparkle sparkle--point sparkle--fuchsia" style="top:4%; left:5%; animation-delay:.5s;"></span>
+      <span class="sparkle sparkle--point sparkle--cyan" style="top:9%; right:5%; animation-delay:1.9s;"></span>
+      <span class="sparkle sparkle--point sparkle--point-sm sparkle--violet" style="top:20%; left:2%; animation-delay:2.7s;"></span>
+      <span class="sparkle sparkle--point sparkle--fuchsia" style="top:33%; right:2.5%; animation-delay:.8s;"></span>
+      <span class="sparkle sparkle--point sparkle--point-lg sparkle--point-blur sparkle--cyan" style="top:52%; left:3%; animation-delay:3.2s;"></span>
+      <span class="sparkle sparkle--point sparkle--violet" style="top:63%; right:2%; animation-delay:1.4s;"></span>
+      <span class="sparkle sparkle--point sparkle--fuchsia" style="top:80%; left:7%; animation-delay:2.1s;"></span>
+
+      <span class="sparkle sparkle--point sparkle--cyan" style="top:6%; right:14%; animation-delay:.3s;"></span>
+      <span class="sparkle sparkle--point sparkle--violet" style="top:45%; left:1.2%; animation-delay:2.5s;"></span>
+      <span class="sparkle sparkle--point sparkle--point-lg sparkle--fuchsia" style="top:78%; right:18%; animation-delay:1.6s;"></span>
+
+      <span class="sparkle sparkle--point sparkle--point-lg sparkle--cyan" style="top:35%; left:1.5%; animation-delay:.9s;"></span>
+    </div>
+    <span class="album-section__fade-bottom" aria-hidden="true"></span>
+
+    <div class="section-heading album-section__heading">
+      <span class="section-divider" aria-hidden="true">
+        <span class="follow-line"></span>
+        <span class="follow-diamond"></span>
+        <span class="follow-line"></span>
+      </span>
+      <p class="section-eyebrow">Nuestra música</p>
+      <p class="album-section__subtitle">
+        Cada canción forma parte del universo de <strong>Las Trillizas de Oro y el Libro Mágico</strong>, llevando su magia más allá de la pantalla y combinando nuevas canciones con clásicos de <strong>Las Trillizas de Oro</strong>.
+      </p>
+    </div>
+
+    <div class="album-section__row">
+      <div class="album-section__trixi-halo" aria-hidden="true"></div>
+      <img
+        src="imagenes/trixi_pop_music_web.webp"
+        alt=""
+        aria-hidden="true"
+        loading="lazy"
+        class="album-section__trixi-bg"
+      />
+      <span class="album-section__trixi-sparkles" aria-hidden="true">
+        <i></i><i></i><i></i><i></i><i></i><i></i>
+      </span>
+
+      <div class="album-section__cover">
+        <img
+          src="imagenes/arte_de_tapa_trillizas.png"
+          alt="Tapa del álbum Las Trillizas de Oro y El Libro Mágico, Volumen 1"
+          loading="lazy"
+        />
+        <span class="album-section__cover-sparkles" aria-hidden="true">
+          <i></i><i></i><i></i><i></i>
+        </span>
+      </div>
+
+      <div class="album-section__info">
+        <div class="album-section__top">
+          <h3 class="album-section__name">
+            Las Trillizas de Oro<br />
+            y El Libro Mágico
+          </h3>
+          <p class="album-section__volume">Volumen 1</p>
+        </div>
+
+      <a
+        class="magic-button magic-button--gold"
+        href="https://ffm.to/libromagico1"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Escuchar el álbum"
+        data-event="ListenAlbum"
+        data-destination="SmartLink"
+        data-track-button="escuchar_album"
+      >
+        <img
+          class="magic-button__frame"
+          src="imagenes/button-frame-gold.png"
+          alt=""
+          aria-hidden="true"
+        />
+        <span class="magic-button__content">
+          <span class="magic-button__icon">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M9 18V5l12-2v13" />
+              <circle cx="6" cy="18" r="3" />
+              <circle cx="18" cy="16" r="3" />
+            </svg>
+          </span>
+          <span class="magic-button__label">Escuchar el álbum</span>
+        </span>
+      </a>
+
+      <div class="album-section__platforms">
+        <p class="album-section__platforms-label">Disponible en todas las plataformas</p>
+        <div class="album-section__platforms-icons">
+          <span class="album-section__platform-icon" title="Spotify">
+            <img src="imagenes/spotify_full_web.webp" alt="Spotify" loading="lazy" />
+          </span>
+          <span class="album-section__platform-icon" title="YouTube">
+            <img src="imagenes/youtube_full_web.png" alt="YouTube" loading="lazy" />
+          </span>
+          <span class="album-section__platform-icon" title="Apple Music">
+            <img src="imagenes/apple_music_icon_web.png" alt="Apple Music" loading="lazy" />
+          </span>
+          <span class="album-section__platform-icon" title="Amazon Music">
+            <img src="imagenes/amazon_music_icon_web.png" alt="Amazon Music" loading="lazy" />
+          </span>
+        </div>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Separador claro entre Álbum e Historia -->
+  <div class="section-boundary-divider" aria-hidden="true"></div>
+
+  <!-- HISTORIA -->
+  <section class="historia-section" id="historia-section">
+    <span class="bg-halo bg-halo--cyan historia-section__halo-a" aria-hidden="true"></span>
+    <span class="bg-halo bg-halo--violet historia-section__halo-b" aria-hidden="true"></span>
+    <span class="bg-halo bg-halo--fuchsia historia-section__halo-c" aria-hidden="true"></span>
+    <div class="magic-sparkles" aria-hidden="true">
+      <span class="sparkle sparkle--point sparkle--gold" style="top:5%; left:5%; animation-delay:.7s;"></span>
+      <span class="sparkle sparkle--point sparkle--violet" style="top:9%; right:6%; animation-delay:2.1s;"></span>
+      <span class="sparkle sparkle--point sparkle--point-sm sparkle--cyan" style="top:30%; left:2%; animation-delay:3.3s;"></span>
+      <span class="sparkle sparkle--point sparkle--gold" style="top:45%; right:3%; animation-delay:1.1s;"></span>
+      <span class="sparkle sparkle--point sparkle--point-lg sparkle--point-blur sparkle--violet" style="top:65%; left:6%; animation-delay:2.6s;"></span>
+      <span class="sparkle sparkle--point sparkle--cyan" style="top:85%; right:10%; animation-delay:.4s;"></span>
+
+      <span class="sparkle sparkle--point sparkle--violet" style="top:7%; right:16%; animation-delay:1.7s;"></span>
+      <span class="sparkle sparkle--point sparkle--gold" style="top:55%; left:1.5%; animation-delay:3s;"></span>
+
+      <span class="sparkle sparkle--point sparkle--point-lg sparkle--cyan" style="top:75%; right:3%; animation-delay:.5s;"></span>
+    </div>
+
+    <div class="historia-section__text">
+      <span class="section-divider" aria-hidden="true">
+        <span class="follow-line"></span>
+        <span class="follow-diamond"></span>
+        <span class="follow-line"></span>
+      </span>
+      <h2 class="section-title historia-section__title">Las Trillizas de Oro <br class="historia-title-break" />y el Libro Mágico</h2>
+      <p class="historia-section__body">
+        <strong>María Eugenia, María Emilia y María Laura</strong> descubren un misterioso <strong>Libro Mágico</strong> capaz de abrir portales hacia mundos extraordinarios. Al cruzarlos se transforman en las <strong>Trixipop</strong> y viven aventuras donde la imaginación, la música y el trabajo en equipo son la clave.
+      </p>
+    </div>
+
+    <div class="historia-section__visual">
+      <div class="historia-slot">
+        <div class="historia-slot__image">
+          <img
+            src="imagenes/historia_trillizas_vertical_web.jpg"
+            alt="Las Trillizas de Oro"
+            loading="lazy"
+          />
+        </div>
+        <span class="historia-slot__label">Las Trillizas de Oro</span>
+      </div>
+
+      <span class="historia-arrow" aria-hidden="true">&rarr;</span>
+
+      <div class="historia-slot">
+        <div class="historia-slot__image">
+          <img
+            src="imagenes/proximos_episodios_web.jpg"
+            alt="El Libro Mágico"
+            loading="lazy"
+          />
+        </div>
+        <span class="historia-slot__label">El libro mágico</span>
+      </div>
+
+      <span class="historia-arrow" aria-hidden="true">&rarr;</span>
+
+      <div class="historia-slot">
+        <div class="historia-slot__image">
+          <img
+            src="imagenes/historia_trixipop_vertical_web.jpg"
+            alt="Las Trixipop"
+            loading="lazy"
+          />
+        </div>
+        <span class="historia-slot__label">Trixipop</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PORTAL SOCIAL + SUSCRIPCIÓN + FOOTER (movido debajo de Episodios y Álbum) -->
+  <section class="post-sections-footer">
+    <span class="bg-halo bg-halo--fuchsia post-sections-footer__halo-a" aria-hidden="true"></span>
+    <span class="bg-halo bg-halo--cyan post-sections-footer__halo-b" aria-hidden="true"></span>
+    <span class="bg-halo bg-halo--violet post-sections-footer__halo-c" aria-hidden="true"></span>
+    <div class="magic-sparkles" aria-hidden="true">
+      <span class="sparkle sparkle--point sparkle--gold" style="top:4%; left:8%; animation-delay:.3s;"></span>
+      <span class="sparkle sparkle--point sparkle--violet" style="top:9%; right:8%; animation-delay:1.6s;"></span>
+      <span class="sparkle sparkle--point sparkle--fuchsia" style="top:28%; left:3%; animation-delay:2.8s;"></span>
+      <span class="sparkle sparkle--point sparkle--cyan" style="top:35%; right:2.5%; animation-delay:.9s;"></span>
+      <span class="sparkle sparkle--point sparkle--point-sm sparkle--gold" style="top:45%; left:2%; animation-delay:3.4s;"></span>
+      <span class="sparkle sparkle--point sparkle--fuchsia" style="top:55%; right:3%; animation-delay:1.2s;"></span>
+      <span class="sparkle sparkle--point sparkle--point-blur sparkle--cyan" style="top:62%; left:4%; animation-delay:2.4s;"></span>
+      <span class="sparkle sparkle--point sparkle--violet" style="top:80%; right:10%; animation-delay:.6s;"></span>
+      <span class="sparkle sparkle--point sparkle--gold" style="top:90%; left:14%; animation-delay:1.9s;"></span>
+
+      <span class="sparkle sparkle--point sparkle--gold" style="top:6%; right:20%; animation-delay:.8s;"></span>
+      <span class="sparkle sparkle--point sparkle--cyan" style="top:40%; left:1.3%; animation-delay:2.2s;"></span>
+      <span class="sparkle sparkle--point sparkle--point-lg sparkle--violet" style="top:85%; right:22%; animation-delay:1.4s;"></span>
+
+      <span class="sparkle sparkle--point sparkle--point-lg sparkle--fuchsia" style="top:50%; right:1.5%; animation-delay:.5s;"></span>
+    </div>
+
+    <div class="hero-content-mirror">
       <div class="hero-follow">
 
         <div
@@ -373,7 +734,7 @@
         </div>
 
         <span class="follow-title">
-          Cruzá el portal mágico
+          Cruzá el portal con nosotras
         </span>
 
         <div class="follow-links">
@@ -523,67 +884,71 @@
       </div>
 
       <!-- SUSCRIPCIÓN -->
-      <div class="hero-newsletter">
-        <div class="follow-divider" aria-hidden="true">
-          <span class="follow-line"></span>
-          <span class="follow-diamond"></span>
-          <span class="follow-line"></span>
+      <div class="hero-newsletter" id="suscribirse">
+        <span class="newsletter-halo newsletter-halo--cyan" aria-hidden="true"></span>
+
+        <div class="newsletter-card">
+          <div class="follow-divider" aria-hidden="true">
+            <span class="follow-line"></span>
+            <span class="follow-diamond"></span>
+            <span class="follow-line"></span>
+          </div>
+
+          <h2 class="newsletter-title">Entrá al universo de<br class="newsletter-title-break" /> Las Trillizas de Oro<br class="newsletter-title-break2" /> y el Libro Mágico</h2>
+          <p class="newsletter-text">Recibí antes que nadie nuevos episodios, canciones y novedades.</p>
+
+          <form class="newsletter-form" id="newsletterForm" novalidate>
+            <input
+              class="newsletter-input"
+              type="email"
+              name="email"
+              placeholder="Tu correo electrónico"
+              autocomplete="email"
+              required
+            />
+            <span class="newsletter-status" aria-hidden="true">
+              <svg class="newsletter-check" viewBox="0 0 24 24">
+                <path
+                  d="M4 12.5l5 5L20 6.5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+              <svg class="newsletter-cross" viewBox="0 0 24 24">
+                <path
+                  d="M5 5l14 14M19 5L5 19"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
+            <button type="submit" class="newsletter-button" aria-label="Suscribirme">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M4 12h16m0 0l-6-6m6 6l-6 6"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+          </form>
+
+          <p
+            class="newsletter-feedback"
+            id="newsletterFeedback"
+            role="status"
+            aria-live="polite"
+          ></p>
         </div>
-
-        <h2 class="newsletter-title">Entrá al universo de<br class="newsletter-title-break" /> Las Trillizas de Oro y el Libro Mágico</h2>
-        <p class="newsletter-text">Recibí antes que nadie nuevos videoclips, canciones y novedades.</p>
-
-        <form class="newsletter-form" id="newsletterForm" novalidate>
-          <input
-            class="newsletter-input"
-            type="email"
-            name="email"
-            placeholder="Tu correo electrónico"
-            autocomplete="email"
-            required
-          />
-          <span class="newsletter-status" aria-hidden="true">
-            <svg class="newsletter-check" viewBox="0 0 24 24">
-              <path
-                d="M4 12.5l5 5L20 6.5"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-            <svg class="newsletter-cross" viewBox="0 0 24 24">
-              <path
-                d="M5 5l14 14M19 5L5 19"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </span>
-          <button type="submit" class="newsletter-button" aria-label="Suscribirme">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path
-                d="M4 12h16m0 0l-6-6m6 6l-6 6"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </button>
-        </form>
-
-        <p
-          class="newsletter-feedback"
-          id="newsletterFeedback"
-          role="status"
-          aria-live="polite"
-        ></p>
       </div>
 
       <!-- FOOTER -->
@@ -591,30 +956,166 @@
         <span class="footer-rule" aria-hidden="true"></span>
         <div class="footer-inner">
           <span class="footer-text">By Babidibu Records</span>
-          <img
-            class="footer-logo-tv"
-            src="imagenes/Logo%20BABIDIBU%20TV.png"
-            alt="Babidibu TV"
-            width="849"
-            height="344"
-          />
-          <img
-            class="footer-logo"
-            src="imagenes/logo%20nuevo%20babidibu%20.png"
-            alt="Babidibu Records"
-            width="1230"
-            height="338"
-          />
+          <a
+            href="https://linktw.in/qeBBaV"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Abrir el canal de YouTube de Babidibu TV"
+            data-event="OpenSocial"
+            data-destination="YouTube"
+            data-track-button="footer_babidibu_tv"
+          >
+            <img
+              class="footer-logo-tv"
+              src="imagenes/Logo%20BABIDIBU%20TV.png"
+              alt="Babidibu TV"
+              width="849"
+              height="344"
+            />
+          </a>
+          <a
+            href="https://babidiburecords.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Abrir el sitio de Babidibu Records"
+            data-event="OpenSocial"
+            data-destination="BabidibuRecords"
+            data-track-button="footer_babidibu_records"
+          >
+            <img
+              class="footer-logo"
+              src="imagenes/logo%20nuevo%20babidibu%20.png"
+              alt="Babidibu Records"
+              width="1230"
+              height="338"
+            />
+          </a>
         </div>
       </footer>
-
     </div>
-
   </section>
 
   <script src="config.js?v=20260827152227"></script>
   <script src="tracking.js?v=20260714151543"></script>
-  <script src="script.js?v=20260827152227"></script>
+  <script src="script.js?v=20260904navhide1"></script>
+
+  <!-- ================================================
+       BORRADOR VIERNES: datos de los episodios de la serie.
+       PARA AGREGAR UN EPISODIO NUEVO: agregar un objeto más acá
+       abajo (temporada, número, título, thumbnail, link de YouTube)
+       — la tarjeta aparece sola, no hay que tocar nada de HTML/CSS.
+       "thumbnail" puede quedar vacío ("") mientras no haya foto
+       todavía: se muestra un ícono de play en su lugar.
+       ================================================ -->
+  <script>
+    var episodes = [
+      {
+        season: 1,
+        episode: 1,
+        title: 'Trixipop',
+        thumbnail: 'imagenes/miniaturas-ytminiatura_-trixipop%201.png',
+        youtubeUrl: 'https://linktw.in/WLomzs'
+      },
+      {
+        season: 1,
+        episode: 2,
+        title: 'Locomotora llega a la Estación',
+        thumbnail: 'imagenes/miniatura_locomotora_web.jpg',
+        youtubeUrl: 'https://linktw.in/QtAEqZ'
+      },
+      {
+        season: 1,
+        episode: 3,
+        title: 'Amiga Hermana',
+        thumbnail: '',
+        youtubeUrl: 'https://linktw.in/Dnofjd'
+      },
+      {
+        season: 1,
+        episode: 4,
+        title: 'Susanita',
+        thumbnail: '',
+        youtubeUrl: 'https://linktw.in/Dnofjd'
+      }
+    ];
+
+    (function () {
+      var grid = document.getElementById('episodesGrid');
+      if (!grid) return;
+      var soonCard = grid.querySelector('.episode-tile--soon');
+
+      episodes.forEach(function (ep) {
+        var a = document.createElement('a');
+        a.className = 'episode-tile';
+        a.href = ep.youtubeUrl || '#';
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        a.setAttribute('aria-label', 'Ver episodio ' + ep.episode + ': ' + ep.title);
+        a.setAttribute('data-event', 'WatchVideo');
+        a.setAttribute('data-destination', 'YouTube');
+        a.setAttribute('data-track-button', 'episodio_' + ep.episode);
+
+        var playIconHtml =
+          '<span class="episode-tile__play" aria-hidden="true">'
+          + '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="none" '
+          + 'stroke="currentColor" stroke-width="1.6" stroke-linecap="round" '
+          + 'stroke-linejoin="round" /></svg></span>';
+
+        // Con imagen real: solo la foto (sin ícono de play encima —
+        // ya está el CTA "Ver episodio" abajo, no hace falta duplicar
+        // la señal). Sin imagen todavía: el ícono de play como antes,
+        // para que no quede una miniatura vacía.
+        var thumbHtml = ep.thumbnail
+          ? '<img src="' + ep.thumbnail + '" alt="" loading="lazy" />'
+          : playIconHtml;
+
+        var episodeNum = ep.episode < 10 ? '0' + ep.episode : String(ep.episode);
+
+        a.innerHTML =
+          '<span class="episode-tile__thumb">' + thumbHtml + '</span>' +
+          '<span class="episode-tile__number">Episodio ' + episodeNum + '</span>' +
+          '<span class="episode-tile__title">' + ep.title + '</span>' +
+          '<span class="episode-tile__cta">' +
+          '<svg class="episode-tile__cta-icon" viewBox="0 0 28 20" aria-hidden="true">' +
+          '<rect x="0" y="0" width="28" height="20" rx="5" fill="#FF0000" />' +
+          '<path d="M11.5 5.5v9l7.5-4.5z" fill="#fff" /></svg>' +
+          '<span>Ver episodio en YouTube</span>' +
+          '<svg class="episode-tile__cta-arrow" viewBox="0 0 24 24" aria-hidden="true">' +
+          '<path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" ' +
+          'stroke-linecap="round" stroke-linejoin="round" /></svg>' +
+          '</span>';
+
+        if (soonCard) {
+          grid.insertBefore(a, soonCard);
+        } else {
+          grid.appendChild(a);
+        }
+      });
+    })();
+  </script>
+
+  <!-- BORRADOR VIERNES: menú hamburguesa de la barra de navegación. -->
+  <script>
+    (function () {
+      var burger = document.getElementById('siteNavBurger');
+      var mobileMenu = document.getElementById('siteNavMobile');
+      if (!burger || !mobileMenu) return;
+
+      burger.addEventListener('click', function () {
+        var isOpen = mobileMenu.classList.toggle('is-open');
+        burger.classList.toggle('is-open', isOpen);
+        burger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      });
+
+      mobileMenu.addEventListener('click', function (e) {
+        if (e.target.closest('a')) {
+          mobileMenu.classList.remove('is-open');
+          burger.classList.remove('is-open');
+          burger.setAttribute('aria-expanded', 'false');
+        }
+      });
+    })();
+  </script>
 
 </body>
 </html>
