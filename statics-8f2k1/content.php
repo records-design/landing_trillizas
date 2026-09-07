@@ -164,11 +164,16 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
           </div>
         </div>
         <label>Título</label>
-        <input type="text" id="new_title" />
-        <label>Miniatura (ruta de imagen, ej: imagenes/foo.jpg) — opcional</label>
-        <input type="text" id="new_thumbnail" placeholder="Dejalo vacío si todavía no hay imagen" />
+        <input type="text" id="new_title" maxlength="255" />
+        <label>Miniatura — opcional (si no subís nada, se muestra un ícono de play)</label>
+        <div class="thumb-uploader">
+          <img class="thumb-preview" id="new_thumbnail_preview" style="display:none" />
+          <input type="hidden" id="new_thumbnail" value="" />
+          <input type="file" accept="image/jpeg,image/png,image/webp" id="new_thumbnail_file" />
+          <span class="status" id="new_thumbnail_status"></span>
+        </div>
         <label>Link de YouTube</label>
-        <input type="url" id="new_youtube_url" />
+        <input type="url" id="new_youtube_url" maxlength="500" placeholder="https://..." />
         <div class="ep-actions">
           <button class="small" id="addEpisodeBtn">+ Agregar episodio</button>
           <span class="status" id="addEpisodeStatus"></span>
@@ -186,6 +191,44 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
     ];
 
     let episodesCache = [];
+
+    // Sube una imagen elegida en un <input type="file"> a imagenes/,
+    // y guarda la ruta resultante en el input escondido correspondiente
+    // + muestra la vista previa. Así nadie tiene que saber usar
+    // FileZilla ni escribir una ruta de archivo a mano.
+    async function uploadImage(fileInput, hiddenInput, previewImg, statusEl) {
+      const file = fileInput.files[0];
+      if (!file) return;
+
+      statusEl.textContent = 'Subiendo imagen...';
+      statusEl.className = 'status';
+
+      const formData = new FormData();
+      formData.append('image', file);
+
+      try {
+        const res = await fetch('upload-image.php', { method: 'POST', body: formData });
+        const d = await res.json();
+        if (!d.ok) throw new Error(d.error || 'No se pudo subir la imagen.');
+        hiddenInput.value = d.path;
+        previewImg.src = '../' + d.path;
+        previewImg.style.display = 'block';
+        statusEl.textContent = '✓ Imagen subida';
+        statusEl.className = 'status ok';
+      } catch (e) {
+        statusEl.textContent = e.message || 'No se pudo subir la imagen.';
+        statusEl.className = 'status err';
+      }
+    }
+
+    // Límite de caracteres en todos los campos de texto/link (mismo
+    // tope que valida el servidor) — así el navegador ya avisa antes
+    // de intentar guardar, en vez de que aparezca un error recién al
+    // apretar el botón.
+    CONTENT_KEYS.forEach((key) => {
+      const el = document.getElementById(key);
+      if (el) el.maxLength = 500;
+    });
 
     async function loadContent() {
       const res = await fetch('../backend/content.php');
@@ -229,11 +272,16 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
             </div>
           </div>
           <label>Título</label>
-          <input type="text" value="${escapeAttr(ep.title)}" data-field="title" />
-          <label>Miniatura (ruta de imagen) — opcional</label>
-          <input type="text" value="${escapeAttr(ep.thumbnail || '')}" data-field="thumbnail" placeholder="Dejalo vacío si todavía no hay imagen" />
+          <input type="text" maxlength="255" value="${escapeAttr(ep.title)}" data-field="title" />
+          <label>Miniatura — opcional (si no hay ninguna, se muestra un ícono de play)</label>
+          <div class="thumb-uploader">
+            <img class="thumb-preview" data-role="thumb-preview" style="display:${ep.thumbnail ? 'block' : 'none'}" src="${ep.thumbnail ? '../' + escapeAttr(ep.thumbnail) : ''}" />
+            <input type="hidden" value="${escapeAttr(ep.thumbnail || '')}" data-field="thumbnail" />
+            <input type="file" accept="image/jpeg,image/png,image/webp" data-role="thumb-file" />
+            <span class="status" data-role="thumb-status"></span>
+          </div>
           <label>Link de YouTube</label>
-          <input type="url" value="${escapeAttr(ep.youtube_url)}" data-field="youtube_url" />
+          <input type="url" maxlength="500" value="${escapeAttr(ep.youtube_url)}" data-field="youtube_url" />
           <div class="row-check">
             <input type="checkbox" data-field="is_visible" ${ep.is_visible ? 'checked' : ''} />
             <label>Visible en la web</label>
@@ -246,6 +294,14 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
         `;
         card.querySelector('.save-ep').addEventListener('click', () => saveEpisode(ep.id, card));
         card.querySelector('.delete-ep').addEventListener('click', () => deleteEpisode(ep.id, ep.title));
+        card.querySelector('[data-role="thumb-file"]').addEventListener('change', (e) => {
+          uploadImage(
+            e.target,
+            card.querySelector('[data-field="thumbnail"]'),
+            card.querySelector('[data-role="thumb-preview"]'),
+            card.querySelector('[data-role="thumb-status"]')
+          );
+        });
         wrap.appendChild(card);
       });
     }
@@ -279,12 +335,12 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
           body: JSON.stringify(payload),
         });
         const d = await res.json();
-        if (!d.ok) throw new Error(d.error || 'error');
+        if (!d.ok) throw new Error(d.error || 'No se pudo guardar.');
         statusEl.textContent = '✓ Guardado';
         statusEl.className = 'status ep-status ok';
         loadEpisodesWithIds();
       } catch (e) {
-        statusEl.textContent = 'Error al guardar';
+        statusEl.textContent = e.message || 'No se pudo guardar.';
         statusEl.className = 'status ep-status err';
       }
     }
@@ -298,6 +354,15 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
       });
       loadEpisodesWithIds();
     }
+
+    document.getElementById('new_thumbnail_file').addEventListener('change', () => {
+      uploadImage(
+        document.getElementById('new_thumbnail_file'),
+        document.getElementById('new_thumbnail'),
+        document.getElementById('new_thumbnail_preview'),
+        document.getElementById('new_thumbnail_status')
+      );
+    });
 
     document.getElementById('addEpisodeBtn').addEventListener('click', async () => {
       const statusEl = document.getElementById('addEpisodeStatus');
@@ -325,13 +390,16 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
           body: JSON.stringify(payload),
         });
         const d = await res.json();
-        if (!d.ok) throw new Error(d.error || 'error');
+        if (!d.ok) throw new Error(d.error || 'No se pudo guardar.');
         statusEl.textContent = '';
         ['new_season', 'new_episode_number', 'new_sort_order', 'new_title', 'new_thumbnail', 'new_youtube_url']
           .forEach((id) => { document.getElementById(id).value = id === 'new_season' ? '1' : ''; });
+        document.getElementById('new_thumbnail_preview').style.display = 'none';
+        document.getElementById('new_thumbnail_status').textContent = '';
+        document.getElementById('new_thumbnail_file').value = '';
         loadEpisodesWithIds();
       } catch (e) {
-        statusEl.textContent = 'Error al guardar';
+        statusEl.textContent = e.message || 'No se pudo guardar.';
         statusEl.className = 'status err';
       }
     });
@@ -351,11 +419,11 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
           body: JSON.stringify({ action: 'save_content', fields }),
         });
         const d = await res.json();
-        if (!d.ok) throw new Error(d.error || 'error');
+        if (!d.ok) throw new Error(d.error || 'No se pudo guardar.');
         statusEl.textContent = '✓ Guardado — ya está en vivo';
         statusEl.className = 'status ok';
       } catch (e) {
-        statusEl.textContent = 'Error al guardar';
+        statusEl.textContent = e.message || 'No se pudo guardar.';
         statusEl.className = 'status err';
       }
     });
