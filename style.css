@@ -3748,6 +3748,23 @@ body.has-sections .hero-content {
   }
 }
 
+/* El Trixi Pop de fondo está posicionado suelto (pegado al borde
+   derecho de TODA la sección, no de la caja de tapa+texto) — en
+   desktop grande la caja llega casi hasta ese borde y calza bien,
+   pero en cualquier ancho de tablet (701-1199px) la caja queda
+   angosta y pegada a la izquierda, dejando un hueco vacío enorme en
+   el medio hasta el Trixi Pop, que además puede solaparse con el
+   texto. Se saca en todo ese rango (mismo criterio que en mobile) y
+   se deja solo en desktop grande (1200px+), que es el único ancho
+   para el que está pensado. */
+@media (min-width: 701px) and (max-width: 1199px) {
+  .album-section__trixi-bg,
+  .album-section__trixi-halo,
+  .album-section__trixi-sparkles {
+    display: none;
+  }
+}
+
 .album-section__volume {
   color: var(--ivory);
   font-family: var(--font-ui);
