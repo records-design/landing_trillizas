@@ -41,6 +41,15 @@ function q($pdo, $sql, $params)
 $range = [$fromDt, $toDt];
 
 // ------------------------------------------------------------
+// Los 4 objetivos reales de la landing (usados por el embudo y por
+// "Fuentes por conversión" / "Nuevos vs. recurrentes" más abajo).
+// ------------------------------------------------------------
+const YOUTUBE_SUB_BUTTONS = ['social_youtube', 'proximos_episodios_canal', 'footer_babidibu_tv'];
+const SERIE_BUTTONS = ['ver_serie'];
+const ALBUM_BUTTONS = ['escuchar_album', 'social_spotify'];
+const GOAL_BUTTONS_SQL = "button IN ('ver_serie','escuchar_album','social_spotify','social_youtube','proximos_episodios_canal','footer_babidibu_tv') OR button REGEXP '^episodio_[0-9]+$'";
+
+// ------------------------------------------------------------
 // Filtros opcionales por anuncio específico (?ad_id=...) y/o por
 // fuente de tráfico (?utm_source=..., ej. "qr_cartel" para un QR de
 // vía pública). Cuando están activos, todas las métricas de abajo
@@ -127,6 +136,24 @@ $totalClicks = (int) q($pdo,
 $sessionsWithClick = (int) q($pdo,
     "SELECT COUNT(DISTINCT session_id) n FROM events WHERE event_name='click' AND created_at BETWEEN ? AND ?{$adEventsCond}",
     array_merge($range, $adEventsParam))[0]['n'];
+
+// Sesiones que hicieron click en alguno de los 4 objetivos reales
+// (ver la serie, escuchar el álbum/canción, o suscribirse al canal).
+$sessionsWithGoalClick = (int) q($pdo,
+    "SELECT COUNT(DISTINCT session_id) n FROM events WHERE event_name='click' AND (" . GOAL_BUTTONS_SQL . ") AND created_at BETWEEN ? AND ?{$adEventsCond}",
+    array_merge($range, $adEventsParam))[0]['n'];
+
+// Sesiones que llegaron al final del todo: se suscribieron (al
+// newsletter o al canal de YouTube — cualquiera de las dos cuenta
+// como "convirtió del todo").
+$ytPlaceholdersFunnel = implode(',', array_fill(0, count(YOUTUBE_SUB_BUTTONS), '?'));
+$sessionsSubscribed = (int) q($pdo,
+    "SELECT COUNT(DISTINCT session_id) n FROM (
+        SELECT session_id FROM subscribers WHERE created_at BETWEEN ? AND ?{$subsCond}
+        UNION
+        SELECT session_id FROM events WHERE event_name='click' AND button IN ($ytPlaceholdersFunnel) AND created_at BETWEEN ? AND ?{$adEventsCond}
+     ) t",
+    array_merge($range, $subsParam, YOUTUBE_SUB_BUTTONS, $range, $adEventsParam))[0]['n'];
 
 // ------------------------------------------------------------
 // Activos ahora (últimos 5 minutos)
@@ -277,16 +304,6 @@ $paidVsOrganic = q($pdo,
 // ------------------------------------------------------------
 const MIN_SAMPLE_SOURCE = 30;
 
-// Botones que llevan directo a suscribirse/seguir el canal de
-// YouTube (no "ver_serie"/"episodio_N", que son mirar un video
-// puntual, no suscribirse al canal en sí).
-const YOUTUBE_SUB_BUTTONS = ['social_youtube', 'proximos_episodios_canal', 'footer_babidibu_tv'];
-// "Ver la serie": el botón del hero + cada episodio puntual (episodio_N,
-// para cualquier cantidad, incluso los que se agreguen más adelante).
-const SERIE_BUTTONS = ['ver_serie'];
-// "Escuchar el álbum": el botón del hero/sección álbum + el link a Spotify.
-const ALBUM_BUTTONS = ['escuchar_album', 'social_spotify'];
-
 $srcCondSess = '';
 $srcCondSessParam = [];
 if ($adFilter !== null) { $srcCondSess .= ' AND sess.ad_id = ?'; $srcCondSessParam[] = $adFilter; }
@@ -355,6 +372,43 @@ $newVsReturning = q($pdo,
      WHERE first_seen BETWEEN ? AND ?{$adSessionsCond}
      GROUP BY tipo",
     array_merge($range, $adSessionsParam));
+
+// Mismo cruce que "Fuentes por conversión", pero por nuevo/recurrente
+// en vez de por fuente: ¿los que ya habían entrado antes convierten
+// mejor que los que llegan por primera vez?
+$ytPlaceholdersNvr = implode(',', array_fill(0, count(YOUTUBE_SUB_BUTTONS), '?'));
+$newVsReturningConversion = q($pdo,
+    "SELECT
+        CASE
+          WHEN sess.visitor_id IS NULL THEN '(sin dato)'
+          WHEN EXISTS (
+            SELECT 1 FROM sessions s2
+             WHERE s2.visitor_id = sess.visitor_id
+               AND s2.first_seen < sess.first_seen
+          ) THEN 'recurrente'
+          ELSE 'nuevo'
+        END AS tipo,
+        COUNT(DISTINCT sess.session_id) visitas,
+        COUNT(DISTINCT CASE WHEN " . str_replace('button', 'ev.button', GOAL_BUTTONS_SQL) . " THEN sess.session_id END) con_objetivo,
+        COUNT(DISTINCT sub.email) suscripciones,
+        COUNT(DISTINCT CASE WHEN ev.button IN ($ytPlaceholdersNvr) THEN sess.session_id END) con_youtube
+     FROM sessions sess
+     LEFT JOIN events ev ON ev.session_id = sess.session_id AND ev.event_name = 'click'
+     LEFT JOIN subscribers sub ON sub.session_id = sess.session_id
+     WHERE sess.first_seen BETWEEN ? AND ?{$srcCondSess}
+     GROUP BY tipo",
+    array_merge(YOUTUBE_SUB_BUTTONS, $range, $srcCondSessParam));
+
+foreach ($newVsReturningConversion as &$nvc) {
+    $nvc['visitas'] = (int) $nvc['visitas'];
+    $nvc['con_objetivo'] = (int) $nvc['con_objetivo'];
+    $nvc['suscripciones'] = (int) $nvc['suscripciones'];
+    $nvc['con_youtube'] = (int) $nvc['con_youtube'];
+    $nvc['pct_objetivo'] = $nvc['visitas'] ? round($nvc['con_objetivo'] / $nvc['visitas'] * 100, 1) : 0;
+    $nvc['pct_sub'] = $nvc['visitas'] ? round($nvc['suscripciones'] / $nvc['visitas'] * 100, 1) : 0;
+    $nvc['pct_youtube'] = $nvc['visitas'] ? round($nvc['con_youtube'] / $nvc['visitas'] * 100, 1) : 0;
+}
+unset($nvc);
 
 // ------------------------------------------------------------
 // Interés real en el video y la canción: tasa de clic sobre el
@@ -498,8 +552,10 @@ echo json_encode([
         ],
     ],
     'funnel' => [
-        'visits'              => $uniqueVisitors,
-        'sessions_with_click' => $sessionsWithClick,
+        'visits'                  => $uniqueVisitors,
+        'sessions_with_click'     => $sessionsWithClick,
+        'sessions_with_goal_click' => $sessionsWithGoalClick,
+        'sessions_subscribed'     => $sessionsSubscribed,
     ],
     'timeline'         => $timeline,
     'clicks_by_button' => $clicksByButton,
@@ -512,6 +568,7 @@ echo json_encode([
     'cities'           => $cities,
     'ads'              => $ads,
     'new_vs_returning' => $newVsReturning,
+    'new_vs_returning_conversion' => $newVsReturningConversion,
     'button_interest'  => $buttonInterest,
     'music_engagement' => $musicEngagement,
     'page_engagement'  => $pageEngagement,

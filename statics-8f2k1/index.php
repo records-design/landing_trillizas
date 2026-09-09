@@ -125,6 +125,10 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
         <h2>Nuevos vs. recurrentes</h2>
         <canvas id="chartNewReturning"></canvas>
         <p class="muted">"Nuevo": es la primera vez que esa persona entra a la web. "Recurrente": ya había entrado antes (por ejemplo, volvió por un anuncio de remarketing).</p>
+        <table id="tblNewReturningConversion" style="margin-top:14px">
+          <thead><tr><th>Tipo</th><th class="n">Visitas</th><th class="n">% objetivo real</th><th class="n">% canal</th><th class="n">% newsletter</th></tr></thead>
+          <tbody></tbody>
+        </table>
       </div>
       <div class="panel">
         <h2>Embudo de conversión</h2>
@@ -345,14 +349,24 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
       drawChart('chartPaidOrganic', 'doughnut',
         d.paid_vs_organic.map(r => r.tipo), d.paid_vs_organic.map(r => +r.n));
 
-      // Embudo
-      const v = d.funnel.visits || 0, c = d.funnel.sessions_with_click || 0;
-      const pct = v ? (c / v * 100) : 0;
-      $('funnel').innerHTML =
-        `<div class="funnel-step"><span>Visitantes</span><strong>${fmt(v)}</strong></div>
-         <div class="funnel-bar" style="width:100%"></div>
-         <div class="funnel-step" style="margin-top:14px"><span>Hicieron clic en un botón</span><strong>${fmt(c)} (${pct.toFixed(1)}%)</strong></div>
-         <div class="funnel-bar" style="width:${Math.max(pct,2)}%"></div>`;
+      // Embudo — 4 escalones: visitantes -> hicieron click en algo ->
+      // hicieron click en el objetivo real (serie/álbum/canal) -> se
+      // suscribieron (newsletter o canal, lo que pase primero cuenta).
+      const v = d.funnel.visits || 0;
+      const c = d.funnel.sessions_with_click || 0;
+      const g = d.funnel.sessions_with_goal_click || 0;
+      const s = d.funnel.sessions_subscribed || 0;
+      const steps = [
+        ['Visitantes', v],
+        ['Hicieron clic en un botón', c],
+        ['Hicieron clic en el objetivo real (serie/álbum/canal)', g],
+        ['Se suscribieron (newsletter o canal)', s],
+      ];
+      $('funnel').innerHTML = steps.map(([label, n], i) => {
+        const pct = v ? (n / v * 100) : 0;
+        return `<div class="funnel-step"${i ? ' style="margin-top:14px"' : ''}><span>${label}</span><strong>${fmt(n)}${i ? ` (${pct.toFixed(1)}%)` : ''}</strong></div>` +
+          `<div class="funnel-bar" style="width:${i ? Math.max(pct, 2) : 100}%"></div>`;
+      }).join('');
 
       // Tablas
       rows('tblPlacement', d.placements, r => `<td>${r.placement}</td><td class="n">${fmt(+r.n)}</td>`);
@@ -366,6 +380,11 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
           `<td class="n"${pctClass}>${r.pct_youtube}%</td>` +
           `<td class="n"${pctClass}>${r.pct_sub}%</td>`;
       });
+      rows('tblNewReturningConversion', d.new_vs_returning_conversion, (r) =>
+        `<td>${r.tipo}</td><td class="n">${fmt(r.visitas)}</td>` +
+        `<td class="n">${r.pct_objetivo}%</td>` +
+        `<td class="n">${r.pct_youtube}%</td>` +
+        `<td class="n">${r.pct_sub}%</td>`);
       rows('tblCities', d.cities, r => `<td>${r.city}${r.cc ? ' · ' + r.cc : ''}</td><td class="n">${fmt(+r.n)}</td>`);
       rows('tblAds', d.ads, r =>
         `<td>${r.ad_name ?? r.ad_id}</td><td>${r.campaign_name ?? ''}</td><td class="n">${fmt(+r.visitas)}</td><td class="n">${fmt(+r.clics)}</td><td class="n">${fmt(+r.suscripciones)}</td>`);
