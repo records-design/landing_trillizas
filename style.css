@@ -4027,9 +4027,15 @@ body.has-sections {
      un video/gradiente de fondo con position:fixed propio, el blur
      no alcanza a taparlo del todo al scrollear rápido — se ve el
      fondo "pasando" detrás de la barra. Acá se la deja opaca del
-     todo para que no se transparente nada. */
+     todo para que no se transparente nada. También se saca el
+     backdrop-filter (blur): con el fondo ya sólido no hace falta, y
+     en algunos celulares esa combinación (fixed + blur) parpadea o
+     deja ver el contenido de atrás por una fracción de segundo
+     durante el scroll rápido, aunque el color de fondo esté bien. */
   .site-nav {
     background: rgb(15, 8, 26);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
   }
 }
 
