@@ -177,15 +177,15 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
       <div class="panel">
         <h2>¿Ven la serie y escuchan el álbum?</h2>
         <table id="tblButtonInterest">
-          <thead><tr><th>Botón</th><th class="n">% que lo tocó</th><th class="n">Cuánto tardaron en tocarlo</th></tr></thead>
+          <thead><tr><th>Botón</th><th>Tipo</th><th class="n">% que lo tocó</th><th class="n">Cuánto tardaron en tocarlo</th></tr></thead>
           <tbody></tbody>
         </table>
-        <p class="muted">"% que lo tocó" = de cada 100 personas que entran a la web, cuántas apretaron ese botón. "Cuánto tardaron" = el tiempo promedio desde que entraron hasta que lo apretaron — más tiempo suele significar que lo pensaron, no que fue un clic apurado sin querer.</p>
+        <p class="muted">"% que lo tocó" = de cada 100 personas que entran a la web, cuántas apretaron ese botón. "Cuánto tardaron" = el tiempo promedio desde que entraron hasta que lo apretaron — más tiempo suele significar que lo pensaron, no que fue un clic apurado sin querer. Separado por pagado/orgánico.</p>
       </div>
       <div class="panel">
         <h2>¿El interés en la música se transforma en suscriptores?</h2>
         <table id="tblMusicEngagement">
-          <thead><tr><th></th><th class="n">Personas que lo tocaron</th><th class="n">De esas, cuántas dejaron el mail</th></tr></thead>
+          <thead><tr><th>Tipo</th><th></th><th class="n">Personas que lo tocaron</th><th class="n">De esas, cuántas dejaron el mail</th></tr></thead>
           <tbody></tbody>
         </table>
         <p class="muted" id="bothClicksNote"></p>
@@ -442,17 +442,20 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
         return ms < 1000 ? `${ms} ms` : `${(ms / 1000).toFixed(1)} s`;
       };
       rows('tblButtonInterest', d.button_interest, r =>
-        `<td>${buttonLabel[r.button] ?? r.button}</td><td class="n">${r.pct_visitantes}%</td><td class="n">${fmtDwell(r.avg_dwell_ms)}</td>`);
+        `<td>${buttonLabel[r.button] ?? r.button}</td><td>${r.tipo}</td><td class="n">${r.pct_visitantes}%</td><td class="n">${fmtDwell(r.avg_dwell_ms)}</td>`);
 
-      // Cruce interés musical <-> suscripción
-      const me = d.music_engagement;
+      // Cruce interés musical <-> suscripción, separado por pagado/orgánico
       const pctSubs = (subs, clicks) => clicks ? (subs / clicks * 100).toFixed(1) : '0.0';
-      rows('tblMusicEngagement', [
-        { label: 'Ver la serie', clics: me.video.clics, subs: me.video.suscripciones },
-        { label: 'Escuchar el álbum', clics: me.cancion.clics, subs: me.cancion.suscripciones },
-      ], r => `<td>${r.label}</td><td class="n">${fmt(r.clics)}</td><td class="n">${fmt(r.subs)} (${pctSubs(r.subs, r.clics)}%)</td>`);
-      $('bothClicksNote').textContent =
-        `${fmt(me.ambos_clics)} persona(s) tocaron "Ver la serie" Y "Escuchar el álbum" — el segmento más interesado.`;
+      const meRows = [];
+      d.music_engagement.forEach((me) => {
+        meRows.push({ tipo: me.tipo, label: 'Ver la serie', clics: me.video.clics, subs: me.video.suscripciones });
+        meRows.push({ tipo: me.tipo, label: 'Escuchar el álbum', clics: me.cancion.clics, subs: me.cancion.suscripciones });
+      });
+      rows('tblMusicEngagement', meRows, r =>
+        `<td>${r.tipo}</td><td>${r.label}</td><td class="n">${fmt(r.clics)}</td><td class="n">${fmt(r.subs)} (${pctSubs(r.subs, r.clics)}%)</td>`);
+      $('bothClicksNote').textContent = d.music_engagement
+        .map((me) => `${me.tipo}: ${fmt(me.ambos_clics)} persona(s) tocaron "Ver la serie" Y "Escuchar el álbum"`)
+        .join(' · ');
 
       // Tiempo en la página
       const pe = d.page_engagement;

@@ -73,17 +73,13 @@ function sourceCond($sourceFilter, $sourceIsDirecto, $prefix = '')
 }
 
 $adEventsCond = '';
-$adEventsCondE = ''; // igual, pero con prefijo "e." para queries con JOIN (evita "column is ambiguous")
 $adEventsParam = [];
 if ($adFilter !== null) {
     $adEventsCond .= ' AND ad_id = ?';
-    $adEventsCondE .= ' AND e.ad_id = ?';
     $adEventsParam[] = $adFilter;
 }
 [$srcSql, $srcParam] = sourceCond($sourceFilter, $sourceIsDirecto);
-[$srcSqlE, $srcParamE] = sourceCond($sourceFilter, $sourceIsDirecto, 'e.');
 $adEventsCond .= $srcSql;
-$adEventsCondE .= $srcSqlE;
 $adEventsParam = array_merge($adEventsParam, $srcParam);
 
 // Mismo filtro de anuncio/fuente que $adEventsCond, pero con prefijo
@@ -482,69 +478,81 @@ $newVsReturningConversion = conversionBreakdown(
     $range
 );
 
+// Mismo filtro de anuncio/fuente, con prefijo "ev." — para las 2
+// queries de acá abajo, que unen events (alias ev) con sessions
+// (alias sess) para saber si esa visita fue pagada u orgánica.
+$adCondEv = '';
+$adCondEvParam = [];
+if ($adFilter !== null) { $adCondEv .= ' AND ev.ad_id = ?'; $adCondEvParam[] = $adFilter; }
+[$srcSqlEv, $srcParamEv] = sourceCond($sourceFilter, $sourceIsDirecto, 'ev.');
+$adCondEv .= $srcSqlEv;
+$adCondEvParam = array_merge($adCondEvParam, $srcParamEv);
+const PAID_TIPO_SQL = "CASE WHEN sess.utm_medium = 'paid' OR sess.fbclid IS NOT NULL OR sess.gclid IS NOT NULL THEN 'Pagado' ELSE 'Orgánico' END";
+
 // ------------------------------------------------------------
-// Interés real en el video y la canción: tasa de clic sobre el
-// total de visitantes (no solo el número absoluto) y cuánto tiempo
-// pasó, en promedio, antes de que alguien clickeara cada uno —
+// Interés real en "Ver la serie" y "Escuchar el álbum": tasa de clic
+// sobre el total de visitantes (no solo el número absoluto) y cuánto
+// tiempo pasó, en promedio, antes de que alguien clickeara cada uno —
 // un clic a los 2 segundos de entrar vale distinto que uno a los 30.
+// Separado por pagado/orgánico, para no mezclar los dos públicos.
 // ------------------------------------------------------------
 $buttonInterest = q($pdo,
-    "SELECT button,
-            COUNT(DISTINCT session_id) sesiones,
-            AVG(dwell_ms) avg_dwell_ms
-     FROM events
-     WHERE event_name = 'click' AND button IN ('ver_serie', 'escuchar_album')
-       AND created_at BETWEEN ? AND ?{$adEventsCond}
-     GROUP BY button",
-    array_merge($range, $adEventsParam));
+    "SELECT ev.button,
+            $PAID_TIPO_SQL AS tipo,
+            COUNT(DISTINCT ev.session_id) sesiones,
+            AVG(ev.dwell_ms) avg_dwell_ms
+     FROM events ev
+     JOIN sessions sess ON sess.session_id = ev.session_id
+     WHERE ev.event_name = 'click' AND ev.button IN ('ver_serie', 'escuchar_album')
+       AND ev.created_at BETWEEN ? AND ?{$adCondEv}
+     GROUP BY ev.button, tipo
+     ORDER BY ev.button, tipo",
+    array_merge($range, $adCondEvParam));
 foreach ($buttonInterest as &$b) {
+    $b['sesiones'] = (int) $b['sesiones'];
     $b['pct_visitantes'] = $uniqueVisitors ? round($b['sesiones'] / $uniqueVisitors * 100, 1) : 0;
     $b['avg_dwell_ms'] = $b['avg_dwell_ms'] !== null ? round($b['avg_dwell_ms']) : null;
 }
 unset($b);
 
 // ------------------------------------------------------------
-// Cruce interés musical <-> suscripción: de la gente que clickeó
-// el video o la canción, ¿cuántos además dejaron el mail? Y cuántos
-// clickearon LOS DOS (el segmento más interesado de todos).
+// Cruce interés musical <-> suscripción, separado por pagado/orgánico:
+// de la gente que clickeó "ver la serie" o "escuchar el álbum",
+// ¿cuántos además dejaron el mail? Y cuántos clickearon LOS DOS (el
+// segmento más interesado de todos), en cada balde.
 // ------------------------------------------------------------
-$videoClicks = (int) q($pdo,
-    "SELECT COUNT(DISTINCT session_id) n FROM events
-     WHERE event_name='click' AND button='ver_serie' AND created_at BETWEEN ? AND ?{$adEventsCond}",
-    array_merge($range, $adEventsParam))[0]['n'];
+$musicEngagementRows = q($pdo,
+    "SELECT
+        tipo,
+        SUM(has_serie) clics_serie,
+        SUM(CASE WHEN has_serie = 1 AND has_news = 1 THEN 1 ELSE 0 END) subs_serie,
+        SUM(has_album) clics_album,
+        SUM(CASE WHEN has_album = 1 AND has_news = 1 THEN 1 ELSE 0 END) subs_album,
+        SUM(CASE WHEN has_serie = 1 AND has_album = 1 THEN 1 ELSE 0 END) ambos_clics
+     FROM (
+        SELECT sess.session_id,
+            $PAID_TIPO_SQL AS tipo,
+            MAX(CASE WHEN ev.button = 'ver_serie' THEN 1 ELSE 0 END) has_serie,
+            MAX(CASE WHEN ev.button = 'escuchar_album' THEN 1 ELSE 0 END) has_album,
+            MAX(CASE WHEN sub.email IS NOT NULL THEN 1 ELSE 0 END) has_news
+        FROM sessions sess
+        LEFT JOIN events ev ON ev.session_id = sess.session_id AND ev.event_name = 'click'
+        LEFT JOIN subscribers sub ON sub.session_id = sess.session_id
+        WHERE sess.first_seen BETWEEN ? AND ?{$srcCondSess}
+        GROUP BY sess.session_id, tipo
+     ) t
+     GROUP BY tipo",
+    array_merge($range, $srcCondSessParam));
 
-$videoSubs = (int) q($pdo,
-    "SELECT COUNT(DISTINCT e.session_id) n FROM events e
-     JOIN subscribers s ON s.session_id = e.session_id
-     WHERE e.event_name='click' AND e.button='ver_serie' AND e.created_at BETWEEN ? AND ?{$adEventsCondE}",
-    array_merge($range, $adEventsParam))[0]['n'];
-
-$songClicks = (int) q($pdo,
-    "SELECT COUNT(DISTINCT session_id) n FROM events
-     WHERE event_name='click' AND button='escuchar_album' AND created_at BETWEEN ? AND ?{$adEventsCond}",
-    array_merge($range, $adEventsParam))[0]['n'];
-
-$songSubs = (int) q($pdo,
-    "SELECT COUNT(DISTINCT e.session_id) n FROM events e
-     JOIN subscribers s ON s.session_id = e.session_id
-     WHERE e.event_name='click' AND e.button='escuchar_album' AND e.created_at BETWEEN ? AND ?{$adEventsCondE}",
-    array_merge($range, $adEventsParam))[0]['n'];
-
-$bothClicks = (int) q($pdo,
-    "SELECT COUNT(DISTINCT e1.session_id) n FROM events e1
-     WHERE e1.event_name='click' AND e1.button='ver_serie' AND e1.created_at BETWEEN ? AND ?{$adEventsCond}
-       AND EXISTS (
-         SELECT 1 FROM events e2
-          WHERE e2.session_id = e1.session_id AND e2.event_name='click'
-            AND e2.button='escuchar_album' AND e2.created_at BETWEEN ? AND ?{$adEventsCond}
-       )",
-    array_merge([$fromDt, $toDt], $adEventsParam, [$fromDt, $toDt], $adEventsParam))[0]['n'];
-
-$musicEngagement = [
-    'video' => ['clics' => $videoClicks, 'suscripciones' => $videoSubs],
-    'cancion' => ['clics' => $songClicks, 'suscripciones' => $songSubs],
-    'ambos_clics' => $bothClicks,
-];
+$musicEngagement = [];
+foreach ($musicEngagementRows as $row) {
+    $musicEngagement[] = [
+        'tipo' => $row['tipo'],
+        'video' => ['clics' => (int) $row['clics_serie'], 'suscripciones' => (int) $row['subs_serie']],
+        'cancion' => ['clics' => (int) $row['clics_album'], 'suscripciones' => (int) $row['subs_album']],
+        'ambos_clics' => (int) $row['ambos_clics'],
+    ];
+}
 
 // ------------------------------------------------------------
 // Tiempo en la página, en general (no solo antes de un clic): se
