@@ -4683,7 +4683,7 @@ body.has-sections .hero {
 
 .lore-modal__title {
   align-self: stretch;
-  margin: 0 0 18px;
+  margin: 0 0 6px;
   text-align: center;
 
   color: var(--gold-title);
@@ -4692,6 +4692,19 @@ body.has-sections .hero {
   font-weight: 600;
   line-height: 1.2;
   text-shadow: 0 0 18px rgba(232, 201, 123, 0.35);
+}
+
+.lore-modal__subtitle {
+  align-self: stretch;
+  margin: 0 0 18px;
+  text-align: center;
+
+  color: var(--gold-light);
+  font-family: var(--font-ui);
+  font-size: clamp(13px, 1.4vw, 15px);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  opacity: 0.85;
 }
 
 .lore-modal__body {
@@ -4758,6 +4771,33 @@ body.has-sections .hero {
 .lore-modal__trait-text strong {
   color: var(--gold-title);
   font-weight: 700;
+}
+
+/* Cada fuerza con su propio color (mismo trío rosa/violeta/cian que
+   ya se usa en los halos de fondo de las secciones), para que se
+   distingan de un vistazo en vez de ser 3 líneas iguales. */
+.lore-modal__trait--alma .lore-modal__trait-diamond {
+  border-color: #ff23aa;
+  background: #ff8ad4;
+}
+.lore-modal__trait--alma .lore-modal__trait-text strong {
+  color: #ff8ad4;
+}
+
+.lore-modal__trait--mente .lore-modal__trait-diamond {
+  border-color: #8e46ff;
+  background: #c9a8ff;
+}
+.lore-modal__trait--mente .lore-modal__trait-text strong {
+  color: #c9a8ff;
+}
+
+.lore-modal__trait--cuerpo .lore-modal__trait-diamond {
+  border-color: #19dcff;
+  background: #9aeeff;
+}
+.lore-modal__trait--cuerpo .lore-modal__trait-text strong {
+  color: #9aeeff;
 }
 
 body.lore-modal-open {
