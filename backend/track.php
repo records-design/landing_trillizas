@@ -88,6 +88,17 @@ $get = function ($key) use ($campaign) {
     return isset($campaign[$key]) && $campaign[$key] !== '' ? (string) $campaign[$key] : null;
 };
 
+// Algunas campañas (ej. cuando Meta autocompleta los UTM por default,
+// en vez de usar el link con ad_id/adset_id/placement de BACKEND-README)
+// solo mandan utm_content/utm_term genéricos, sin los parámetros
+// "ad_id"/"adset_id" a medida. Ahí se usan esos UTM como respaldo, para
+// no perder el desglose por anuncio ("Resultados por anuncio" quedaba
+// siempre vacío en esos casos). Si el link SÍ manda ad_id/adset_id
+// explícitos (el template recomendado), esos tienen prioridad y no
+// cambia nada de lo que ya funcionaba.
+$adId = $get('ad_id') ?: $get('utm_content');
+$adsetId = $get('adset_id') ?: $get('utm_term');
+
 $now = gmdate('Y-m-d H:i:s'); // UTC
 $pdo = db();
 
@@ -120,8 +131,8 @@ if (!$session) {
         $in['session_id'], clip($in['visitor_id'] ?? null, 64), $now, $now,
         clip($get('utm_source'), 120), clip($get('utm_medium'), 120),
         clip($get('utm_campaign'), 255), clip($get('utm_content'), 255),
-        clip($get('campaign_id'), 64), clip($get('adset_id'), 64),
-        clip($get('ad_id'), 64), clip($get('placement'), 80),
+        clip($get('campaign_id'), 64), clip($adsetId, 64),
+        clip($adId, 64), clip($get('placement'), 80),
         clip($get('fbclid'), 512), clip($get('gclid'), 512),
         $uaParsed['device'], $uaParsed['os'], $uaParsed['browser'],
         clip($geo['country'], 80), clip($geo['country_code'], 4),
@@ -159,7 +170,7 @@ $evt->execute([
     clip($in['button'] ?? null, 60), clip($in['destination'] ?? null, 60), $dwellMs, $now,
     clip($in['url'] ?? null, 1000), clip($in['referrer'] ?? null, 512),
     clip($get('utm_source'), 120), clip($get('utm_campaign'), 255),
-    clip($get('ad_id'), 64), clip($get('placement'), 80),
+    clip($adId, 64), clip($get('placement'), 80),
     $device, clip($country_code, 4), clip($city, 120),
 ]);
 $eventRowId = $pdo->lastInsertId();
@@ -167,7 +178,7 @@ $eventRowId = $pdo->lastInsertId();
 // ------------------------------------------------------------
 // Tabla de referencia ad_id -> ad.name (para etiquetas legibles)
 // ------------------------------------------------------------
-if ($get('ad_id')) {
+if ($adId) {
     $ref = $pdo->prepare(
         'INSERT INTO ad_reference (ad_id, ad_name, campaign_id, campaign_name, adset_id, updated_at)
          VALUES (?, ?, ?, ?, ?, ?)
@@ -179,9 +190,9 @@ if ($get('ad_id')) {
             updated_at = VALUES(updated_at)'
     );
     $ref->execute([
-        clip($get('ad_id'), 64), clip($get('utm_content'), 255),
+        clip($adId, 64), clip($get('utm_content'), 255),
         clip($get('campaign_id'), 64), clip($get('utm_campaign'), 255),
-        clip($get('adset_id'), 64), $now,
+        clip($adsetId, 64), $now,
     ]);
 }
 

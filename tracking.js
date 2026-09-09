@@ -95,6 +95,8 @@
     'utm_medium',
     'utm_campaign',
     'utm_content',
+    'utm_term',
+    'utm_id',
     'campaign_id',
     'adset_id',
     'ad_id',
