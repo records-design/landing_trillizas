@@ -87,6 +87,22 @@ $adEventsCond .= $srcSql;
 $adEventsCondE .= $srcSqlE;
 $adEventsParam = array_merge($adEventsParam, $srcParam);
 
+// Mismo filtro de anuncio/fuente que $adEventsCond, pero con prefijo
+// "sess." — para queries que hacen JOIN sessions+events (ahí sí hace
+// falta el prefijo, "ad_id"/"utm_source" existen en las 2 tablas y
+// quedarían ambiguos sin aclarar de cuál).
+$srcCondSess = '';
+$srcCondSessParam = [];
+if ($adFilter !== null) { $srcCondSess .= ' AND sess.ad_id = ?'; $srcCondSessParam[] = $adFilter; }
+if ($sourceFilter !== null) {
+    if ($sourceIsDirecto) {
+        $srcCondSess .= " AND (sess.utm_source IS NULL OR sess.utm_source = '')";
+    } else {
+        $srcCondSess .= ' AND sess.utm_source = ?';
+        $srcCondSessParam[] = $sourceFilter;
+    }
+}
+
 $adSessionsCond = '';
 $adSessionsParam = [];
 if ($adFilter !== null || $sourceFilter !== null) {
@@ -290,6 +306,38 @@ $paidVsOrganic = q($pdo,
      GROUP BY tipo",
     array_merge($range, $adSessionsParam));
 
+// Mismo cruce que "Fuentes por conversión", pero por pagado/orgánico
+// en vez de por fuente puntual — para comparar los 2 baldes grandes
+// de un vistazo, sin tener que sumar "an" + "fb" + "ig" a mano.
+$ytPlaceholdersPvo = implode(',', array_fill(0, count(YOUTUBE_SUB_BUTTONS), '?'));
+$paidVsOrganicConversion = q($pdo,
+    "SELECT
+        CASE
+          WHEN sess.utm_medium = 'paid' OR sess.fbclid IS NOT NULL OR sess.gclid IS NOT NULL THEN 'Pagado'
+          ELSE 'Orgánico'
+        END AS tipo,
+        COUNT(DISTINCT sess.session_id) visitas,
+        COUNT(DISTINCT CASE WHEN " . str_replace('button', 'ev.button', GOAL_BUTTONS_SQL) . " THEN sess.session_id END) con_objetivo,
+        COUNT(DISTINCT sub.email) suscripciones,
+        COUNT(DISTINCT CASE WHEN ev.button IN ($ytPlaceholdersPvo) THEN sess.session_id END) con_youtube
+     FROM sessions sess
+     LEFT JOIN events ev ON ev.session_id = sess.session_id AND ev.event_name = 'click'
+     LEFT JOIN subscribers sub ON sub.session_id = sess.session_id
+     WHERE sess.first_seen BETWEEN ? AND ?{$srcCondSess}
+     GROUP BY tipo",
+    array_merge(YOUTUBE_SUB_BUTTONS, $range, $srcCondSessParam));
+
+foreach ($paidVsOrganicConversion as &$pvc) {
+    $pvc['visitas'] = (int) $pvc['visitas'];
+    $pvc['con_objetivo'] = (int) $pvc['con_objetivo'];
+    $pvc['suscripciones'] = (int) $pvc['suscripciones'];
+    $pvc['con_youtube'] = (int) $pvc['con_youtube'];
+    $pvc['pct_objetivo'] = $pvc['visitas'] ? round($pvc['con_objetivo'] / $pvc['visitas'] * 100, 1) : 0;
+    $pvc['pct_sub'] = $pvc['visitas'] ? round($pvc['suscripciones'] / $pvc['visitas'] * 100, 1) : 0;
+    $pvc['pct_youtube'] = $pvc['visitas'] ? round($pvc['con_youtube'] / $pvc['visitas'] * 100, 1) : 0;
+}
+unset($pvc);
+
 // ------------------------------------------------------------
 // Fuentes por conversión: de las visitas de cada fuente, qué % logró
 // cada uno de los 4 objetivos reales de la landing — ver la serie,
@@ -303,18 +351,6 @@ $paidVsOrganic = q($pdo,
 // todavía no llegan a ese mínimo.
 // ------------------------------------------------------------
 const MIN_SAMPLE_SOURCE = 30;
-
-$srcCondSess = '';
-$srcCondSessParam = [];
-if ($adFilter !== null) { $srcCondSess .= ' AND sess.ad_id = ?'; $srcCondSessParam[] = $adFilter; }
-if ($sourceFilter !== null) {
-    if ($sourceIsDirecto) {
-        $srcCondSess .= " AND (sess.utm_source IS NULL OR sess.utm_source = '')";
-    } else {
-        $srcCondSess .= ' AND sess.utm_source = ?';
-        $srcCondSessParam[] = $sourceFilter;
-    }
-}
 
 $ytPlaceholders = implode(',', array_fill(0, count(YOUTUBE_SUB_BUTTONS), '?'));
 $seriePlaceholders = implode(',', array_fill(0, count(SERIE_BUTTONS), '?'));
@@ -562,6 +598,7 @@ echo json_encode([
     'sources'          => $sources,
     'source_conversion' => $sourceConversion,
     'paid_vs_organic'  => $paidVsOrganic,
+    'paid_vs_organic_conversion' => $paidVsOrganicConversion,
     'devices'          => $devices,
     'placements'       => $placements,
     'countries'        => $countries,

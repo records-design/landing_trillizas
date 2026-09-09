@@ -117,6 +117,10 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
         <h2>Pagado vs. Orgánico</h2>
         <canvas id="chartPaidOrganic"></canvas>
         <p class="muted">"Pagado": vino de un anuncio real (Meta o Google Ads, con su click id). "Orgánico": cualquier otro ingreso (bio, historias, QR, directo, etc.), sin importar cuántas fuentes distintas tenga.</p>
+        <table id="tblPaidOrganicConversion" style="margin-top:14px">
+          <thead><tr><th>Tipo</th><th class="n">Visitas</th><th class="n">% objetivo real</th><th class="n">% canal</th><th class="n">% newsletter</th></tr></thead>
+          <tbody></tbody>
+        </table>
       </div>
     </div>
 
@@ -391,6 +395,11 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
           `<td class="n"${pctClass}>${r.pct_sub}%</td>`;
       });
       rows('tblNewReturningConversion', d.new_vs_returning_conversion, (r) =>
+        `<td>${r.tipo}</td><td class="n">${fmt(r.visitas)}</td>` +
+        `<td class="n">${r.pct_objetivo}%</td>` +
+        `<td class="n">${r.pct_youtube}%</td>` +
+        `<td class="n">${r.pct_sub}%</td>`);
+      rows('tblPaidOrganicConversion', d.paid_vs_organic_conversion, (r) =>
         `<td>${r.tipo}</td><td class="n">${fmt(r.visitas)}</td>` +
         `<td class="n">${r.pct_objetivo}%</td>` +
         `<td class="n">${r.pct_youtube}%</td>` +
