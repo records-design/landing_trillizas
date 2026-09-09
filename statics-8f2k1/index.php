@@ -186,7 +186,7 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
 
     <div class="grid2">
       <div class="panel">
-        <h2>¿Miran el video y escuchan la canción?</h2>
+        <h2>¿Ven la serie y escuchan el álbum?</h2>
         <table id="tblButtonInterest">
           <thead><tr><th>Botón</th><th class="n">% que lo tocó</th><th class="n">Cuánto tardaron en tocarlo</th></tr></thead>
           <tbody></tbody>
@@ -433,7 +433,7 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
         `<td>${r.ad_name ?? r.ad_id}</td><td>${r.campaign_name ?? ''}</td><td class="n">${fmt(+r.visitas)}</td><td class="n">${fmt(+r.clics)}</td><td class="n">${fmt(+r.suscripciones)}</td>`);
 
       // Interés real en video/canción
-      const buttonLabel = { videoclip: 'Mirá el videoclip', cancion_spotify: 'Escuchá la canción' };
+      const buttonLabel = { ver_serie: 'Ver la serie', escuchar_album: 'Escuchar el álbum' };
       const fmtDwell = (ms) => {
         if (ms === null || ms === undefined) return '–';
         return ms < 1000 ? `${ms} ms` : `${(ms / 1000).toFixed(1)} s`;
@@ -445,11 +445,11 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
       const me = d.music_engagement;
       const pctSubs = (subs, clicks) => clicks ? (subs / clicks * 100).toFixed(1) : '0.0';
       rows('tblMusicEngagement', [
-        { label: 'Video', clics: me.video.clics, subs: me.video.suscripciones },
-        { label: 'Canción', clics: me.cancion.clics, subs: me.cancion.suscripciones },
+        { label: 'Ver la serie', clics: me.video.clics, subs: me.video.suscripciones },
+        { label: 'Escuchar el álbum', clics: me.cancion.clics, subs: me.cancion.suscripciones },
       ], r => `<td>${r.label}</td><td class="n">${fmt(r.clics)}</td><td class="n">${fmt(r.subs)} (${pctSubs(r.subs, r.clics)}%)</td>`);
       $('bothClicksNote').textContent =
-        `${fmt(me.ambos_clics)} persona(s) clickearon el video Y la canción — el segmento más interesado.`;
+        `${fmt(me.ambos_clics)} persona(s) tocaron "Ver la serie" Y "Escuchar el álbum" — el segmento más interesado.`;
 
       // Tiempo en la página
       const pe = d.page_engagement;

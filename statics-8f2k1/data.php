@@ -493,7 +493,7 @@ $buttonInterest = q($pdo,
             COUNT(DISTINCT session_id) sesiones,
             AVG(dwell_ms) avg_dwell_ms
      FROM events
-     WHERE event_name = 'click' AND button IN ('videoclip', 'cancion_spotify')
+     WHERE event_name = 'click' AND button IN ('ver_serie', 'escuchar_album')
        AND created_at BETWEEN ? AND ?{$adEventsCond}
      GROUP BY button",
     array_merge($range, $adEventsParam));
@@ -510,33 +510,33 @@ unset($b);
 // ------------------------------------------------------------
 $videoClicks = (int) q($pdo,
     "SELECT COUNT(DISTINCT session_id) n FROM events
-     WHERE event_name='click' AND button='videoclip' AND created_at BETWEEN ? AND ?{$adEventsCond}",
+     WHERE event_name='click' AND button='ver_serie' AND created_at BETWEEN ? AND ?{$adEventsCond}",
     array_merge($range, $adEventsParam))[0]['n'];
 
 $videoSubs = (int) q($pdo,
     "SELECT COUNT(DISTINCT e.session_id) n FROM events e
      JOIN subscribers s ON s.session_id = e.session_id
-     WHERE e.event_name='click' AND e.button='videoclip' AND e.created_at BETWEEN ? AND ?{$adEventsCondE}",
+     WHERE e.event_name='click' AND e.button='ver_serie' AND e.created_at BETWEEN ? AND ?{$adEventsCondE}",
     array_merge($range, $adEventsParam))[0]['n'];
 
 $songClicks = (int) q($pdo,
     "SELECT COUNT(DISTINCT session_id) n FROM events
-     WHERE event_name='click' AND button='cancion_spotify' AND created_at BETWEEN ? AND ?{$adEventsCond}",
+     WHERE event_name='click' AND button='escuchar_album' AND created_at BETWEEN ? AND ?{$adEventsCond}",
     array_merge($range, $adEventsParam))[0]['n'];
 
 $songSubs = (int) q($pdo,
     "SELECT COUNT(DISTINCT e.session_id) n FROM events e
      JOIN subscribers s ON s.session_id = e.session_id
-     WHERE e.event_name='click' AND e.button='cancion_spotify' AND e.created_at BETWEEN ? AND ?{$adEventsCondE}",
+     WHERE e.event_name='click' AND e.button='escuchar_album' AND e.created_at BETWEEN ? AND ?{$adEventsCondE}",
     array_merge($range, $adEventsParam))[0]['n'];
 
 $bothClicks = (int) q($pdo,
     "SELECT COUNT(DISTINCT e1.session_id) n FROM events e1
-     WHERE e1.event_name='click' AND e1.button='videoclip' AND e1.created_at BETWEEN ? AND ?{$adEventsCond}
+     WHERE e1.event_name='click' AND e1.button='ver_serie' AND e1.created_at BETWEEN ? AND ?{$adEventsCond}
        AND EXISTS (
          SELECT 1 FROM events e2
           WHERE e2.session_id = e1.session_id AND e2.event_name='click'
-            AND e2.button='cancion_spotify' AND e2.created_at BETWEEN ? AND ?{$adEventsCond}
+            AND e2.button='escuchar_album' AND e2.created_at BETWEEN ? AND ?{$adEventsCond}
        )",
     array_merge([$fromDt, $toDt], $adEventsParam, [$fromDt, $toDt], $adEventsParam))[0]['n'];
 
