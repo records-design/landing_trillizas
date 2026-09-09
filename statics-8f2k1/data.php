@@ -45,7 +45,6 @@ $range = [$fromDt, $toDt];
 // "Fuentes por conversión" / "Nuevos vs. recurrentes" más abajo).
 // ------------------------------------------------------------
 const YOUTUBE_SUB_BUTTONS = ['social_youtube', 'proximos_episodios_canal', 'footer_babidibu_tv'];
-const SERIE_BUTTONS = ['ver_serie'];
 const ALBUM_BUTTONS = ['escuchar_album', 'social_spotify'];
 const GOAL_BUTTONS_SQL = "button IN ('ver_serie','escuchar_album','social_spotify','social_youtube','proximos_episodios_canal','footer_babidibu_tv') OR button REGEXP '^episodio_[0-9]+$'";
 
@@ -306,37 +305,75 @@ $paidVsOrganic = q($pdo,
      GROUP BY tipo",
     array_merge($range, $adSessionsParam));
 
-// Mismo cruce que "Fuentes por conversión", pero por pagado/orgánico
-// en vez de por fuente puntual — para comparar los 2 baldes grandes
-// de un vistazo, sin tener que sumar "an" + "fb" + "ig" a mano.
-$ytPlaceholdersPvo = implode(',', array_fill(0, count(YOUTUBE_SUB_BUTTONS), '?'));
-$paidVsOrganicConversion = q($pdo,
-    "SELECT
-        CASE
-          WHEN sess.utm_medium = 'paid' OR sess.fbclid IS NOT NULL OR sess.gclid IS NOT NULL THEN 'Pagado'
-          ELSE 'Orgánico'
-        END AS tipo,
-        COUNT(DISTINCT sess.session_id) visitas,
-        COUNT(DISTINCT CASE WHEN " . str_replace('button', 'ev.button', GOAL_BUTTONS_SQL) . " THEN sess.session_id END) con_objetivo,
-        COUNT(DISTINCT sub.email) suscripciones,
-        COUNT(DISTINCT CASE WHEN ev.button IN ($ytPlaceholdersPvo) THEN sess.session_id END) con_youtube
-     FROM sessions sess
-     LEFT JOIN events ev ON ev.session_id = sess.session_id AND ev.event_name = 'click'
-     LEFT JOIN subscribers sub ON sub.session_id = sess.session_id
-     WHERE sess.first_seen BETWEEN ? AND ?{$srcCondSess}
-     GROUP BY tipo",
-    array_merge(YOUTUBE_SUB_BUTTONS, $range, $srcCondSessParam));
+// ------------------------------------------------------------
+// Cruce de conversión reutilizable: por cada valor de $dimSql (una
+// fuente, pagado/orgánico, nuevo/recurrente...), cuenta visitas y
+// cuántas vieron el capítulo 1, el capítulo 2, LOS DOS capítulos,
+// escucharon el álbum, se sumaron al canal, o se suscribieron al
+// newsletter — cada cosa por separado, con sus % sobre el total de
+// visitas de ese grupo.
+// ------------------------------------------------------------
+function conversionBreakdown($pdo, $dimSql, $dimAlias, $cond, $condParam, $range)
+{
+    $albumPh = implode(',', array_fill(0, count(ALBUM_BUTTONS), '?'));
+    $ytPh = implode(',', array_fill(0, count(YOUTUBE_SUB_BUTTONS), '?'));
+    $rows = q($pdo,
+        "SELECT
+            dim AS `$dimAlias`,
+            COUNT(*) visitas,
+            SUM(has_ep1) con_ep1,
+            SUM(has_ep2) con_ep2,
+            SUM(CASE WHEN has_ep1 = 1 AND has_ep2 = 1 THEN 1 ELSE 0 END) con_ambos_caps,
+            SUM(has_album) con_album,
+            SUM(has_youtube) con_youtube,
+            SUM(has_news) suscripciones
+         FROM (
+            SELECT sess.session_id, $dimSql AS dim,
+                MAX(CASE WHEN ev.button = 'episodio_1' THEN 1 ELSE 0 END) has_ep1,
+                MAX(CASE WHEN ev.button = 'episodio_2' THEN 1 ELSE 0 END) has_ep2,
+                MAX(CASE WHEN ev.button IN ($albumPh) THEN 1 ELSE 0 END) has_album,
+                MAX(CASE WHEN ev.button IN ($ytPh) THEN 1 ELSE 0 END) has_youtube,
+                MAX(CASE WHEN sub.email IS NOT NULL THEN 1 ELSE 0 END) has_news
+            FROM sessions sess
+            LEFT JOIN events ev ON ev.session_id = sess.session_id AND ev.event_name = 'click'
+            LEFT JOIN subscribers sub ON sub.session_id = sess.session_id
+            WHERE sess.first_seen BETWEEN ? AND ?{$cond}
+            GROUP BY sess.session_id, dim
+         ) t
+         GROUP BY dim
+         ORDER BY visitas DESC",
+        array_merge(ALBUM_BUTTONS, YOUTUBE_SUB_BUTTONS, $range, $condParam));
 
-foreach ($paidVsOrganicConversion as &$pvc) {
-    $pvc['visitas'] = (int) $pvc['visitas'];
-    $pvc['con_objetivo'] = (int) $pvc['con_objetivo'];
-    $pvc['suscripciones'] = (int) $pvc['suscripciones'];
-    $pvc['con_youtube'] = (int) $pvc['con_youtube'];
-    $pvc['pct_objetivo'] = $pvc['visitas'] ? round($pvc['con_objetivo'] / $pvc['visitas'] * 100, 1) : 0;
-    $pvc['pct_sub'] = $pvc['visitas'] ? round($pvc['suscripciones'] / $pvc['visitas'] * 100, 1) : 0;
-    $pvc['pct_youtube'] = $pvc['visitas'] ? round($pvc['con_youtube'] / $pvc['visitas'] * 100, 1) : 0;
+    foreach ($rows as &$r) {
+        $r['visitas'] = (int) $r['visitas'];
+        $r['con_ep1'] = (int) $r['con_ep1'];
+        $r['con_ep2'] = (int) $r['con_ep2'];
+        $r['con_ambos_caps'] = (int) $r['con_ambos_caps'];
+        $r['con_album'] = (int) $r['con_album'];
+        $r['con_youtube'] = (int) $r['con_youtube'];
+        $r['suscripciones'] = (int) $r['suscripciones'];
+        $r['pct_ep1'] = $r['visitas'] ? round($r['con_ep1'] / $r['visitas'] * 100, 1) : 0;
+        $r['pct_ep2'] = $r['visitas'] ? round($r['con_ep2'] / $r['visitas'] * 100, 1) : 0;
+        $r['pct_ambos_caps'] = $r['visitas'] ? round($r['con_ambos_caps'] / $r['visitas'] * 100, 1) : 0;
+        $r['pct_album'] = $r['visitas'] ? round($r['con_album'] / $r['visitas'] * 100, 1) : 0;
+        $r['pct_youtube'] = $r['visitas'] ? round($r['con_youtube'] / $r['visitas'] * 100, 1) : 0;
+        $r['pct_sub'] = $r['visitas'] ? round($r['suscripciones'] / $r['visitas'] * 100, 1) : 0;
+    }
+    unset($r);
+    return $rows;
 }
-unset($pvc);
+
+// Mismo cruce en 3 sabores: por pagado/orgánico, por fuente puntual, y
+// por nuevo/recurrente (este último se arma más abajo, junto con su
+// tabla simple de conteo).
+$paidVsOrganicConversion = conversionBreakdown(
+    $pdo,
+    "CASE WHEN sess.utm_medium = 'paid' OR sess.fbclid IS NOT NULL OR sess.gclid IS NOT NULL THEN 'Pagado' ELSE 'Orgánico' END",
+    'tipo',
+    $srcCondSess,
+    $srcCondSessParam,
+    $range
+);
 
 // ------------------------------------------------------------
 // Canal vs. newsletter: cuánta gente se suscribió a SOLO uno de los
@@ -388,35 +425,15 @@ unset($so);
 // ------------------------------------------------------------
 const MIN_SAMPLE_SOURCE = 30;
 
-$ytPlaceholders = implode(',', array_fill(0, count(YOUTUBE_SUB_BUTTONS), '?'));
-$seriePlaceholders = implode(',', array_fill(0, count(SERIE_BUTTONS), '?'));
-$albumPlaceholders = implode(',', array_fill(0, count(ALBUM_BUTTONS), '?'));
-$sourceConversion = q($pdo,
-    "SELECT
-        COALESCE(NULLIF(sess.utm_source,''),'landing') src,
-        COUNT(DISTINCT sess.session_id) visitas,
-        COUNT(DISTINCT CASE WHEN ev.button IN ($seriePlaceholders) OR ev.button REGEXP '^episodio_[0-9]+$' THEN sess.session_id END) con_serie,
-        COUNT(DISTINCT CASE WHEN ev.button IN ($albumPlaceholders) THEN sess.session_id END) con_album,
-        COUNT(DISTINCT CASE WHEN ev.button IN ($ytPlaceholders) THEN sess.session_id END) con_youtube,
-        COUNT(DISTINCT sub.email) suscripciones
-     FROM sessions sess
-     LEFT JOIN events ev ON ev.session_id = sess.session_id AND ev.event_name = 'click'
-     LEFT JOIN subscribers sub ON sub.session_id = sess.session_id
-     WHERE sess.first_seen BETWEEN ? AND ?{$srcCondSess}
-     GROUP BY src
-     ORDER BY visitas DESC",
-    array_merge(SERIE_BUTTONS, ALBUM_BUTTONS, YOUTUBE_SUB_BUTTONS, $range, $srcCondSessParam));
-
+$sourceConversion = conversionBreakdown(
+    $pdo,
+    "COALESCE(NULLIF(sess.utm_source,''),'landing')",
+    'src',
+    $srcCondSess,
+    $srcCondSessParam,
+    $range
+);
 foreach ($sourceConversion as &$sc) {
-    $sc['visitas'] = (int) $sc['visitas'];
-    $sc['con_serie'] = (int) $sc['con_serie'];
-    $sc['con_album'] = (int) $sc['con_album'];
-    $sc['con_youtube'] = (int) $sc['con_youtube'];
-    $sc['suscripciones'] = (int) $sc['suscripciones'];
-    $sc['pct_serie'] = $sc['visitas'] ? round($sc['con_serie'] / $sc['visitas'] * 100, 1) : 0;
-    $sc['pct_album'] = $sc['visitas'] ? round($sc['con_album'] / $sc['visitas'] * 100, 1) : 0;
-    $sc['pct_youtube'] = $sc['visitas'] ? round($sc['con_youtube'] / $sc['visitas'] * 100, 1) : 0;
-    $sc['pct_sub'] = $sc['visitas'] ? round($sc['suscripciones'] / $sc['visitas'] * 100, 1) : 0;
     $sc['confiable'] = $sc['visitas'] >= MIN_SAMPLE_SOURCE;
 }
 unset($sc);
@@ -448,39 +465,22 @@ $newVsReturning = q($pdo,
 // Mismo cruce que "Fuentes por conversión", pero por nuevo/recurrente
 // en vez de por fuente: ¿los que ya habían entrado antes convierten
 // mejor que los que llegan por primera vez?
-$ytPlaceholdersNvr = implode(',', array_fill(0, count(YOUTUBE_SUB_BUTTONS), '?'));
-$newVsReturningConversion = q($pdo,
-    "SELECT
-        CASE
-          WHEN sess.visitor_id IS NULL THEN '(sin dato)'
-          WHEN EXISTS (
-            SELECT 1 FROM sessions s2
-             WHERE s2.visitor_id = sess.visitor_id
-               AND s2.first_seen < sess.first_seen
-          ) THEN 'recurrente'
-          ELSE 'nuevo'
-        END AS tipo,
-        COUNT(DISTINCT sess.session_id) visitas,
-        COUNT(DISTINCT CASE WHEN " . str_replace('button', 'ev.button', GOAL_BUTTONS_SQL) . " THEN sess.session_id END) con_objetivo,
-        COUNT(DISTINCT sub.email) suscripciones,
-        COUNT(DISTINCT CASE WHEN ev.button IN ($ytPlaceholdersNvr) THEN sess.session_id END) con_youtube
-     FROM sessions sess
-     LEFT JOIN events ev ON ev.session_id = sess.session_id AND ev.event_name = 'click'
-     LEFT JOIN subscribers sub ON sub.session_id = sess.session_id
-     WHERE sess.first_seen BETWEEN ? AND ?{$srcCondSess}
-     GROUP BY tipo",
-    array_merge(YOUTUBE_SUB_BUTTONS, $range, $srcCondSessParam));
-
-foreach ($newVsReturningConversion as &$nvc) {
-    $nvc['visitas'] = (int) $nvc['visitas'];
-    $nvc['con_objetivo'] = (int) $nvc['con_objetivo'];
-    $nvc['suscripciones'] = (int) $nvc['suscripciones'];
-    $nvc['con_youtube'] = (int) $nvc['con_youtube'];
-    $nvc['pct_objetivo'] = $nvc['visitas'] ? round($nvc['con_objetivo'] / $nvc['visitas'] * 100, 1) : 0;
-    $nvc['pct_sub'] = $nvc['visitas'] ? round($nvc['suscripciones'] / $nvc['visitas'] * 100, 1) : 0;
-    $nvc['pct_youtube'] = $nvc['visitas'] ? round($nvc['con_youtube'] / $nvc['visitas'] * 100, 1) : 0;
-}
-unset($nvc);
+$newVsReturningConversion = conversionBreakdown(
+    $pdo,
+    "CASE
+        WHEN sess.visitor_id IS NULL THEN '(sin dato)'
+        WHEN EXISTS (
+          SELECT 1 FROM sessions s2
+           WHERE s2.visitor_id = sess.visitor_id
+             AND s2.first_seen < sess.first_seen
+        ) THEN 'recurrente'
+        ELSE 'nuevo'
+      END",
+    'tipo',
+    $srcCondSess,
+    $srcCondSessParam,
+    $range
+);
 
 // ------------------------------------------------------------
 // Interés real en el video y la canción: tasa de clic sobre el

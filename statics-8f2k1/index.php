@@ -105,10 +105,10 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
       <div class="panel" style="grid-column: 1 / -1;">
         <h2>Fuentes por conversión</h2>
         <table id="tblSourceConversion">
-          <thead><tr><th>Fuente</th><th class="n">Visitas</th><th class="n">% vio la serie</th><th class="n">% escuchó el álbum</th><th class="n">% canal YouTube</th><th class="n">% newsletter</th></tr></thead>
+          <thead><tr><th>Fuente</th><th class="n">Visitas</th><th class="n">% vio cap. 1</th><th class="n">% vio cap. 2</th><th class="n">% vio los 2</th><th class="n">% escuchó el álbum</th><th class="n">% canal YouTube</th><th class="n">% newsletter</th></tr></thead>
           <tbody></tbody>
         </table>
-        <p class="muted">Los 4 objetivos reales de la landing, cada uno por separado: ver la serie, escuchar el álbum/canción, suscribirse al canal de YouTube, y suscribirse al newsletter. Con menos de 30 visitas el % queda marcado como "pocos datos todavía" (atenuado) — con tan poco volumen, un solo caso de suerte cambia todo el porcentaje, así que no conviene decidir nada (cortar o invertir más en un canal) basándose en esos números todavía. A partir de 30 visitas el dato ya es confiable.</p>
+        <p class="muted">Los objetivos reales de la landing, cada uno por separado: ver cada capítulo (y cuántos vieron los 2), escuchar el álbum/canción, suscribirse al canal de YouTube, y suscribirse al newsletter. Con menos de 30 visitas el % queda marcado como "pocos datos todavía" (atenuado) — con tan poco volumen, un solo caso de suerte cambia todo el porcentaje, así que no conviene decidir nada (cortar o invertir más en un canal) basándose en esos números todavía. A partir de 30 visitas el dato ya es confiable.</p>
       </div>
     </div>
 
@@ -118,7 +118,7 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
         <canvas id="chartPaidOrganic"></canvas>
         <p class="muted">"Pagado": vino de un anuncio real (Meta o Google Ads, con su click id). "Orgánico": cualquier otro ingreso (bio, historias, QR, directo, etc.), sin importar cuántas fuentes distintas tenga.</p>
         <table id="tblPaidOrganicConversion" style="margin-top:14px">
-          <thead><tr><th>Tipo</th><th class="n">Visitas</th><th class="n">% objetivo real</th><th class="n">% canal</th><th class="n">% newsletter</th></tr></thead>
+          <thead><tr><th>Tipo</th><th class="n">Visitas</th><th class="n">% cap. 1</th><th class="n">% cap. 2</th><th class="n">% los 2</th><th class="n">% álbum</th><th class="n">% canal</th><th class="n">% newsletter</th></tr></thead>
           <tbody></tbody>
         </table>
       </div>
@@ -138,7 +138,7 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
         <canvas id="chartNewReturning"></canvas>
         <p class="muted">"Nuevo": es la primera vez que esa persona entra a la web. "Recurrente": ya había entrado antes (por ejemplo, volvió por un anuncio de remarketing).</p>
         <table id="tblNewReturningConversion" style="margin-top:14px">
-          <thead><tr><th>Tipo</th><th class="n">Visitas</th><th class="n">% objetivo real</th><th class="n">% canal</th><th class="n">% newsletter</th></tr></thead>
+          <thead><tr><th>Tipo</th><th class="n">Visitas</th><th class="n">% cap. 1</th><th class="n">% cap. 2</th><th class="n">% los 2</th><th class="n">% álbum</th><th class="n">% canal</th><th class="n">% newsletter</th></tr></thead>
           <tbody></tbody>
         </table>
       </div>
@@ -397,19 +397,27 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
         const pctClass = r.confiable ? '' : ' style="opacity:.45"';
         const note = r.confiable ? '' : ' <span class="muted">(pocos datos todavía)</span>';
         return `<td>${prettySource(r.src)}${note}</td><td class="n">${fmt(r.visitas)}</td>` +
-          `<td class="n"${pctClass}>${r.pct_serie}%</td>` +
+          `<td class="n"${pctClass}>${r.pct_ep1}%</td>` +
+          `<td class="n"${pctClass}>${r.pct_ep2}%</td>` +
+          `<td class="n"${pctClass}>${r.pct_ambos_caps}%</td>` +
           `<td class="n"${pctClass}>${r.pct_album}%</td>` +
           `<td class="n"${pctClass}>${r.pct_youtube}%</td>` +
           `<td class="n"${pctClass}>${r.pct_sub}%</td>`;
       });
       rows('tblNewReturningConversion', d.new_vs_returning_conversion, (r) =>
         `<td>${r.tipo}</td><td class="n">${fmt(r.visitas)}</td>` +
-        `<td class="n">${r.pct_objetivo}%</td>` +
+        `<td class="n">${r.pct_ep1}%</td>` +
+        `<td class="n">${r.pct_ep2}%</td>` +
+        `<td class="n">${r.pct_ambos_caps}%</td>` +
+        `<td class="n">${r.pct_album}%</td>` +
         `<td class="n">${r.pct_youtube}%</td>` +
         `<td class="n">${r.pct_sub}%</td>`);
       rows('tblPaidOrganicConversion', d.paid_vs_organic_conversion, (r) =>
         `<td>${r.tipo}</td><td class="n">${fmt(r.visitas)}</td>` +
-        `<td class="n">${r.pct_objetivo}%</td>` +
+        `<td class="n">${r.pct_ep1}%</td>` +
+        `<td class="n">${r.pct_ep2}%</td>` +
+        `<td class="n">${r.pct_ambos_caps}%</td>` +
+        `<td class="n">${r.pct_album}%</td>` +
         `<td class="n">${r.pct_youtube}%</td>` +
         `<td class="n">${r.pct_sub}%</td>`);
       rows('tblSubsOverlap', d.subs_overlap, (r) =>
