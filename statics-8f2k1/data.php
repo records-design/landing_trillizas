@@ -264,6 +264,53 @@ $paidVsOrganic = q($pdo,
     array_merge($range, $adSessionsParam));
 
 // ------------------------------------------------------------
+// Fuentes por conversión: de las visitas de cada fuente, qué % hizo
+// click en algo y qué % se suscribió — no solo cuántas visitas trajo
+// (eso ya lo muestra "Fuentes de tráfico"), sino qué tan bien
+// convierte cada una. Con pocas visitas el % es poco confiable (un
+// solo caso de suerte cambia todo el porcentaje) — se marca
+// "confiable" a partir de MIN_SAMPLE_SOURCE visitas, y el panel
+// atenúa visualmente las que todavía no llegan a ese mínimo.
+// ------------------------------------------------------------
+const MIN_SAMPLE_SOURCE = 30;
+
+$srcCondSess = '';
+$srcCondSessParam = [];
+if ($adFilter !== null) { $srcCondSess .= ' AND sess.ad_id = ?'; $srcCondSessParam[] = $adFilter; }
+if ($sourceFilter !== null) {
+    if ($sourceIsDirecto) {
+        $srcCondSess .= " AND (sess.utm_source IS NULL OR sess.utm_source = '')";
+    } else {
+        $srcCondSess .= ' AND sess.utm_source = ?';
+        $srcCondSessParam[] = $sourceFilter;
+    }
+}
+
+$sourceConversion = q($pdo,
+    "SELECT
+        COALESCE(NULLIF(sess.utm_source,''),'landing') src,
+        COUNT(DISTINCT sess.session_id) visitas,
+        COUNT(DISTINCT CASE WHEN ev.session_id IS NOT NULL THEN sess.session_id END) con_click,
+        COUNT(DISTINCT sub.email) suscripciones
+     FROM sessions sess
+     LEFT JOIN events ev ON ev.session_id = sess.session_id AND ev.event_name = 'click'
+     LEFT JOIN subscribers sub ON sub.session_id = sess.session_id
+     WHERE sess.first_seen BETWEEN ? AND ?{$srcCondSess}
+     GROUP BY src
+     ORDER BY visitas DESC",
+    array_merge($range, $srcCondSessParam));
+
+foreach ($sourceConversion as &$sc) {
+    $sc['visitas'] = (int) $sc['visitas'];
+    $sc['con_click'] = (int) $sc['con_click'];
+    $sc['suscripciones'] = (int) $sc['suscripciones'];
+    $sc['pct_click'] = $sc['visitas'] ? round($sc['con_click'] / $sc['visitas'] * 100, 1) : 0;
+    $sc['pct_sub'] = $sc['visitas'] ? round($sc['suscripciones'] / $sc['visitas'] * 100, 1) : 0;
+    $sc['confiable'] = $sc['visitas'] >= MIN_SAMPLE_SOURCE;
+}
+unset($sc);
+
+// ------------------------------------------------------------
 // Nuevos vs. recurrentes: un visitante es "recurrente" si su
 // visitor_id (persiste entre visitas, ver tracking.js) ya tenía
 // una sesión ANTERIOR a esta, sin importar cuándo. "(sin dato)"
@@ -435,6 +482,7 @@ echo json_encode([
     'timeline'         => $timeline,
     'clicks_by_button' => $clicksByButton,
     'sources'          => $sources,
+    'source_conversion' => $sourceConversion,
     'paid_vs_organic'  => $paidVsOrganic,
     'devices'          => $devices,
     'placements'       => $placements,

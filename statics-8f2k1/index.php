@@ -100,6 +100,17 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
     </div>
 
     <div class="grid2">
+      <div class="panel" style="grid-column: 1 / -1;">
+        <h2>Fuentes por conversión</h2>
+        <table id="tblSourceConversion">
+          <thead><tr><th>Fuente</th><th class="n">Visitas</th><th class="n">% hizo click</th><th class="n">% se suscribió</th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <p class="muted">Con menos de 30 visitas el % queda marcado como "pocos datos todavía" (atenuado) — con tan poco volumen, un solo caso de suerte cambia todo el porcentaje, así que no conviene decidir nada (cortar o invertir más en un canal) basándose en esos números todavía. A partir de 30 visitas el dato ya es confiable.</p>
+      </div>
+    </div>
+
+    <div class="grid2">
       <div class="panel">
         <h2>Pagado vs. Orgánico</h2>
         <canvas id="chartPaidOrganic"></canvas>
@@ -344,6 +355,13 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
       // Tablas
       rows('tblPlacement', d.placements, r => `<td>${r.placement}</td><td class="n">${fmt(+r.n)}</td>`);
       rows('tblCountries', d.countries, r => `<td>${r.country}</td><td class="n">${fmt(+r.n)}</td>`);
+      rows('tblSourceConversion', d.source_conversion, (r) => {
+        const pctClass = r.confiable ? '' : ' style="opacity:.45"';
+        const note = r.confiable ? '' : ' <span class="muted">(pocos datos todavía)</span>';
+        return `<td>${prettySource(r.src)}${note}</td><td class="n">${fmt(r.visitas)}</td>` +
+          `<td class="n"${pctClass}>${r.pct_click}%</td>` +
+          `<td class="n"${pctClass}>${r.pct_sub}%</td>`;
+      });
       rows('tblCities', d.cities, r => `<td>${r.city}${r.cc ? ' · ' + r.cc : ''}</td><td class="n">${fmt(+r.n)}</td>`);
       rows('tblAds', d.ads, r =>
         `<td>${r.ad_name ?? r.ad_id}</td><td>${r.campaign_name ?? ''}</td><td class="n">${fmt(+r.visitas)}</td><td class="n">${fmt(+r.clics)}</td><td class="n">${fmt(+r.suscripciones)}</td>`);
