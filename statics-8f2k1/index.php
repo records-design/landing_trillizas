@@ -105,10 +105,10 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
       <div class="panel" style="grid-column: 1 / -1;">
         <h2>Fuentes por conversión</h2>
         <table id="tblSourceConversion">
-          <thead><tr><th>Fuente</th><th class="n">Visitas</th><th class="n">% hizo click</th><th class="n">% se suscribió</th></tr></thead>
+          <thead><tr><th>Fuente</th><th class="n">Visitas</th><th class="n">% hizo click</th><th class="n">% cumplió el objetivo</th></tr></thead>
           <tbody></tbody>
         </table>
-        <p class="muted">Con menos de 30 visitas el % queda marcado como "pocos datos todavía" (atenuado) — con tan poco volumen, un solo caso de suerte cambia todo el porcentaje, así que no conviene decidir nada (cortar o invertir más en un canal) basándose en esos números todavía. A partir de 30 visitas el dato ya es confiable.</p>
+        <p class="muted">"Cumplió el objetivo" = se suscribió al canal de YouTube, tocó para ver la serie, o para escuchar el álbum/canción — el objetivo real de la landing (no el newsletter, que es secundario). Con menos de 30 visitas el % queda marcado como "pocos datos todavía" (atenuado) — con tan poco volumen, un solo caso de suerte cambia todo el porcentaje, así que no conviene decidir nada (cortar o invertir más en un canal) basándose en esos números todavía. A partir de 30 visitas el dato ya es confiable.</p>
       </div>
     </div>
 
@@ -362,7 +362,7 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
         const note = r.confiable ? '' : ' <span class="muted">(pocos datos todavía)</span>';
         return `<td>${prettySource(r.src)}${note}</td><td class="n">${fmt(r.visitas)}</td>` +
           `<td class="n"${pctClass}>${r.pct_click}%</td>` +
-          `<td class="n"${pctClass}>${r.pct_sub}%</td>`;
+          `<td class="n"${pctClass}>${r.pct_objetivo}%</td>`;
       });
       rows('tblCities', d.cities, r => `<td>${r.city}${r.cc ? ' · ' + r.cc : ''}</td><td class="n">${fmt(+r.n)}</td>`);
       rows('tblAds', d.ads, r =>
