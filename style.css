@@ -4791,6 +4791,21 @@ body.lore-modal-open {
   overflow: hidden;
 }
 
+/* Desktop: cada fuerza (Alma / Mente / Cuerpo) entra en un solo
+   renglón — se ensancha un poco el modal (solo acá, mobile/tablet
+   quedan igual) para que alcance el ancho real del texto más largo,
+   y se fuerza a no partir la línea. En mobile/tablet, más angosto,
+   se sigue partiendo en 2-3 líneas como corresponde a ese ancho. */
+@media (min-width: 901px) {
+  .lore-modal__panel {
+    width: min(620px, 100%);
+  }
+
+  .lore-modal__trait-text {
+    white-space: nowrap;
+  }
+}
+
 /* Círculo dorado con la flecha adentro, en vez de una flecha suelta
    flotando entre las cards. */
 .historia-arrow {
