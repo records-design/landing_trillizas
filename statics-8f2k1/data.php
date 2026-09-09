@@ -339,6 +339,34 @@ foreach ($paidVsOrganicConversion as &$pvc) {
 unset($pvc);
 
 // ------------------------------------------------------------
+// Canal vs. newsletter: cuánta gente se suscribió a SOLO uno de los
+// dos, y cuánta a los DOS — para saber si son públicos superpuestos
+// o si conviene pedir las 2 cosas porque la gente solo hace una.
+// ------------------------------------------------------------
+$ytPlaceholdersOverlap = implode(',', array_fill(0, count(YOUTUBE_SUB_BUTTONS), '?'));
+$subsOverlap = q($pdo,
+    "SELECT
+        SUM(CASE WHEN has_canal = 1 AND has_news = 0 THEN 1 ELSE 0 END) solo_canal,
+        SUM(CASE WHEN has_canal = 0 AND has_news = 1 THEN 1 ELSE 0 END) solo_newsletter,
+        SUM(CASE WHEN has_canal = 1 AND has_news = 1 THEN 1 ELSE 0 END) ambos
+     FROM (
+        SELECT sess.session_id,
+            MAX(CASE WHEN ev.button IN ($ytPlaceholdersOverlap) THEN 1 ELSE 0 END) has_canal,
+            MAX(CASE WHEN sub.email IS NOT NULL THEN 1 ELSE 0 END) has_news
+        FROM sessions sess
+        LEFT JOIN events ev ON ev.session_id = sess.session_id AND ev.event_name = 'click'
+        LEFT JOIN subscribers sub ON sub.session_id = sess.session_id
+        WHERE sess.first_seen BETWEEN ? AND ?{$srcCondSess}
+        GROUP BY sess.session_id
+     ) t",
+    array_merge(YOUTUBE_SUB_BUTTONS, $range, $srcCondSessParam))[0];
+$subsOverlap = [
+    'solo_canal' => (int) ($subsOverlap['solo_canal'] ?? 0),
+    'solo_newsletter' => (int) ($subsOverlap['solo_newsletter'] ?? 0),
+    'ambos' => (int) ($subsOverlap['ambos'] ?? 0),
+];
+
+// ------------------------------------------------------------
 // Fuentes por conversión: de las visitas de cada fuente, qué % logró
 // cada uno de los 4 objetivos reales de la landing — ver la serie,
 // escuchar el álbum, suscribirse al canal de YouTube, y suscribirse
@@ -599,6 +627,7 @@ echo json_encode([
     'source_conversion' => $sourceConversion,
     'paid_vs_organic'  => $paidVsOrganic,
     'paid_vs_organic_conversion' => $paidVsOrganicConversion,
+    'subs_overlap' => $subsOverlap,
     'devices'          => $devices,
     'placements'       => $placements,
     'countries'        => $countries,

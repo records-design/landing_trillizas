@@ -122,6 +122,15 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
           <tbody></tbody>
         </table>
       </div>
+      <div class="panel">
+        <h2>Canal vs. newsletter</h2>
+        <div class="cards" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 0;">
+          <div class="card"><div class="label">Solo canal de YouTube</div><div class="value" id="kpiSoloCanal">–</div></div>
+          <div class="card"><div class="label">Solo newsletter</div><div class="value" id="kpiSoloNewsletter">–</div></div>
+          <div class="card"><div class="label">Los dos</div><div class="value" id="kpiAmbasSubs">–</div></div>
+        </div>
+        <p class="muted">Cuánta gente se sumó a uno solo de los dos vs. a los dos — si "los dos" es chico en relación al resto, son públicos bastante distintos y conviene seguir pidiendo ambas cosas por separado.</p>
+      </div>
     </div>
 
     <div class="grid2">
@@ -404,6 +413,9 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
         `<td class="n">${r.pct_objetivo}%</td>` +
         `<td class="n">${r.pct_youtube}%</td>` +
         `<td class="n">${r.pct_sub}%</td>`);
+      $('kpiSoloCanal').textContent = fmt(d.subs_overlap.solo_canal);
+      $('kpiSoloNewsletter').textContent = fmt(d.subs_overlap.solo_newsletter);
+      $('kpiAmbasSubs').textContent = fmt(d.subs_overlap.ambos);
       rows('tblCities', d.cities, r => `<td>${r.city}${r.cc ? ' · ' + r.cc : ''}</td><td class="n">${fmt(+r.n)}</td>`);
       rows('tblAds', d.ads, r =>
         `<td>${r.ad_name ?? r.ad_id}</td><td>${r.campaign_name ?? ''}</td><td class="n">${fmt(+r.visitas)}</td><td class="n">${fmt(+r.clics)}</td><td class="n">${fmt(+r.suscripciones)}</td>`);
