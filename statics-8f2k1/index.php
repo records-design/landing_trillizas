@@ -60,7 +60,9 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
     <h1><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-3px; margin-right:6px;"><rect x="3" y="12" width="4" height="8"/><rect x="10" y="7" width="4" height="13"/><rect x="17" y="3" width="4" height="17"/></svg>Analíticas · Las Trillizas de Oro y El Libro Mágico</h1>
     <div class="right">
       <span class="live"><span class="dot"></span><span id="activeNow">0</span> activos ahora</span>
+      <!-- TODO: volver a agregar cuando se suba el panel de contenido (content.php, content-save.php, upload-image.php, backend/content.php) y el schema.sql:
       <a href="content.php" style="color:var(--gold); text-decoration:none;">✎ Editar contenido</a>
+      -->
       <span class="muted"><?= $panelUser ?></span>
       <a class="logout" href="logout.php">Salir</a>
     </div>
