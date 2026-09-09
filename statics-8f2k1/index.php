@@ -178,7 +178,22 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
 
     // Solo para mostrar: "qr_academia" -> "qr academia". El valor real
     // (utm_source) no cambia, así que el filtro sigue funcionando igual.
-    function prettySource(s) { return String(s).replace(/_/g, ' '); }
+    // Códigos cortos que arma Meta automáticamente (utm_source dinámico
+    // según dónde se mostró el anuncio: Facebook, Instagram, Messenger
+    // o Audience Network) — sin esto se ven crípticos ("an", "ig") y
+    // no queda claro qué son para alguien que no conoce esa jerga.
+    const KNOWN_SOURCE_LABELS = {
+      fb: 'Facebook (Meta Ads)',
+      ig: 'Instagram (Meta Ads)',
+      an: 'Audience Network (Meta Ads)',
+      msg: 'Messenger (Meta Ads)',
+    };
+
+    function prettySource(s) {
+      const key = String(s).toLowerCase();
+      if (KNOWN_SOURCE_LABELS[key]) return KNOWN_SOURCE_LABELS[key];
+      return String(s).replace(/_/g, ' ');
+    }
 
     function setPreset(days) {
       const to = new Date();
