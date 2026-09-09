@@ -105,10 +105,10 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
       <div class="panel" style="grid-column: 1 / -1;">
         <h2>Fuentes por conversión</h2>
         <table id="tblSourceConversion">
-          <thead><tr><th>Fuente</th><th class="n">Visitas</th><th class="n">% hizo click</th><th class="n">% newsletter</th><th class="n">% canal YouTube</th></tr></thead>
+          <thead><tr><th>Fuente</th><th class="n">Visitas</th><th class="n">% vio la serie</th><th class="n">% escuchó el álbum</th><th class="n">% canal YouTube</th><th class="n">% newsletter</th></tr></thead>
           <tbody></tbody>
         </table>
-        <p class="muted">"% newsletter" = dejó el mail en el formulario de suscripción. "% canal YouTube" = tocó un botón para suscribirse/seguir el canal (distinto del newsletter). Con menos de 30 visitas el % queda marcado como "pocos datos todavía" (atenuado) — con tan poco volumen, un solo caso de suerte cambia todo el porcentaje, así que no conviene decidir nada (cortar o invertir más en un canal) basándose en esos números todavía. A partir de 30 visitas el dato ya es confiable.</p>
+        <p class="muted">Los 4 objetivos reales de la landing, cada uno por separado: ver la serie, escuchar el álbum/canción, suscribirse al canal de YouTube, y suscribirse al newsletter. Con menos de 30 visitas el % queda marcado como "pocos datos todavía" (atenuado) — con tan poco volumen, un solo caso de suerte cambia todo el porcentaje, así que no conviene decidir nada (cortar o invertir más en un canal) basándose en esos números todavía. A partir de 30 visitas el dato ya es confiable.</p>
       </div>
     </div>
 
@@ -361,9 +361,10 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
         const pctClass = r.confiable ? '' : ' style="opacity:.45"';
         const note = r.confiable ? '' : ' <span class="muted">(pocos datos todavía)</span>';
         return `<td>${prettySource(r.src)}${note}</td><td class="n">${fmt(r.visitas)}</td>` +
-          `<td class="n"${pctClass}>${r.pct_click}%</td>` +
-          `<td class="n"${pctClass}>${r.pct_sub}%</td>` +
-          `<td class="n"${pctClass}>${r.pct_youtube}%</td>`;
+          `<td class="n"${pctClass}>${r.pct_serie}%</td>` +
+          `<td class="n"${pctClass}>${r.pct_album}%</td>` +
+          `<td class="n"${pctClass}>${r.pct_youtube}%</td>` +
+          `<td class="n"${pctClass}>${r.pct_sub}%</td>`;
       });
       rows('tblCities', d.cities, r => `<td>${r.city}${r.cc ? ' · ' + r.cc : ''}</td><td class="n">${fmt(+r.n)}</td>`);
       rows('tblAds', d.ads, r =>

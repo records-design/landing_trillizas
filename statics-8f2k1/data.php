@@ -264,15 +264,16 @@ $paidVsOrganic = q($pdo,
     array_merge($range, $adSessionsParam));
 
 // ------------------------------------------------------------
-// Fuentes por conversión: de las visitas de cada fuente, qué % hizo
-// click en algo, qué % se suscribió al newsletter (mail), y qué % se
-// suscribió al canal de YouTube (el objetivo real de la landing) —
-// las dos suscripciones por separado, no mezcladas. No solo cuántas
-// visitas trajo cada fuente (eso ya lo muestra "Fuentes de tráfico"),
-// sino qué tan bien convierte. Con pocas visitas el % es poco
-// confiable (un solo caso de suerte cambia todo el porcentaje) — se
-// marca "confiable" a partir de MIN_SAMPLE_SOURCE visitas, y el panel
-// atenúa visualmente las que todavía no llegan a ese mínimo.
+// Fuentes por conversión: de las visitas de cada fuente, qué % logró
+// cada uno de los 4 objetivos reales de la landing — ver la serie,
+// escuchar el álbum, suscribirse al canal de YouTube, y suscribirse
+// al newsletter — cada uno por separado, no mezclados. No solo
+// cuántas visitas trajo cada fuente (eso ya lo muestra "Fuentes de
+// tráfico"), sino qué tan bien convierte para lo que realmente
+// importa. Con pocas visitas el % es poco confiable (un solo caso de
+// suerte cambia todo el porcentaje) — se marca "confiable" a partir
+// de MIN_SAMPLE_SOURCE visitas, y el panel atenúa visualmente las que
+// todavía no llegan a ese mínimo.
 // ------------------------------------------------------------
 const MIN_SAMPLE_SOURCE = 30;
 
@@ -280,6 +281,11 @@ const MIN_SAMPLE_SOURCE = 30;
 // YouTube (no "ver_serie"/"episodio_N", que son mirar un video
 // puntual, no suscribirse al canal en sí).
 const YOUTUBE_SUB_BUTTONS = ['social_youtube', 'proximos_episodios_canal', 'footer_babidibu_tv'];
+// "Ver la serie": el botón del hero + cada episodio puntual (episodio_N,
+// para cualquier cantidad, incluso los que se agreguen más adelante).
+const SERIE_BUTTONS = ['ver_serie'];
+// "Escuchar el álbum": el botón del hero/sección álbum + el link a Spotify.
+const ALBUM_BUTTONS = ['escuchar_album', 'social_spotify'];
 
 $srcCondSess = '';
 $srcCondSessParam = [];
@@ -294,11 +300,14 @@ if ($sourceFilter !== null) {
 }
 
 $ytPlaceholders = implode(',', array_fill(0, count(YOUTUBE_SUB_BUTTONS), '?'));
+$seriePlaceholders = implode(',', array_fill(0, count(SERIE_BUTTONS), '?'));
+$albumPlaceholders = implode(',', array_fill(0, count(ALBUM_BUTTONS), '?'));
 $sourceConversion = q($pdo,
     "SELECT
         COALESCE(NULLIF(sess.utm_source,''),'landing') src,
         COUNT(DISTINCT sess.session_id) visitas,
-        COUNT(DISTINCT CASE WHEN ev.session_id IS NOT NULL THEN sess.session_id END) con_click,
+        COUNT(DISTINCT CASE WHEN ev.button IN ($seriePlaceholders) OR ev.button REGEXP '^episodio_[0-9]+$' THEN sess.session_id END) con_serie,
+        COUNT(DISTINCT CASE WHEN ev.button IN ($albumPlaceholders) THEN sess.session_id END) con_album,
         COUNT(DISTINCT CASE WHEN ev.button IN ($ytPlaceholders) THEN sess.session_id END) con_youtube,
         COUNT(DISTINCT sub.email) suscripciones
      FROM sessions sess
@@ -307,14 +316,16 @@ $sourceConversion = q($pdo,
      WHERE sess.first_seen BETWEEN ? AND ?{$srcCondSess}
      GROUP BY src
      ORDER BY visitas DESC",
-    array_merge(YOUTUBE_SUB_BUTTONS, $range, $srcCondSessParam));
+    array_merge(SERIE_BUTTONS, ALBUM_BUTTONS, YOUTUBE_SUB_BUTTONS, $range, $srcCondSessParam));
 
 foreach ($sourceConversion as &$sc) {
     $sc['visitas'] = (int) $sc['visitas'];
-    $sc['con_click'] = (int) $sc['con_click'];
+    $sc['con_serie'] = (int) $sc['con_serie'];
+    $sc['con_album'] = (int) $sc['con_album'];
     $sc['con_youtube'] = (int) $sc['con_youtube'];
     $sc['suscripciones'] = (int) $sc['suscripciones'];
-    $sc['pct_click'] = $sc['visitas'] ? round($sc['con_click'] / $sc['visitas'] * 100, 1) : 0;
+    $sc['pct_serie'] = $sc['visitas'] ? round($sc['con_serie'] / $sc['visitas'] * 100, 1) : 0;
+    $sc['pct_album'] = $sc['visitas'] ? round($sc['con_album'] / $sc['visitas'] * 100, 1) : 0;
     $sc['pct_youtube'] = $sc['visitas'] ? round($sc['con_youtube'] / $sc['visitas'] * 100, 1) : 0;
     $sc['pct_sub'] = $sc['visitas'] ? round($sc['suscripciones'] / $sc['visitas'] * 100, 1) : 0;
     $sc['confiable'] = $sc['visitas'] >= MIN_SAMPLE_SOURCE;
