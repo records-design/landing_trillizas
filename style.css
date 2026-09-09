@@ -3544,20 +3544,24 @@ button:focus-visible {
    suficiente alto de sobra (la sección tiene min-height: 100vh) para
    que entre sin pisar el texto. */
 @media (min-width: 701px) and (max-width: 900px) {
-  .album-section__row {
-    position: relative;
-  }
-
+  /* En vez de calcular una posición flotante a mano (frágil, y en un
+     primer intento terminó superpuesto justo detrás del texto), se
+     lo deja como un elemento más del flujo normal: al ser el grid de
+     una sola columna, "order" lo manda después de la tapa y el texto
+     (que se quedan con su order:0 por defecto) — así nunca se puede
+     superponer con nada, entra siempre debajo, sin importar cuánto
+     mida el texto en cada pantalla. */
   .album-section__trixi-bg {
-    position: absolute;
-    right: auto;
-    top: auto;
-    bottom: -40px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: min(520px, 68vw);
-    opacity: 0.55;
-    z-index: 0;
+    position: static;
+    order: 1;
+    width: min(420px, 62vw);
+    max-width: none;
+    height: auto;
+    margin: 12px auto 0;
+    opacity: 1;
+    transform: none;
+    -webkit-mask-image: none;
+    mask-image: none;
   }
 
   .album-section__trixi-halo,
