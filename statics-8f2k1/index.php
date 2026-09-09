@@ -171,18 +171,6 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
           <p class="muted">"Placement" es en qué parte de Instagram o Facebook apareció el anuncio que trajo a esa persona (el feed, las Historias, los Reels, etc.). Solo se completa si viene de un anuncio de Meta con ese dato configurado — el resto del tráfico (QR, redes, landing) aparece como "(sin dato)".</p>
         </div>
       </div>
-      <div class="panel">
-        <h2>Países</h2>
-        <table id="tblCountries"><thead><tr><th>País</th><th class="n">Sesiones</th></tr></thead><tbody></tbody></table>
-        <p class="muted">"Sesiones" = cantidad de visitas. Si la misma persona entra dos veces en momentos distintos, cuenta como dos sesiones (no es necesariamente gente distinta).</p>
-      </div>
-    </div>
-
-    <div class="grid2">
-      <div class="panel">
-        <h2>Ciudades</h2>
-        <table id="tblCities"><thead><tr><th>Ciudad</th><th class="n">Sesiones</th></tr></thead><tbody></tbody></table>
-      </div>
     </div>
 
     <div class="grid2">
@@ -211,6 +199,18 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
         <tbody></tbody>
       </table>
       <p class="muted">Cuánta gente entró, clickeó algo y dejó su mail, separado por cada anuncio de Meta.</p>
+    </div>
+
+    <div class="grid2">
+      <div class="panel">
+        <h2>Países</h2>
+        <table id="tblCountries"><thead><tr><th>País</th><th class="n">Sesiones</th></tr></thead><tbody></tbody></table>
+        <p class="muted">"Sesiones" = cantidad de visitas. Si la misma persona entra dos veces en momentos distintos, cuenta como dos sesiones (no es necesariamente gente distinta).</p>
+      </div>
+      <div class="panel">
+        <h2>Ciudades</h2>
+        <table id="tblCities"><thead><tr><th>Ciudad</th><th class="n">Sesiones</th></tr></thead><tbody></tbody></table>
+      </div>
     </div>
   </div>
 
