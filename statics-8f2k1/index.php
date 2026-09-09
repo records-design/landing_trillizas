@@ -101,6 +101,14 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
 
     <div class="grid2">
       <div class="panel">
+        <h2>Pagado vs. Orgánico</h2>
+        <canvas id="chartPaidOrganic"></canvas>
+        <p class="muted">"Pagado": vino de un anuncio real (Meta o Google Ads, con su click id). "Orgánico": cualquier otro ingreso (bio, historias, QR, directo, etc.), sin importar cuántas fuentes distintas tenga.</p>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="panel">
         <h2>Nuevos vs. recurrentes</h2>
         <canvas id="chartNewReturning"></canvas>
         <p class="muted">"Nuevo": es la primera vez que esa persona entra a la web. "Recurrente": ya había entrado antes (por ejemplo, volvió por un anuncio de remarketing).</p>
@@ -321,6 +329,8 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
         d.devices.map(r => r.device), d.devices.map(r => +r.n));
       drawChart('chartNewReturning', 'doughnut',
         d.new_vs_returning.map(r => r.tipo), d.new_vs_returning.map(r => +r.n));
+      drawChart('chartPaidOrganic', 'doughnut',
+        d.paid_vs_organic.map(r => r.tipo), d.paid_vs_organic.map(r => +r.n));
 
       // Embudo
       const v = d.funnel.visits || 0, c = d.funnel.sessions_with_click || 0;

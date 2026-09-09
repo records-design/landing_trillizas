@@ -244,6 +244,26 @@ $ads = q($pdo,
     [$fromDt, $toDt, $fromDt, $toDt]);
 
 // ------------------------------------------------------------
+// Pagado vs. orgánico: "pagado" es cualquier sesión que llegó con
+// utm_medium=paid (como arman los links de Meta/Google Ads) o con
+// un click id real de un anuncio (fbclid/gclid) — eso solo lo genera
+// un anuncio de verdad, nunca puede salir de una visita orgánica por
+// accidente. Todo lo demás (bio, historias, QR, directo, etc.) es
+// orgánico, sin importar cuántas fuentes distintas tenga.
+// ------------------------------------------------------------
+$paidVsOrganic = q($pdo,
+    "SELECT
+        CASE
+          WHEN utm_medium = 'paid' OR fbclid IS NOT NULL OR gclid IS NOT NULL THEN 'Pagado'
+          ELSE 'Orgánico'
+        END AS tipo,
+        COUNT(*) n
+     FROM sessions
+     WHERE first_seen BETWEEN ? AND ?{$adSessionsCond}
+     GROUP BY tipo",
+    array_merge($range, $adSessionsParam));
+
+// ------------------------------------------------------------
 // Nuevos vs. recurrentes: un visitante es "recurrente" si su
 // visitor_id (persiste entre visitas, ver tracking.js) ya tenía
 // una sesión ANTERIOR a esta, sin importar cuándo. "(sin dato)"
@@ -415,6 +435,7 @@ echo json_encode([
     'timeline'         => $timeline,
     'clicks_by_button' => $clicksByButton,
     'sources'          => $sources,
+    'paid_vs_organic'  => $paidVsOrganic,
     'devices'          => $devices,
     'placements'       => $placements,
     'countries'        => $countries,
