@@ -4706,6 +4706,60 @@ body.has-sections .hero {
   opacity: 0.92;
 }
 
+.lore-modal__body + .lore-modal__traits {
+  margin-top: 18px;
+}
+
+.lore-modal__traits + .lore-modal__body {
+  margin-top: 18px;
+}
+
+/* Lista de las 3 fuerzas (Alma / Mente / Cuerpo) — cada una en su
+   propia fila, con un diamante dorado como viñeta (mismo lenguaje
+   que el separador de títulos), para que se lean como conceptos
+   distintos y no como una frase corrida más. */
+.lore-modal__traits {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+  padding: 14px clamp(16px, 3vw, 22px);
+  list-style: none;
+
+  border: 1px solid rgba(216, 178, 92, 0.22);
+  border-radius: 12px;
+  background: rgba(216, 178, 92, 0.05);
+}
+
+.lore-modal__trait {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.lore-modal__trait-diamond {
+  width: 6px;
+  height: 6px;
+  flex-shrink: 0;
+  transform: rotate(45deg) translateY(-2px);
+  border: 1px solid var(--gold);
+  background: var(--gold-light);
+}
+
+.lore-modal__trait-text {
+  color: var(--ivory);
+  font-family: var(--font-ui);
+  font-size: clamp(15px, 1.6vw, 17px);
+  line-height: 1.5;
+  opacity: 0.92;
+}
+
+.lore-modal__trait-text strong {
+  color: var(--gold-title);
+  font-weight: 700;
+}
+
 body.lore-modal-open {
   overflow: hidden;
 }
