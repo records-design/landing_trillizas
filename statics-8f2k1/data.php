@@ -498,7 +498,7 @@ const PAID_TIPO_SQL = "CASE WHEN sess.utm_medium = 'paid' OR sess.fbclid IS NOT 
 // ------------------------------------------------------------
 $buttonInterest = q($pdo,
     "SELECT ev.button,
-            $PAID_TIPO_SQL AS tipo,
+            " . PAID_TIPO_SQL . " AS tipo,
             COUNT(DISTINCT ev.session_id) sesiones,
             AVG(ev.dwell_ms) avg_dwell_ms
      FROM events ev
@@ -531,7 +531,7 @@ $musicEngagementRows = q($pdo,
         SUM(CASE WHEN has_serie = 1 AND has_album = 1 THEN 1 ELSE 0 END) ambos_clics
      FROM (
         SELECT sess.session_id,
-            $PAID_TIPO_SQL AS tipo,
+            " . PAID_TIPO_SQL . " AS tipo,
             MAX(CASE WHEN ev.button = 'ver_serie' THEN 1 ELSE 0 END) has_serie,
             MAX(CASE WHEN ev.button = 'escuchar_album' THEN 1 ELSE 0 END) has_album,
             MAX(CASE WHEN sub.email IS NOT NULL THEN 1 ELSE 0 END) has_news
