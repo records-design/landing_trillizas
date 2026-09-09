@@ -4683,7 +4683,7 @@ body.has-sections .hero {
 
 .lore-modal__title {
   align-self: stretch;
-  margin: 0 0 6px;
+  margin: 0 0 18px;
   text-align: center;
 
   color: var(--gold-title);
@@ -4692,19 +4692,6 @@ body.has-sections .hero {
   font-weight: 600;
   line-height: 1.2;
   text-shadow: 0 0 18px rgba(232, 201, 123, 0.35);
-}
-
-.lore-modal__subtitle {
-  align-self: stretch;
-  margin: 0 0 18px;
-  text-align: center;
-
-  color: var(--gold-light);
-  font-family: var(--font-ui);
-  font-size: clamp(13px, 1.4vw, 15px);
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  opacity: 0.85;
 }
 
 .lore-modal__body {
