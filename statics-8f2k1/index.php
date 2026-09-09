@@ -149,8 +149,13 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
     <div class="grid2">
       <div class="panel">
         <h2>Placement</h2>
-        <table id="tblPlacement"><thead><tr><th>Placement</th><th class="n">Sesiones</th></tr></thead><tbody></tbody></table>
-        <p class="muted">"Placement" es en qué parte de Instagram o Facebook apareció el anuncio que trajo a esa persona (el feed, las Historias, los Reels, etc.). Solo se completa si viene de un anuncio de Meta con ese dato configurado — el resto del tráfico (QR, redes, landing) aparece como "(sin dato)".</p>
+        <div id="placementNoData" hidden>
+          <p class="muted">Ninguna visita de este período trae el dato de placement — el link del anuncio no lo está mandando (le falta el parámetro <code>placement</code> en la URL). Es un ajuste que tiene que hacer quien carga el anuncio en Meta Ads Manager, agregando <code>&amp;placement={{placement}}</code> a la URL del anuncio. Mientras tanto esta tabla no va a mostrar nada útil.</p>
+        </div>
+        <div id="placementTableWrap">
+          <table id="tblPlacement"><thead><tr><th>Placement</th><th class="n">Sesiones</th></tr></thead><tbody></tbody></table>
+          <p class="muted">"Placement" es en qué parte de Instagram o Facebook apareció el anuncio que trajo a esa persona (el feed, las Historias, los Reels, etc.). Solo se completa si viene de un anuncio de Meta con ese dato configurado — el resto del tráfico (QR, redes, landing) aparece como "(sin dato)".</p>
+        </div>
       </div>
       <div class="panel">
         <h2>Países</h2>
@@ -369,7 +374,12 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
       }).join('');
 
       // Tablas
-      rows('tblPlacement', d.placements, r => `<td>${r.placement}</td><td class="n">${fmt(+r.n)}</td>`);
+      const hasRealPlacement = d.placements.some((r) => r.placement !== '(sin dato)');
+      $('placementNoData').hidden = hasRealPlacement;
+      $('placementTableWrap').hidden = !hasRealPlacement;
+      if (hasRealPlacement) {
+        rows('tblPlacement', d.placements, r => `<td>${r.placement}</td><td class="n">${fmt(+r.n)}</td>`);
+      }
       rows('tblCountries', d.countries, r => `<td>${r.country}</td><td class="n">${fmt(+r.n)}</td>`);
       rows('tblSourceConversion', d.source_conversion, (r) => {
         const pctClass = r.confiable ? '' : ' style="opacity:.45"';
