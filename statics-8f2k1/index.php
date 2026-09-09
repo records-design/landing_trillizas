@@ -51,7 +51,7 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
     td.n, th.n { text-align: right; }
     .funnel-step { display: flex; justify-content: space-between; padding: 8px 0; font-size: 14px; }
     .funnel-track { height: 8px; border-radius: 999px; background: rgba(255,255,255,0.08); margin-top: 4px; overflow: hidden; }
-    .funnel-bar { height: 100%; border-radius: 999px; }
+    .funnel-bar { height: 100%; border-radius: 999px; background: linear-gradient(90deg,var(--accent),var(--gold)); }
     canvas { max-height: 260px; }
     .muted { color: var(--muted); font-size: 12px; }
   </style>
@@ -374,19 +374,19 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
       const c = d.funnel.sessions_with_click || 0;
       const g = d.funnel.sessions_with_goal_click || 0;
       const s = d.funnel.sessions_subscribed || 0;
-      // Un color propio por escalón (no todos el mismo degradé), y una
-      // barra "de riel completo" detrás para que se note la proporción
-      // real aunque el % sea chico.
+      // Mismo color en las 4 barras (como cualquier embudo: es "lo
+      // mismo" achicándose a medida que baja) — el riel completo
+      // detrás deja ver la proporción real aunque el % sea chico.
       const steps = [
-        ['Visitantes', v, '#ffd76b'],
-        ['Hicieron clic en un botón', c, '#a678ff'],
-        ['Hicieron clic en el objetivo real (serie/álbum/canal)', g, '#67e8f9'],
-        ['Se suscribieron (newsletter o canal)', s, '#ff8ad4'],
+        ['Visitantes', v],
+        ['Hicieron clic en un botón', c],
+        ['Hicieron clic en el objetivo real (serie/álbum/canal)', g],
+        ['Se suscribieron (newsletter o canal)', s],
       ];
-      $('funnel').innerHTML = steps.map(([label, n, color], i) => {
+      $('funnel').innerHTML = steps.map(([label, n], i) => {
         const pct = v ? (n / v * 100) : 0;
         return `<div class="funnel-step"${i ? ' style="margin-top:14px"' : ''}><span>${label}</span><strong>${fmt(n)}${i ? ` (${pct.toFixed(1)}%)` : ''}</strong></div>` +
-          `<div class="funnel-track"><div class="funnel-bar" style="width:${i ? Math.max(pct, 2) : 100}%; background:${color}"></div></div>`;
+          `<div class="funnel-track"><div class="funnel-bar" style="width:${i ? Math.max(pct, 2) : 100}%"></div></div>`;
       }).join('');
 
       // Tablas
