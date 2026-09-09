@@ -145,6 +145,7 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
       </div>
       <div class="panel">
         <h2>Embudo de conversión</h2>
+        <p class="muted">Muestra cómo se va achicando la gente a medida que avanza hacia lo que realmente importa: entran a la web, algunos hacen click en algo, menos todavía hacen click en lo que de verdad buscamos (ver la serie, escuchar el álbum o sumarse al canal), y menos aún terminan suscribiéndose. Cada escalón es un filtro más difícil de pasar — el % de cada uno es sobre el total de visitantes, no sobre el escalón anterior.</p>
         <div id="funnel"></div>
       </div>
     </div>
