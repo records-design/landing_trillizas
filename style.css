@@ -4527,6 +4527,149 @@ body.has-sections .hero {
   text-transform: uppercase;
 }
 
+/* Botón "Conocé más" — mismo lenguaje visual que el CTA de las
+   cards de episodio (texto + flechita), para que quede clarísimo
+   que la card no es solo una foto, hay más para ver adentro. */
+.historia-slot__more {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  background: none;
+  border: none;
+  padding: 4px 2px;
+  cursor: pointer;
+
+  color: var(--gold-light);
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+
+  transition: transform 0.25s ease, color 0.25s ease;
+}
+
+.historia-slot__more svg {
+  width: 13px;
+  height: 13px;
+  flex: 0 0 auto;
+  transition: transform 0.25s ease;
+}
+
+.historia-slot__more:hover {
+  color: var(--gold);
+}
+
+.historia-slot__more:hover svg {
+  transform: translateX(3px);
+}
+
+/* ============================================================
+   Modales "Conocé más" (Trillizas / Libro Mágico / Trixipop)
+   ============================================================ */
+.lore-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.lore-modal.is-open {
+  display: flex;
+}
+
+.lore-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 5, 18, 0.78);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.lore-modal__panel {
+  position: relative;
+  z-index: 1;
+  width: min(560px, 100%);
+  max-height: 85vh;
+  overflow-y: auto;
+
+  padding: clamp(28px, 4vw, 44px) clamp(24px, 4vw, 40px);
+  border-radius: 18px;
+  border: 1px solid rgba(216, 178, 92, 0.35);
+
+  background:
+    radial-gradient(circle at 20% 0%, rgba(216, 178, 92, 0.08), transparent 55%),
+    linear-gradient(160deg, #241333, #1b0f2e 65%);
+
+  box-shadow:
+    0 30px 70px rgba(0, 0, 0, 0.55),
+    0 0 40px rgba(216, 178, 92, 0.1);
+
+  animation: loreModalIn 0.3s cubic-bezier(.22, 1, .36, 1);
+}
+
+@keyframes loreModalIn {
+  from { opacity: 0; transform: translateY(14px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.lore-modal__close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(216, 178, 92, 0.12);
+  border: 1px solid rgba(216, 178, 92, 0.35);
+  border-radius: 50%;
+  color: var(--gold-light);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+
+  transition: background-color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+}
+
+.lore-modal__close:hover {
+  background: rgba(216, 178, 92, 0.24);
+  border-color: rgba(216, 178, 92, 0.6);
+  transform: rotate(90deg);
+}
+
+.lore-modal__title {
+  margin: 0 0 16px;
+  padding-right: 30px;
+
+  color: var(--gold-title);
+  font-family: var(--font-display);
+  font-size: clamp(24px, 3vw, 30px);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.lore-modal__body {
+  margin: 0;
+  color: var(--ivory);
+  font-family: var(--font-ui);
+  font-size: clamp(15px, 1.6vw, 17px);
+  font-weight: 400;
+  line-height: 1.7;
+  opacity: 0.92;
+}
+
+body.lore-modal-open {
+  overflow: hidden;
+}
+
 /* Círculo dorado con la flecha adentro, en vez de una flecha suelta
    flotando entre las cards. */
 .historia-arrow {

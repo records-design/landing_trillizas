@@ -165,7 +165,7 @@
   />
 
   <!-- CSS -->
-  <link rel="stylesheet" href="style.css?v=20260908trixitablet3" />
+  <link rel="stylesheet" href="style.css?v=20260909loremodal1" />
 </head>
 
 <body class="has-sections">
@@ -672,6 +672,10 @@
           />
         </div>
         <span class="historia-slot__label">Las Trillizas de Oro</span>
+        <button class="historia-slot__more" type="button" data-modal-open="modal-trillizas" data-track-button="conoce_mas_trillizas">
+          Conocé más
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        </button>
       </div>
 
       <span class="historia-arrow" aria-hidden="true">&rarr;</span>
@@ -685,6 +689,10 @@
           />
         </div>
         <span class="historia-slot__label">El libro mágico</span>
+        <button class="historia-slot__more" type="button" data-modal-open="modal-libro" data-track-button="conoce_mas_libro">
+          Conocé más
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        </button>
       </div>
 
       <span class="historia-arrow" aria-hidden="true">&rarr;</span>
@@ -698,9 +706,51 @@
           />
         </div>
         <span class="historia-slot__label">Trixipop</span>
+        <button class="historia-slot__more" type="button" data-modal-open="modal-trixipop" data-track-button="conoce_mas_trixipop">
+          Conocé más
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        </button>
       </div>
     </div>
   </section>
+
+  <!-- ================================================
+       Modales "Conocé más" de la sección Historia. Los 3 comparten
+       el mismo estilo (.lore-modal) — se abren con el botón de cada
+       card, se cierran con la X, tocando afuera, o con Escape (ver
+       <script> al final del archivo). -->
+  <div class="lore-modal" id="modal-trillizas" aria-hidden="true">
+    <div class="lore-modal__backdrop" data-modal-close></div>
+    <div class="lore-modal__panel" role="dialog" aria-modal="true" aria-labelledby="modal-trillizas-title">
+      <button class="lore-modal__close" type="button" data-modal-close aria-label="Cerrar">&times;</button>
+      <h3 class="lore-modal__title" id="modal-trillizas-title">Las Trillizas de Oro</h3>
+      <p class="lore-modal__body">
+        Cantantes, actrices y conductoras, construyeron una trayectoria única que atravesó generaciones y las convirtió en referentes indiscutidas del entretenimiento familiar. Música, televisión y una conexión especial con el público forman parte de una historia que continúa reinventándose hasta hoy.
+      </p>
+    </div>
+  </div>
+
+  <div class="lore-modal" id="modal-libro" aria-hidden="true">
+    <div class="lore-modal__backdrop" data-modal-close></div>
+    <div class="lore-modal__panel" role="dialog" aria-modal="true" aria-labelledby="modal-libro-title">
+      <button class="lore-modal__close" type="button" data-modal-close aria-label="Cerrar">&times;</button>
+      <h3 class="lore-modal__title" id="modal-libro-title">El Libro Mágico</h3>
+      <p class="lore-modal__body">
+        Las Trillizas descubren un misterioso Libro Mágico. Al abrirlo, sus páginas se llenan de luz y aparecen portales capaces de llevarlas a mundos increíbles. Cada vez que cruzan uno de ellos, se transforman en las Trixipop y comienza una nueva aventura, llena de música, magia y desafíos que solo podrán resolver juntas.
+      </p>
+    </div>
+  </div>
+
+  <div class="lore-modal" id="modal-trixipop" aria-hidden="true">
+    <div class="lore-modal__backdrop" data-modal-close></div>
+    <div class="lore-modal__panel" role="dialog" aria-modal="true" aria-labelledby="modal-trixipop-title">
+      <button class="lore-modal__close" type="button" data-modal-close aria-label="Cerrar">&times;</button>
+      <h3 class="lore-modal__title" id="modal-trixipop-title">Trixipop</h3>
+      <p class="lore-modal__body">
+        Las Trixipop son las versiones mágicas de Las Trillizas de Oro. Al cruzar el portal del Libro Mágico, cada una representa una fuerza diferente: Alma conecta con las emociones, Mente ayuda a comprender y resolver, y Cuerpo impulsa a actuar. Juntas descubren que su verdadero poder aparece cuando las tres trabajan en equilibrio.
+      </p>
+    </div>
+  </div>
 
   <!-- PORTAL SOCIAL + SUSCRIPCIÓN + FOOTER (movido debajo de Episodios y Álbum) -->
   <section class="post-sections-footer">
@@ -1214,6 +1264,46 @@
           // Pages, que no ejecuta PHP): se queda con el contenido fijo
           // de siempre, no pasa nada.
         });
+    })();
+  </script>
+
+  <!-- BORRADOR VIERNES: modales "Conocé más" de la sección Historia. -->
+  <script>
+    (function () {
+      var openBtns = document.querySelectorAll('[data-modal-open]');
+      var closeEls = document.querySelectorAll('[data-modal-close]');
+
+      function openModal(modal) {
+        if (!modal) return;
+        modal.classList.add('is-open');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('lore-modal-open');
+      }
+
+      function closeModal(modal) {
+        if (!modal) return;
+        modal.classList.remove('is-open');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('lore-modal-open');
+      }
+
+      openBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          openModal(document.getElementById(btn.getAttribute('data-modal-open')));
+        });
+      });
+
+      closeEls.forEach(function (el) {
+        el.addEventListener('click', function () {
+          closeModal(el.closest('.lore-modal'));
+        });
+      });
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key !== 'Escape') return;
+        var open = document.querySelector('.lore-modal.is-open');
+        if (open) closeModal(open);
+      });
     })();
   </script>
 
