@@ -38,7 +38,8 @@ $ipHint = !empty($cfg['privacy']['anonymize_ip']) ? anonymize_ip($ipRaw) : $ipRa
 $campaign = is_array($in['campaign'] ?? null) ? $in['campaign'] : [];
 $utmSource = isset($campaign['utm_source']) ? (string) $campaign['utm_source'] : null;
 $utmCampaign = isset($campaign['utm_campaign']) ? (string) $campaign['utm_campaign'] : null;
-$adId = isset($campaign['ad_id']) ? (string) $campaign['ad_id'] : null;
+$adId = isset($campaign['ad_id']) ? (string) $campaign['ad_id']
+    : (isset($campaign['utm_content']) ? (string) $campaign['utm_content'] : null);
 $sessionId = isset($in['session_id']) ? (string) $in['session_id'] : null;
 
 $pdo = db();
