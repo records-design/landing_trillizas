@@ -268,16 +268,18 @@ unset($__c);
 // ------------------------------------------------------------
 $ads = q($pdo,
     "SELECT e.ad_id,
+            e.utm_source red,
             COALESCE(r.ad_name, e.utm_campaign, e.ad_id) ad_name,
             COALESCE(r.campaign_name, e.utm_campaign) campaign_name,
             COUNT(DISTINCT e.session_id) visitas,
             SUM(CASE WHEN e.event_name = 'click' THEN 1 ELSE 0 END) clics,
             (SELECT COUNT(*) FROM subscribers s
-               WHERE s.ad_id = e.ad_id AND s.created_at BETWEEN ? AND ?) suscripciones
+               WHERE s.ad_id = e.ad_id AND s.utm_source <=> e.utm_source
+                 AND s.created_at BETWEEN ? AND ?) suscripciones
      FROM events e
      LEFT JOIN ad_reference r ON r.ad_id = e.ad_id
      WHERE e.ad_id IS NOT NULL AND e.created_at BETWEEN ? AND ?
-     GROUP BY e.ad_id, ad_name, campaign_name
+     GROUP BY e.ad_id, red, ad_name, campaign_name
      ORDER BY visitas DESC LIMIT 50",
     [$fromDt, $toDt, $fromDt, $toDt]);
 

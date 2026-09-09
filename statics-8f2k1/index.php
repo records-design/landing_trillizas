@@ -195,7 +195,7 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
     <div class="panel">
       <h2>Resultados por anuncio</h2>
       <table id="tblAds">
-        <thead><tr><th>Anuncio</th><th>Campaña</th><th class="n">Visitas</th><th class="n">Clics</th><th class="n">Mails dejados</th></tr></thead>
+        <thead><tr><th>Anuncio</th><th>Campaña</th><th>Red social</th><th class="n">Visitas</th><th class="n">Clics</th><th class="n">Mails dejados</th></tr></thead>
         <tbody></tbody>
       </table>
       <p class="muted">Cuánta gente entró, clickeó algo y dejó su mail, separado por cada anuncio de Meta.</p>
@@ -234,6 +234,7 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
     };
 
     function prettySource(s) {
+      if (!s) return '(sin dato)';
       const key = String(s).toLowerCase();
       if (KNOWN_SOURCE_LABELS[key]) return KNOWN_SOURCE_LABELS[key];
       return String(s).replace(/_/g, ' ');
@@ -433,7 +434,7 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
         `<td class="n">${fmt(r.ambos)}</td>`);
       rows('tblCities', d.cities, r => `<td>${r.city}${r.cc ? ' · ' + r.cc : ''}</td><td class="n">${fmt(+r.n)}</td>`);
       rows('tblAds', d.ads, r =>
-        `<td>${r.ad_name ?? r.ad_id}</td><td>${r.campaign_name ?? ''}</td><td class="n">${fmt(+r.visitas)}</td><td class="n">${fmt(+r.clics)}</td><td class="n">${fmt(+r.suscripciones)}</td>`);
+        `<td>${r.ad_name ?? r.ad_id}</td><td>${r.campaign_name ?? ''}</td><td>${prettySource(r.red)}</td><td class="n">${fmt(+r.visitas)}</td><td class="n">${fmt(+r.clics)}</td><td class="n">${fmt(+r.suscripciones)}</td>`);
 
       // Interés real en video/canción
       const buttonLabel = { ver_serie: 'Ver la serie', escuchar_album: 'Escuchar el álbum' };
