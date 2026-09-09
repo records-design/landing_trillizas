@@ -265,22 +265,21 @@ $paidVsOrganic = q($pdo,
 
 // ------------------------------------------------------------
 // Fuentes por conversión: de las visitas de cada fuente, qué % hizo
-// click en algo, y qué % hizo un click que importa DE VERDAD para el
-// objetivo real de la landing (que se suscriban al canal de YouTube,
-// vean la serie, o escuchen la canción/álbum) — no el newsletter, que
-// es secundario. No solo cuántas visitas trajo cada fuente (eso ya lo
-// muestra "Fuentes de tráfico"), sino qué tan bien convierte. Con
-// pocas visitas el % es poco confiable (un solo caso de suerte cambia
-// todo el porcentaje) — se marca "confiable" a partir de
-// MIN_SAMPLE_SOURCE visitas, y el panel atenúa visualmente las que
-// todavía no llegan a ese mínimo.
+// click en algo, qué % se suscribió al newsletter (mail), y qué % se
+// suscribió al canal de YouTube (el objetivo real de la landing) —
+// las dos suscripciones por separado, no mezcladas. No solo cuántas
+// visitas trajo cada fuente (eso ya lo muestra "Fuentes de tráfico"),
+// sino qué tan bien convierte. Con pocas visitas el % es poco
+// confiable (un solo caso de suerte cambia todo el porcentaje) — se
+// marca "confiable" a partir de MIN_SAMPLE_SOURCE visitas, y el panel
+// atenúa visualmente las que todavía no llegan a ese mínimo.
 // ------------------------------------------------------------
 const MIN_SAMPLE_SOURCE = 30;
 
-// Botones que representan el objetivo real (canal de YouTube, ver la
-// serie, escuchar el álbum/canción) — "episodio_N" cubre cualquier
-// cantidad de episodios, incluso los que se agreguen más adelante.
-const GOAL_BUTTONS = ['ver_serie', 'escuchar_album', 'social_youtube', 'proximos_episodios_canal', 'footer_babidibu_tv', 'social_spotify'];
+// Botones que llevan directo a suscribirse/seguir el canal de
+// YouTube (no "ver_serie"/"episodio_N", que son mirar un video
+// puntual, no suscribirse al canal en sí).
+const YOUTUBE_SUB_BUTTONS = ['social_youtube', 'proximos_episodios_canal', 'footer_babidibu_tv'];
 
 $srcCondSess = '';
 $srcCondSessParam = [];
@@ -294,26 +293,30 @@ if ($sourceFilter !== null) {
     }
 }
 
-$goalPlaceholders = implode(',', array_fill(0, count(GOAL_BUTTONS), '?'));
+$ytPlaceholders = implode(',', array_fill(0, count(YOUTUBE_SUB_BUTTONS), '?'));
 $sourceConversion = q($pdo,
     "SELECT
         COALESCE(NULLIF(sess.utm_source,''),'landing') src,
         COUNT(DISTINCT sess.session_id) visitas,
         COUNT(DISTINCT CASE WHEN ev.session_id IS NOT NULL THEN sess.session_id END) con_click,
-        COUNT(DISTINCT CASE WHEN ev.button IN ($goalPlaceholders) OR ev.button REGEXP '^episodio_[0-9]+$' THEN sess.session_id END) con_objetivo
+        COUNT(DISTINCT CASE WHEN ev.button IN ($ytPlaceholders) THEN sess.session_id END) con_youtube,
+        COUNT(DISTINCT sub.email) suscripciones
      FROM sessions sess
      LEFT JOIN events ev ON ev.session_id = sess.session_id AND ev.event_name = 'click'
+     LEFT JOIN subscribers sub ON sub.session_id = sess.session_id
      WHERE sess.first_seen BETWEEN ? AND ?{$srcCondSess}
      GROUP BY src
      ORDER BY visitas DESC",
-    array_merge(GOAL_BUTTONS, $range, $srcCondSessParam));
+    array_merge(YOUTUBE_SUB_BUTTONS, $range, $srcCondSessParam));
 
 foreach ($sourceConversion as &$sc) {
     $sc['visitas'] = (int) $sc['visitas'];
     $sc['con_click'] = (int) $sc['con_click'];
-    $sc['con_objetivo'] = (int) $sc['con_objetivo'];
+    $sc['con_youtube'] = (int) $sc['con_youtube'];
+    $sc['suscripciones'] = (int) $sc['suscripciones'];
     $sc['pct_click'] = $sc['visitas'] ? round($sc['con_click'] / $sc['visitas'] * 100, 1) : 0;
-    $sc['pct_objetivo'] = $sc['visitas'] ? round($sc['con_objetivo'] / $sc['visitas'] * 100, 1) : 0;
+    $sc['pct_youtube'] = $sc['visitas'] ? round($sc['con_youtube'] / $sc['visitas'] * 100, 1) : 0;
+    $sc['pct_sub'] = $sc['visitas'] ? round($sc['suscripciones'] / $sc['visitas'] * 100, 1) : 0;
     $sc['confiable'] = $sc['visitas'] >= MIN_SAMPLE_SOURCE;
 }
 unset($sc);
