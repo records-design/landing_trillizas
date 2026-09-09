@@ -164,7 +164,7 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
       <div class="panel">
         <h2>Placement</h2>
         <div id="placementNoData" hidden>
-          <p class="muted">Ninguna visita de este período trae el dato de placement — el link del anuncio no lo está mandando (le falta el parámetro <code>placement</code> en la URL). Es un ajuste que tiene que hacer quien carga el anuncio en Meta Ads Manager, agregando <code>&amp;placement={{placement}}</code> a la URL del anuncio. Mientras tanto esta tabla no va a mostrar nada útil.</p>
+          <p class="muted">Ninguna visita de este período trae el dato de placement todavía. El parámetro ya está configurado en los anuncios de Meta Ads Manager — solo falta que entren nuevas visitas después de ese cambio para que esta tabla empiece a mostrar datos.</p>
         </div>
         <div id="placementTableWrap">
           <table id="tblPlacement"><thead><tr><th>Placement</th><th class="n">Sesiones</th></tr></thead><tbody></tbody></table>
