@@ -160,18 +160,6 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
       </div>
     </div>
 
-    <div class="grid2">
-      <div class="panel">
-        <h2>Placement</h2>
-        <div id="placementNoData" hidden>
-          <p class="muted">Ninguna visita de este período trae el dato de placement todavía. El parámetro ya está configurado en los anuncios de Meta Ads Manager — solo falta que entren nuevas visitas después de ese cambio para que esta tabla empiece a mostrar datos.</p>
-        </div>
-        <div id="placementTableWrap">
-          <table id="tblPlacement"><thead><tr><th>Placement</th><th class="n">Sesiones</th></tr></thead><tbody></tbody></table>
-          <p class="muted">"Placement" es en qué parte de Instagram o Facebook apareció el anuncio que trajo a esa persona (el feed, las Historias, los Reels, etc.). Solo se completa si viene de un anuncio de Meta con ese dato configurado — el resto del tráfico (QR, redes, landing) aparece como "(sin dato)".</p>
-        </div>
-      </div>
-    </div>
 
     <div class="grid2">
       <div class="panel">
@@ -394,12 +382,6 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
       }).join('');
 
       // Tablas
-      const hasRealPlacement = d.placements.some((r) => r.placement !== '(sin dato)');
-      $('placementNoData').hidden = hasRealPlacement;
-      $('placementTableWrap').hidden = !hasRealPlacement;
-      if (hasRealPlacement) {
-        rows('tblPlacement', d.placements, r => `<td>${r.placement}</td><td class="n">${fmt(+r.n)}</td>`);
-      }
       rows('tblCountries', d.countries, r => `<td>${r.country}</td><td class="n">${fmt(+r.n)}</td>`);
       rows('tblSourceConversion', d.source_conversion, (r) => {
         const pctClass = r.confiable ? '' : ' style="opacity:.45"';
