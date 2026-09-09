@@ -145,7 +145,7 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
       </div>
       <div class="panel">
         <h2>Embudo de conversión</h2>
-        <p class="muted">Muestra cómo se va achicando la gente a medida que avanza hacia lo que realmente importa: entran a la web, algunos hacen click en algo, menos todavía hacen click en lo que de verdad buscamos (ver la serie, escuchar el álbum o sumarse al canal), y menos aún terminan suscribiéndose. Cada escalón es un filtro más difícil de pasar — el % de cada uno es sobre el total de visitantes, no sobre el escalón anterior.</p>
+        <p class="muted">Son 4 pasos, cada uno más exigente que el anterior: entran a la web → tocan algún botón → tocan el botón que de verdad importa (ver la serie, escuchar el álbum o sumarse al canal) → se suscriben. El % de cada paso es cuántos de los que llegaron al paso anterior siguieron hasta este — así se ve en qué punto se pierde más gente.</p>
         <div id="funnel"></div>
       </div>
     </div>
@@ -385,9 +385,11 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
         ['Se suscribieron (newsletter o canal)', s],
       ];
       $('funnel').innerHTML = steps.map(([label, n], i) => {
-        const pct = v ? (n / v * 100) : 0;
-        return `<div class="funnel-step"${i ? ' style="margin-top:14px"' : ''}><span>${label}</span><strong>${fmt(n)}${i ? ` (${pct.toFixed(1)}%)` : ''}</strong></div>` +
-          `<div class="funnel-track"><div class="funnel-bar" style="width:${i ? Math.max(pct, 2) : 100}%"></div></div>`;
+        const prevN = i ? steps[i - 1][1] : v;
+        const pctOfPrev = prevN ? (n / prevN * 100) : 0;
+        const widthPct = v ? (n / v * 100) : 0; // el ancho de la barra sigue siendo sobre el total, para que se vea la proporción real de principio a fin
+        return `<div class="funnel-step"${i ? ' style="margin-top:14px"' : ''}><span>${label}</span><strong>${fmt(n)}${i ? ` (${pctOfPrev.toFixed(1)}% del escalón anterior)` : ''}</strong></div>` +
+          `<div class="funnel-track"><div class="funnel-bar" style="width:${i ? Math.max(widthPct, 2) : 100}%"></div></div>`;
       }).join('');
 
       // Tablas
