@@ -346,25 +346,33 @@ unset($pvc);
 $ytPlaceholdersOverlap = implode(',', array_fill(0, count(YOUTUBE_SUB_BUTTONS), '?'));
 $subsOverlap = q($pdo,
     "SELECT
+        tipo,
         SUM(CASE WHEN has_canal = 1 AND has_news = 0 THEN 1 ELSE 0 END) solo_canal,
         SUM(CASE WHEN has_canal = 0 AND has_news = 1 THEN 1 ELSE 0 END) solo_newsletter,
         SUM(CASE WHEN has_canal = 1 AND has_news = 1 THEN 1 ELSE 0 END) ambos
      FROM (
         SELECT sess.session_id,
+            CASE
+              WHEN sess.utm_medium = 'paid' OR sess.fbclid IS NOT NULL OR sess.gclid IS NOT NULL THEN 'Pagado'
+              ELSE 'Orgánico'
+            END AS tipo,
             MAX(CASE WHEN ev.button IN ($ytPlaceholdersOverlap) THEN 1 ELSE 0 END) has_canal,
             MAX(CASE WHEN sub.email IS NOT NULL THEN 1 ELSE 0 END) has_news
         FROM sessions sess
         LEFT JOIN events ev ON ev.session_id = sess.session_id AND ev.event_name = 'click'
         LEFT JOIN subscribers sub ON sub.session_id = sess.session_id
         WHERE sess.first_seen BETWEEN ? AND ?{$srcCondSess}
-        GROUP BY sess.session_id
-     ) t",
-    array_merge(YOUTUBE_SUB_BUTTONS, $range, $srcCondSessParam))[0];
-$subsOverlap = [
-    'solo_canal' => (int) ($subsOverlap['solo_canal'] ?? 0),
-    'solo_newsletter' => (int) ($subsOverlap['solo_newsletter'] ?? 0),
-    'ambos' => (int) ($subsOverlap['ambos'] ?? 0),
-];
+        GROUP BY sess.session_id, tipo
+     ) t
+     GROUP BY tipo",
+    array_merge(YOUTUBE_SUB_BUTTONS, $range, $srcCondSessParam));
+
+foreach ($subsOverlap as &$so) {
+    $so['solo_canal'] = (int) $so['solo_canal'];
+    $so['solo_newsletter'] = (int) $so['solo_newsletter'];
+    $so['ambos'] = (int) $so['ambos'];
+}
+unset($so);
 
 // ------------------------------------------------------------
 // Fuentes por conversión: de las visitas de cada fuente, qué % logró
