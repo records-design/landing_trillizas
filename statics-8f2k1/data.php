@@ -44,6 +44,11 @@ $range = [$fromDt, $toDt];
 // Los 4 objetivos reales de la landing (usados por el embudo y por
 // "Fuentes por conversión" / "Nuevos vs. recurrentes" más abajo).
 // ------------------------------------------------------------
+// Episodios actualmente publicados (botones 'episodio_1'..'episodio_N' en
+// la landing) — actualizar esta lista cada vez que se agregue un episodio
+// nuevo, así el desglose de "vio cada capítulo" lo incluye automáticamente.
+const EPISODE_NUMBERS = [1, 2, 3, 4];
+
 const YOUTUBE_SUB_BUTTONS = ['social_youtube', 'proximos_episodios_canal', 'footer_babidibu_tv'];
 const ALBUM_BUTTONS = ['escuchar_album', 'social_spotify'];
 const GOAL_BUTTONS_SQL = "button IN ('ver_serie','escuchar_album','social_spotify','social_youtube','proximos_episodios_canal','footer_babidibu_tv') OR button REGEXP '^episodio_[0-9]+$'";
@@ -315,20 +320,28 @@ function conversionBreakdown($pdo, $dimSql, $dimAlias, $cond, $condParam, $range
 {
     $albumPh = implode(',', array_fill(0, count(ALBUM_BUTTONS), '?'));
     $ytPh = implode(',', array_fill(0, count(YOUTUBE_SUB_BUTTONS), '?'));
+    $epCols = implode(",\n            ", array_map(
+        fn($n) => "SUM(has_ep$n) con_ep$n",
+        EPISODE_NUMBERS
+    ));
+    $epCaseCols = implode(",\n                ", array_map(
+        fn($n) => "MAX(CASE WHEN ev.button = 'episodio_$n' THEN 1 ELSE 0 END) has_ep$n",
+        EPISODE_NUMBERS
+    ));
+    $epSum = implode(' + ', array_map(fn($n) => "has_ep$n", EPISODE_NUMBERS));
+
     $rows = q($pdo,
         "SELECT
             dim AS `$dimAlias`,
             COUNT(*) visitas,
-            SUM(has_ep1) con_ep1,
-            SUM(has_ep2) con_ep2,
-            SUM(CASE WHEN has_ep1 = 1 AND has_ep2 = 1 THEN 1 ELSE 0 END) con_ambos_caps,
+            $epCols,
+            SUM(CASE WHEN ($epSum) >= 2 THEN 1 ELSE 0 END) con_2_mas_caps,
             SUM(has_album) con_album,
             SUM(has_youtube) con_youtube,
             SUM(has_news) suscripciones
          FROM (
             SELECT sess.session_id, $dimSql AS dim,
-                MAX(CASE WHEN ev.button = 'episodio_1' THEN 1 ELSE 0 END) has_ep1,
-                MAX(CASE WHEN ev.button = 'episodio_2' THEN 1 ELSE 0 END) has_ep2,
+                $epCaseCols,
                 MAX(CASE WHEN ev.button IN ($albumPh) THEN 1 ELSE 0 END) has_album,
                 MAX(CASE WHEN ev.button IN ($ytPh) THEN 1 ELSE 0 END) has_youtube,
                 MAX(CASE WHEN sub.email IS NOT NULL THEN 1 ELSE 0 END) has_news
@@ -344,18 +357,23 @@ function conversionBreakdown($pdo, $dimSql, $dimAlias, $cond, $condParam, $range
 
     foreach ($rows as &$r) {
         $r['visitas'] = (int) $r['visitas'];
-        $r['con_ep1'] = (int) $r['con_ep1'];
-        $r['con_ep2'] = (int) $r['con_ep2'];
-        $r['con_ambos_caps'] = (int) $r['con_ambos_caps'];
         $r['con_album'] = (int) $r['con_album'];
         $r['con_youtube'] = (int) $r['con_youtube'];
         $r['suscripciones'] = (int) $r['suscripciones'];
-        $r['pct_ep1'] = $r['visitas'] ? round($r['con_ep1'] / $r['visitas'] * 100, 1) : 0;
-        $r['pct_ep2'] = $r['visitas'] ? round($r['con_ep2'] / $r['visitas'] * 100, 1) : 0;
-        $r['pct_ambos_caps'] = $r['visitas'] ? round($r['con_ambos_caps'] / $r['visitas'] * 100, 1) : 0;
         $r['pct_album'] = $r['visitas'] ? round($r['con_album'] / $r['visitas'] * 100, 1) : 0;
         $r['pct_youtube'] = $r['visitas'] ? round($r['con_youtube'] / $r['visitas'] * 100, 1) : 0;
         $r['pct_sub'] = $r['visitas'] ? round($r['suscripciones'] / $r['visitas'] * 100, 1) : 0;
+        $r['con_2_mas_caps'] = (int) $r['con_2_mas_caps'];
+        $r['pct_2_mas_caps'] = $r['visitas'] ? round($r['con_2_mas_caps'] / $r['visitas'] * 100, 1) : 0;
+        $r['episodios'] = [];
+        foreach (EPISODE_NUMBERS as $n) {
+            $con = (int) $r["con_ep$n"];
+            $r['episodios'][] = [
+                'n' => $n,
+                'con' => $con,
+                'pct' => $r['visitas'] ? round($con / $r['visitas'] * 100, 1) : 0,
+            ];
+        }
     }
     unset($r);
     return $rows;
