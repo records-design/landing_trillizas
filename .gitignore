@@ -4,3 +4,7 @@ config.php
 
 # Sistema
 .DS_Store
+
+# Imágenes originales sin comprimir, ya no usadas por el sitio —
+# quedan solo como archivo local, no hace falta subirlas al repo.
+imagenes/_originales_sin_usar/
