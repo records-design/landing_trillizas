@@ -47,7 +47,7 @@ $range = [$fromDt, $toDt];
 // Episodios actualmente publicados (botones 'episodio_1'..'episodio_N' en
 // la landing) — actualizar esta lista cada vez que se agregue un episodio
 // nuevo, así el desglose de "vio cada capítulo" lo incluye automáticamente.
-const EPISODE_NUMBERS = [1, 2, 3, 4];
+const EPISODE_NUMBERS = [1, 2, 3, 4, 5, 6];
 
 const YOUTUBE_SUB_BUTTONS = ['social_youtube', 'proximos_episodios_canal', 'footer_babidibu_tv'];
 const ALBUM_BUTTONS = ['escuchar_album', 'social_spotify'];
