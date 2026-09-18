@@ -247,9 +247,24 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
       });
     }
 
+    // Paleta base para pocos segmentos (más linda que colores generados a
+    // mano) — si hay más segmentos que colores en la paleta, se generan
+    // tonos adicionales espaciados (ángulo dorado) para que nunca se
+    // repita un color entre dos segmentos distintos de la misma torta.
+    function chartPalette(n) {
+      const base = ['#a678ff','#ffd76b','#ff9f43','#48d17a','#ff6b9d','#4db8ff','#c9a0ff','#ffcf6b'];
+      if (n <= base.length) return base.slice(0, n);
+      const out = base.slice();
+      for (let i = base.length; i < n; i++) {
+        const hue = (i * 137.508) % 360; // ángulo dorado: máxima separación visual
+        out.push(`hsl(${hue.toFixed(0)}, 70%, 65%)`);
+      }
+      return out;
+    }
+
     function drawChart(id, type, labels, values, opts) {
       if (charts[id]) charts[id].destroy();
-      const palette = ['#a678ff','#ffd76b','#ff9f43','#48d17a','#ff6b9d','#4db8ff','#c9a0ff','#ffcf6b'];
+      const palette = chartPalette(labels.length);
       charts[id] = new Chart($(id), {
         type,
         data: {
