@@ -111,7 +111,7 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
         <h2>Fuentes por conversión</h2>
         <div class="table-scroll">
         <table id="tblSourceConversion">
-          <thead><tr><th>Fuente</th><th class="n">Visitas</th><th class="n">% vio cap. 1</th><th class="n">% vio cap. 2</th><th class="n">% vio cap. 3</th><th class="n">% vio cap. 4</th><th class="n">% vio cap. 5</th><th class="n">% vio cap. 6</th><th class="n">% vio 2+ caps</th><th class="n">% escuchó el álbum</th><th class="n">% canal YouTube</th><th class="n">% newsletter</th></tr></thead>
+          <thead><tr><th>Fuente</th><th class="n">Visitas</th><th class="n">% vio cap. 1</th><th class="n">% vio cap. 2</th><th class="n">% vio cap. 3</th><th class="n">% vio cap. 4</th><th class="n">% vio cap. 5</th><th class="n">% vio cap. 6</th><th class="n">% vio cap. 7</th><th class="n">% vio 2+ caps</th><th class="n">% escuchó el álbum</th><th class="n">% canal YouTube</th><th class="n">% newsletter</th></tr></thead>
           <tbody></tbody>
         </table>
         </div>
@@ -126,7 +126,7 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
         <p class="muted">"Pagado": vino de un anuncio real (Meta o Google Ads, con su click id). "Orgánico": cualquier otro ingreso (bio, historias, QR, directo, etc.), sin importar cuántas fuentes distintas tenga.</p>
         <div class="table-scroll">
         <table id="tblPaidOrganicConversion" style="margin-top:14px">
-          <thead><tr><th>Tipo</th><th class="n">Visitas</th><th class="n">% cap. 1</th><th class="n">% cap. 2</th><th class="n">% cap. 3</th><th class="n">% cap. 4</th><th class="n">% cap. 5</th><th class="n">% cap. 6</th><th class="n">% 2+ caps</th><th class="n">% álbum</th><th class="n">% canal</th><th class="n">% newsletter</th></tr></thead>
+          <thead><tr><th>Tipo</th><th class="n">Visitas</th><th class="n">% cap. 1</th><th class="n">% cap. 2</th><th class="n">% cap. 3</th><th class="n">% cap. 4</th><th class="n">% cap. 5</th><th class="n">% cap. 6</th><th class="n">% cap. 7</th><th class="n">% 2+ caps</th><th class="n">% álbum</th><th class="n">% canal</th><th class="n">% newsletter</th></tr></thead>
           <tbody></tbody>
         </table>
         </div>
@@ -150,7 +150,7 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
         <p class="muted">"Nuevo": es la primera vez que esa persona entra a la web. "Recurrente": ya había entrado antes (por ejemplo, volvió por un anuncio de remarketing).</p>
         <div class="table-scroll">
         <table id="tblNewReturningConversion" style="margin-top:14px">
-          <thead><tr><th>Tipo</th><th class="n">Visitas</th><th class="n">% cap. 1</th><th class="n">% cap. 2</th><th class="n">% cap. 3</th><th class="n">% cap. 4</th><th class="n">% cap. 5</th><th class="n">% cap. 6</th><th class="n">% 2+ caps</th><th class="n">% álbum</th><th class="n">% canal</th><th class="n">% newsletter</th></tr></thead>
+          <thead><tr><th>Tipo</th><th class="n">Visitas</th><th class="n">% cap. 1</th><th class="n">% cap. 2</th><th class="n">% cap. 3</th><th class="n">% cap. 4</th><th class="n">% cap. 5</th><th class="n">% cap. 6</th><th class="n">% cap. 7</th><th class="n">% 2+ caps</th><th class="n">% álbum</th><th class="n">% canal</th><th class="n">% newsletter</th></tr></thead>
           <tbody></tbody>
         </table>
         </div>
