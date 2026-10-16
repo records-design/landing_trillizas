@@ -1192,7 +1192,7 @@
       var isSpecial = !!ep.special;
       var specialSlug = String(ep.title || '')
         .toLowerCase()
-        .normalize('NFD').replace(/[̀-ͯ]/g, '')
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
         .replace(/^especial\s+/, '')
         .replace(/[^a-z0-9]+/g, '_')
         .replace(/^_+|_+$/g, '');
