@@ -1170,6 +1170,13 @@
         title: 'Montaña Rusa',
         thumbnail: 'imagenes/miniatura_montana_rusa_web.jpg',
         youtubeUrl: 'https://linktw.in/molbbw'
+      },
+      {
+        season: 1,
+        special: true,
+        title: 'Especial Halloween',
+        thumbnail: 'imagenes/miniatura_halloween_web.jpg',
+        youtubeUrl: 'https://linktw.in/Dnofjd'
       }
     ];
 
@@ -1179,10 +1186,25 @@
       a.href = ep.youtubeUrl || '#';
       a.target = '_blank';
       a.rel = 'noopener noreferrer';
-      a.setAttribute('aria-label', 'Ver episodio ' + ep.episode + ': ' + ep.title);
+      // Los episodios especiales (ej. Halloween) no tienen número: se
+      // etiquetan "Episodio especial" y se trackean como
+      // episodio_especial_<slug del título>.
+      var isSpecial = !!ep.special;
+      var specialSlug = String(ep.title || '')
+        .toLowerCase()
+        .normalize('NFD').replace(/[̀-ͯ]/g, '')
+        .replace(/^especial\s+/, '')
+        .replace(/[^a-z0-9]+/g, '_')
+        .replace(/^_+|_+$/g, '');
+
+      a.setAttribute('aria-label', isSpecial
+        ? 'Ver episodio especial: ' + ep.title
+        : 'Ver episodio ' + ep.episode + ': ' + ep.title);
       a.setAttribute('data-event', 'WatchVideo');
       a.setAttribute('data-destination', 'YouTube');
-      a.setAttribute('data-track-button', 'episodio_' + ep.episode);
+      a.setAttribute('data-track-button', isSpecial
+        ? 'episodio_especial_' + specialSlug
+        : 'episodio_' + ep.episode);
 
       var playIconHtml =
         '<span class="episode-tile__play" aria-hidden="true">'
@@ -1199,10 +1221,11 @@
         : playIconHtml;
 
       var episodeNum = ep.episode < 10 ? '0' + ep.episode : String(ep.episode);
+      var numberLabel = isSpecial ? 'Episodio especial' : 'Episodio ' + episodeNum;
 
       a.innerHTML =
         '<span class="episode-tile__thumb">' + thumbHtml + '</span>' +
-        '<span class="episode-tile__number">Episodio ' + episodeNum + '</span>' +
+        '<span class="episode-tile__number">' + numberLabel + '</span>' +
         '<span class="episode-tile__title">' + ep.title + '</span>' +
         '<span class="episode-tile__cta">' +
         '<svg class="episode-tile__cta-icon" viewBox="0 0 28 20" aria-hidden="true">' +

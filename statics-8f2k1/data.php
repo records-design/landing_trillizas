@@ -51,7 +51,7 @@ const EPISODE_NUMBERS = [1, 2, 3, 4, 5, 6, 7];
 
 const YOUTUBE_SUB_BUTTONS = ['social_youtube', 'proximos_episodios_canal', 'footer_babidibu_tv'];
 const ALBUM_BUTTONS = ['escuchar_album', 'social_spotify'];
-const GOAL_BUTTONS_SQL = "button IN ('ver_serie','escuchar_album','social_spotify','social_youtube','proximos_episodios_canal','footer_babidibu_tv') OR button REGEXP '^episodio_[0-9]+$'";
+const GOAL_BUTTONS_SQL = "button IN ('ver_serie','escuchar_album','social_spotify','social_youtube','proximos_episodios_canal','footer_babidibu_tv') OR button REGEXP '^episodio_([0-9]+|especial_[a-z0-9_]+)$'";
 
 // ------------------------------------------------------------
 // Filtros opcionales por anuncio específico (?ad_id=...) y/o por
