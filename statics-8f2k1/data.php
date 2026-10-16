@@ -49,6 +49,11 @@ $range = [$fromDt, $toDt];
 // nuevo, así el desglose de "vio cada capítulo" lo incluye automáticamente.
 const EPISODE_NUMBERS = [1, 2, 3, 4, 5, 6, 7];
 
+// Episodios especiales (sin número, ej. Halloween): slug => nombre. El slug es
+// el del botón 'episodio_especial_<slug>' en la landing. Agregar uno nuevo acá
+// (y su columna en las 3 tablas de conversión de index.php) cuando salga otro.
+const SPECIAL_EPISODES = ['halloween' => 'Halloween'];
+
 const YOUTUBE_SUB_BUTTONS = ['social_youtube', 'proximos_episodios_canal', 'footer_babidibu_tv'];
 const ALBUM_BUTTONS = ['escuchar_album', 'social_spotify'];
 const GOAL_BUTTONS_SQL = "button IN ('ver_serie','escuchar_album','social_spotify','social_youtube','proximos_episodios_canal','footer_babidibu_tv') OR button REGEXP '^episodio_([0-9]+|especial_[a-z0-9_]+)$'";
@@ -320,15 +325,24 @@ function conversionBreakdown($pdo, $dimSql, $dimAlias, $cond, $condParam, $range
 {
     $albumPh = implode(',', array_fill(0, count(ALBUM_BUTTONS), '?'));
     $ytPh = implode(',', array_fill(0, count(YOUTUBE_SUB_BUTTONS), '?'));
+    // Una entrada por episodio (numerados primero, después los especiales):
+    // key = sufijo de las columnas SQL, button = botón que lo trackea.
+    $epDefs = [];
+    foreach (EPISODE_NUMBERS as $n) {
+        $epDefs[] = ['key' => "ep$n", 'button' => "episodio_$n", 'n' => $n];
+    }
+    foreach (SPECIAL_EPISODES as $slug => $label) {
+        $epDefs[] = ['key' => "sp_$slug", 'button' => "episodio_especial_$slug", 'label' => $label];
+    }
     $epCols = implode(",\n            ", array_map(
-        fn($n) => "SUM(has_ep$n) con_ep$n",
-        EPISODE_NUMBERS
+        fn($d) => "SUM(has_{$d['key']}) con_{$d['key']}",
+        $epDefs
     ));
     $epCaseCols = implode(",\n                ", array_map(
-        fn($n) => "MAX(CASE WHEN ev.button = 'episodio_$n' THEN 1 ELSE 0 END) has_ep$n",
-        EPISODE_NUMBERS
+        fn($d) => "MAX(CASE WHEN ev.button = '{$d['button']}' THEN 1 ELSE 0 END) has_{$d['key']}",
+        $epDefs
     ));
-    $epSum = implode(' + ', array_map(fn($n) => "has_ep$n", EPISODE_NUMBERS));
+    $epSum = implode(' + ', array_map(fn($d) => "has_{$d['key']}", $epDefs));
 
     $rows = q($pdo,
         "SELECT
@@ -366,13 +380,18 @@ function conversionBreakdown($pdo, $dimSql, $dimAlias, $cond, $condParam, $range
         $r['con_2_mas_caps'] = (int) $r['con_2_mas_caps'];
         $r['pct_2_mas_caps'] = $r['visitas'] ? round($r['con_2_mas_caps'] / $r['visitas'] * 100, 1) : 0;
         $r['episodios'] = [];
-        foreach (EPISODE_NUMBERS as $n) {
-            $con = (int) $r["con_ep$n"];
-            $r['episodios'][] = [
-                'n' => $n,
+        foreach ($epDefs as $d) {
+            $con = (int) $r["con_{$d['key']}"];
+            $entry = [
                 'con' => $con,
                 'pct' => $r['visitas'] ? round($con / $r['visitas'] * 100, 1) : 0,
             ];
+            if (isset($d['n'])) {
+                $entry['n'] = $d['n'];
+            } else {
+                $entry['label'] = $d['label'];
+            }
+            $r['episodios'][] = $entry;
         }
     }
     unset($r);
