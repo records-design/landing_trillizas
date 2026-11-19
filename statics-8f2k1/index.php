@@ -11,6 +11,9 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
   <meta name="robots" content="noindex, nofollow" />
   <title>Panel · Analíticas Trillizas</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"
+    integrity="sha384-vtjasyidUo0kW94K5MXDXntzOJpQgBKXmE7e2Ga4LG0skTTLeBi97eFAXsqewJjw"
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <style>
     :root {
       --bg: #150c26; --card: #221338; --line: #3a2957;
@@ -81,10 +84,12 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
       <button class="preset" data-days="0">Hoy</button>
       <button class="preset" data-days="6">7 días</button>
       <button class="preset" data-days="29">30 días</button>
+      <button id="presetAll" title="Desde que empezó a funcionar el seguimiento (16/07/2026) hasta hoy">Todo</button>
       <select id="adFilter"><option value="">Todos los anuncios</option></select>
       <select id="sourceFilter"><option value="">Todas las fuentes</option></select>
       <button class="exp" id="exportBtn">Visitas y clics CSV</button>
       <button class="exp" id="exportSubsBtn">Suscriptores CSV</button>
+      <button class="exp" id="exportReportBtn">Informe completo (Excel)</button>
     </div>
 
     <p class="muted" id="comparisonNote" style="margin: -10px 0 14px;"></p>
@@ -219,6 +224,7 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
   <script>
     const $ = (id) => document.getElementById(id);
     const charts = {};
+    let lastData = null;
 
     function fmt(n) { return (n ?? 0).toLocaleString('es-AR'); }
 
@@ -313,6 +319,7 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
       const res = await fetch(`data.php?${qs}`, { credentials: 'same-origin' });
       if (res.status === 401) { location.href = 'login.php'; return; }
       const d = await res.json();
+      lastData = d;
 
       // Selector de anuncio: se completa una sola vez con el listado
       // completo (no filtrado), para no perder la selección al recargar.
@@ -495,6 +502,151 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
     });
     $('exportSubsBtn').addEventListener('click', () => {
       location.href = `export-subscribers.php?${exportQs()}`;
+    });
+
+    // ------------------------------------------------------------
+    // Informe completo en Excel: una hoja por tabla del panel, con los
+    // mismos datos que se ven en pantalla (respeta el rango y los filtros
+    // elegidos). Se arma acá en el navegador con la última respuesta de
+    // data.php — no toca el servidor ni la base. Las fechas están en UTC.
+    // ------------------------------------------------------------
+    function cleanUtm(v) {
+      if (v === null || v === undefined || v === '') return '';
+      const t = String(v).replace(/\+/g, ' ');
+      try { return decodeURIComponent(t); } catch (e) { return t; }
+    }
+    const num = (v) => (v === null || v === undefined || v === '' ? 0 : Number(v));
+
+    function exportReport() {
+      const d = lastData;
+      if (!d) { alert('Todavía no cargaron los datos del panel. Probá de nuevo en un momento.'); return; }
+      if (typeof XLSX === 'undefined') { alert('No se pudo cargar el generador de Excel (revisá tu conexión y recargá la página).'); return; }
+
+      const wb = XLSX.utils.book_new();
+      const addSheet = (name, aoa) => {
+        const ws = XLSX.utils.aoa_to_sheet(aoa);
+        const widths = [];
+        aoa.forEach((row) => row.forEach((cell, i) => {
+          const len = String(cell === null || cell === undefined ? '' : cell).length;
+          widths[i] = Math.max(widths[i] || 10, Math.min(len + 2, 60));
+        }));
+        ws['!cols'] = widths.map((w) => ({ wch: w }));
+        XLSX.utils.book_append_sheet(wb, ws, name);
+      };
+
+      // Resumen
+      const adName = d.ad_filter
+        ? cleanUtm((d.ads_list.find((a) => String(a.ad_id) === String(d.ad_filter)) || {}).ad_name || d.ad_filter)
+        : 'Todos los anuncios';
+      const srcName = d.source_filter ? prettySource(d.source_filter) : 'Todas las fuentes';
+      const t = d.totals, pt = d.comparison.prev_totals, pr = d.comparison.prev_range;
+      const ctr = (clicks, visitors) => (visitors ? Math.round(clicks / visitors * 1000) / 10 : 0);
+      const delta = (a, b) => (b ? Math.round((a - b) / b * 1000) / 10 : 'n/d');
+      const seg = d.page_engagement && d.page_engagement.avg_time_ms != null
+        ? Math.round(d.page_engagement.avg_time_ms / 100) / 10 : null;
+      addSheet('Resumen', [
+        ['Informe de analíticas — Las Trillizas de Oro y El Libro Mágico'],
+        [],
+        ['Período', `${d.range.from} a ${d.range.to}`],
+        ['Filtro de anuncio', adName],
+        ['Filtro de fuente', srcName],
+        ['Generado', new Date().toLocaleString('es-AR')],
+        ['Nota', 'Las fechas y horas del panel están en UTC (Argentina = UTC-3).'],
+        [],
+        ['Indicador', 'Período elegido', `Período anterior (${pr.from} a ${pr.to})`, 'Variación (%)'],
+        ['Visitas (page views)', t.page_views, pt.page_views, delta(t.page_views, pt.page_views)],
+        ['Visitantes únicos', t.unique_visitors, pt.unique_visitors, delta(t.unique_visitors, pt.unique_visitors)],
+        ['Clics en botones', t.clicks, pt.clicks, delta(t.clicks, pt.clicks)],
+        ['Tasa de clic (%)', ctr(t.clicks, t.unique_visitors), ctr(pt.clicks, pt.unique_visitors), null],
+        ['Suscripciones (newsletter)', t.subscriptions, pt.subscriptions, delta(t.subscriptions, pt.subscriptions)],
+        ['Tiempo promedio en la página (segundos)', seg, null, null],
+      ]);
+
+      // Embudo
+      const f = d.funnel;
+      const steps = [
+        ['Visitantes', f.visits],
+        ['Hicieron clic en un botón', f.sessions_with_click],
+        ['Hicieron clic en el objetivo real (serie/álbum/canal)', f.sessions_with_goal_click],
+        ['Se suscribieron (newsletter o canal)', f.sessions_subscribed],
+      ];
+      addSheet('Embudo', [
+        ['Paso', 'Personas', '% del paso anterior', '% del total de visitantes'],
+        ...steps.map(([label, n], i) => [
+          label, num(n),
+          i ? (steps[i - 1][1] ? Math.round(n / steps[i - 1][1] * 1000) / 10 : 0) : 100,
+          f.visits ? Math.round(n / f.visits * 1000) / 10 : 0,
+        ]),
+      ]);
+
+      addSheet('Visitas por día', [['Fecha (UTC)', 'Visitas'], ...d.timeline.map((r) => [r.d, num(r.views)])]);
+      addSheet('Fuentes de tráfico', [['Fuente', 'Sesiones'], ...d.sources.map((r) => [prettySource(r.src), num(r.n)])]);
+
+      // Conversión (por fuente / por pagado-orgánico / por nuevo-recurrente)
+      const epHead = (e) => (e.n ? `cap. ${e.n}` : e.label);
+      const convSheet = (list, firstCol, labelFn, withReliable) => {
+        const eps = (list[0] && list[0].episodios) || [];
+        const head = [firstCol, 'Visitas',
+          ...eps.map((e) => `% vio ${epHead(e)}`),
+          '% vio 2 o más episodios', '% escuchó el álbum', '% se sumó al canal de YouTube', '% se suscribió al newsletter',
+          ...eps.map((e) => `Personas que vieron ${epHead(e)}`),
+          'Personas que vieron 2 o más episodios', 'Personas que escucharon el álbum', 'Personas que se sumaron al canal', 'Personas que se suscribieron al newsletter'];
+        if (withReliable) head.push('Muestra confiable (30+ visitas)');
+        const body = list.map((r) => [
+          labelFn(r), num(r.visitas),
+          ...(r.episodios || []).map((e) => e.pct),
+          r.pct_2_mas_caps, r.pct_album, r.pct_youtube, r.pct_sub,
+          ...(r.episodios || []).map((e) => e.con),
+          r.con_2_mas_caps, r.con_album, r.con_youtube, r.suscripciones,
+          ...(withReliable ? [r.confiable ? 'Sí' : 'No (pocos datos)'] : []),
+        ]);
+        return [head, ...body];
+      };
+      addSheet('Conversión por fuente', convSheet(d.source_conversion, 'Fuente', (r) => prettySource(r.src), true));
+      addSheet('Pagado vs Orgánico', convSheet(d.paid_vs_organic_conversion, 'Tipo', (r) => r.tipo, false));
+      addSheet('Nuevos vs recurrentes', convSheet(d.new_vs_returning_conversion, 'Tipo', (r) => r.tipo, false));
+
+      addSheet('Canal vs newsletter', [
+        ['Tipo', 'Solo canal de YouTube', 'Solo newsletter', 'Los dos'],
+        ...d.subs_overlap.map((r) => [r.tipo, num(r.solo_canal), num(r.solo_newsletter), num(r.ambos)]),
+      ]);
+      addSheet('Clics por botón', [['Botón', 'Clics'], ...d.clicks_by_button.map((r) => [r.button, num(r.n)])]);
+
+      // Interés por botón + cruce con suscripción
+      const btn = { ver_serie: 'Ver la serie', escuchar_album: 'Escuchar el álbum' };
+      const dwell = (ms) => (ms === null || ms === undefined ? null : Math.round(ms / 100) / 10);
+      const music = [
+        ['¿Ven la serie y escuchan el álbum?'],
+        ['Botón', 'Tipo', 'Sesiones que lo tocaron', '% de los visitantes que lo tocó', 'Segundos promedio hasta tocarlo'],
+        ...d.button_interest.map((r) => [btn[r.button] || r.button, r.tipo, num(r.sesiones), r.pct_visitantes, dwell(r.avg_dwell_ms)]),
+        [],
+        ['¿El interés en la música se transforma en suscriptores?'],
+        ['Tipo', 'Botón', 'Personas que lo tocaron', 'De esas, dejaron el mail', '% que dejó el mail'],
+      ];
+      d.music_engagement.forEach((me) => {
+        [['Ver la serie', me.video], ['Escuchar el álbum', me.cancion]].forEach(([label, x]) => {
+          music.push([me.tipo, label, x.clics, x.suscripciones, x.clics ? Math.round(x.suscripciones / x.clics * 1000) / 10 : 0]);
+        });
+      });
+      music.push([], ['Personas que tocaron "Ver la serie" Y "Escuchar el álbum"']);
+      d.music_engagement.forEach((me) => music.push([me.tipo, me.ambos_clics]));
+      addSheet('Música y suscripción', music);
+
+      addSheet('Resultados por anuncio', [
+        ['Anuncio', 'Campaña', 'Red social', 'Visitas', 'Clics', 'Mails dejados'],
+        ...d.ads.map((r) => [cleanUtm(r.ad_name ?? r.ad_id), cleanUtm(r.campaign_name ?? ''), prettySource(r.red), num(r.visitas), num(r.clics), num(r.suscripciones)]),
+      ]);
+      addSheet('Dispositivos', [['Dispositivo', 'Sesiones'], ...d.devices.map((r) => [r.device, num(r.n)])]);
+      addSheet('Países', [['País', 'Sesiones'], ...d.countries.map((r) => [r.country, num(r.n)])]);
+      addSheet('Ciudades', [['Ciudad', 'País', 'Sesiones'], ...d.cities.map((r) => [r.city, r.cc || '', num(r.n)])]);
+
+      XLSX.writeFile(wb, `informe_trillizas_${d.range.from}_a_${d.range.to}.xlsx`);
+    }
+    $('exportReportBtn').addEventListener('click', exportReport);
+    $('presetAll').addEventListener('click', () => {
+      $('from').value = '2026-07-16';
+      $('to').value = new Date().toISOString().slice(0, 10);
+      load();
     });
 
     // Inicio: últimos 7 días + auto-refresh de "activos ahora"
