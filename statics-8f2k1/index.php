@@ -185,7 +185,7 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
           <thead><tr><th>Botón</th><th>Tipo</th><th class="n">% que lo tocó</th><th class="n">Cuánto tardaron en tocarlo</th></tr></thead>
           <tbody></tbody>
         </table>
-        <p class="muted">"% que lo tocó" = de cada 100 personas que entran a la web, cuántas apretaron ese botón. "Cuánto tardaron" = el tiempo promedio desde que entraron hasta que lo apretaron — más tiempo suele significar que lo pensaron, no que fue un clic apurado sin querer. Separado por pagado/orgánico.</p>
+        <p class="muted">"% que lo tocó" = de cada 100 personas que entran a la web <strong>en ese grupo</strong> (pagado u orgánico), cuántas apretaron ese botón. Así los dos grupos se pueden comparar entre sí aunque uno tenga muchas más visitas que el otro. "Cuánto tardaron" = el tiempo promedio desde que entraron hasta que lo apretaron — más tiempo suele significar que lo pensaron, no que fue un clic apurado sin querer. Separado por pagado/orgánico.</p>
       </div>
       <div class="panel">
         <h2>¿El interés en la música se transforma en suscriptores?</h2>
@@ -617,8 +617,8 @@ $panelUser = htmlspecialchars($_SESSION['panel_user'] ?? '', ENT_QUOTES);
       const dwell = (ms) => (ms === null || ms === undefined ? null : Math.round(ms / 100) / 10);
       const music = [
         ['¿Ven la serie y escuchan el álbum?'],
-        ['Botón', 'Tipo', 'Sesiones que lo tocaron', '% de los visitantes que lo tocó', 'Segundos promedio hasta tocarlo'],
-        ...d.button_interest.map((r) => [btn[r.button] || r.button, r.tipo, num(r.sesiones), r.pct_visitantes, dwell(r.avg_dwell_ms)]),
+        ['Botón', 'Tipo', 'Sesiones que lo tocaron', 'Visitas de ese grupo', '% de las visitas de su grupo que lo tocó', 'Segundos promedio hasta tocarlo'],
+        ...d.button_interest.map((r) => [btn[r.button] || r.button, r.tipo, num(r.sesiones), num(r.visitantes_tipo), r.pct_visitantes, dwell(r.avg_dwell_ms)]),
         [],
         ['¿El interés en la música se transforma en suscriptores?'],
         ['Tipo', 'Botón', 'Personas que lo tocaron', 'De esas, dejaron el mail', '% que dejó el mail'],

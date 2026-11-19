@@ -547,9 +547,25 @@ $buttonInterest = q($pdo,
      GROUP BY ev.button, tipo
      ORDER BY ev.button, tipo",
     array_merge($range, $adCondEvParam));
+// Visitas de cada grupo (pagado / orgánico) en el rango: es la base correcta
+// para el "% que lo tocó" de cada fila. Dividir por el total de todas las
+// visitas hacía que el grupo chico (orgánico) pareciera tocar muy poco, y
+// el grande (pagado) mucho más de lo que realmente toca.
+$visitorsByTipo = [];
+foreach (q($pdo,
+    "SELECT " . PAID_TIPO_SQL . " AS tipo, COUNT(DISTINCT ev.session_id) n
+     FROM events ev
+     JOIN sessions sess ON sess.session_id = ev.session_id
+     WHERE ev.created_at BETWEEN ? AND ?{$adCondEv}
+     GROUP BY tipo",
+    array_merge($range, $adCondEvParam)) as $vt) {
+    $visitorsByTipo[$vt['tipo']] = (int) $vt['n'];
+}
+
 foreach ($buttonInterest as &$b) {
     $b['sesiones'] = (int) $b['sesiones'];
-    $b['pct_visitantes'] = $uniqueVisitors ? round($b['sesiones'] / $uniqueVisitors * 100, 1) : 0;
+    $b['visitantes_tipo'] = $visitorsByTipo[$b['tipo']] ?? 0;
+    $b['pct_visitantes'] = $b['visitantes_tipo'] ? round($b['sesiones'] / $b['visitantes_tipo'] * 100, 1) : 0;
     $b['avg_dwell_ms'] = $b['avg_dwell_ms'] !== null ? round($b['avg_dwell_ms']) : null;
 }
 unset($b);
